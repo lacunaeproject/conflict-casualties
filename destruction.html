@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Destruction · Conflict Casualties</title>
+<meta name="description" content="Photographs documenting the physical destruction of Gaza since October 2023. Content warning: distressing imagery." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="resources.css" />
+<link rel="stylesheet" href="destruction.css" />
+</head>
+<body class="destruction-body locked">
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<!-- Content warning gate — full-screen overlay shown until user consents -->
+<div class="cw-gate" id="cwGate" role="dialog" aria-modal="true" aria-labelledby="cw-title" aria-describedby="cw-body">
+  <div class="cw-card">
+    <div class="cw-mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 4 L28 26 L4 26 Z" />
+        <path d="M16 13 V19" />
+        <circle cx="16" cy="22.5" r="0.8" fill="currentColor" stroke="none" />
+      </svg>
+    </div>
+    <div class="cw-eyebrow">Content warning</div>
+    <h1 id="cw-title">The images on this page are distressing.</h1>
+    <p id="cw-body">
+      This page contains photographs documenting the physical destruction of Gaza between October 2023 and 2025 — bombed neighborhoods, collapsed apartment blocks, destroyed schools and hospitals, aerial views of flattened camps. The photographs are published here because they are part of the public record; they are also difficult to look at.
+    </p>
+    <p class="cw-meta">
+      All images are drawn from Wikimedia Commons under Creative Commons or public-domain licenses. No photographs of dead or injured people are shown. No images of children are shown. If you prefer not to view this material, you can return to the dashboard instead.
+    </p>
+    <div class="cw-actions">
+      <button type="button" class="btn-primary" id="cwAccept">I understand — show the images</button>
+      <a href="index.html" class="btn-ghost">Return to dashboard</a>
+    </div>
+    <div class="cw-foot">
+      You can leave this page at any time. The images are not auto-played and are not animated.
+    </div>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand">
+      <a href="index.html" style="display:flex;align-items:center;gap:var(--space-3);color:inherit;text-decoration:none">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-label="Conflict Casualties mark" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="16" cy="16" r="13" />
+          <path d="M3 16 H29" />
+          <path d="M16 3 Q 8 16 16 29 Q 24 16 16 3 Z" />
+        </svg>
+        <div>
+          <div class="brand-title">Conflict Casualties</div>
+          <div class="brand-sub">Israel · Palestine · since 7 October 2023</div>
+        </div>
+      </a>
+    </div>
+    <nav class="site-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="resources.html">Reading list</a>
+      <a href="destruction.html" class="active">Destruction</a>
+      <a href="donate.html">Donate</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main-content">
+
+<section class="hero">
+  <div class="card">
+    <div class="eyebrow">Visual record</div>
+    <h1>The destruction of Gaza.</h1>
+    <p>Numbers hold death at a distance. These photographs do not. Between October 2023 and 2025, satellite analysis by the UN and Yale's Conflict Observatory estimated that between <em>60% and 70%</em> of all structures in the Gaza Strip were damaged or destroyed. Entire neighborhoods of Gaza City, Khan Younis, Jabalia, and Rafah were reduced to rubble. Hospitals, schools, bakeries, universities, and refugee camps were among the structures hit. This gallery documents a small fraction of that damage, drawn from the public record on Wikimedia Commons.</p>
+  </div>
+</section>
+
+<section class="gallery">
+
+  <figure class="photo wide">
+    <img src="img/rimal-gaza-city.jpg" alt="Wide view of rubble-strewn streets and collapsed buildings in the Al-Rimal neighborhood of Gaza City following an Israeli airstrike, October 2023." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">Al-Rimal · Gaza City</div>
+      <div class="cap-date">9 October 2023</div>
+      <p>Damage in Al-Rimal following Israeli airstrikes in the first days of the war. Al-Rimal was the commercial and residential heart of Gaza City; by late 2023, most of it was uninhabitable.</p>
+      <div class="cap-credit">Photo: Naaman Omar / APA images · via <a href="https://commons.wikimedia.org/wiki/File:Damage_in_Gaza_Strip_during_the_October_2023_-_29.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 3.0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo">
+    <img src="img/khan-younis-oct8.jpg" alt="Palestinians standing on a mound of debris beside a destroyed multi-story building in Khan Younis, southern Gaza." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">Khan Younis</div>
+      <div class="cap-date">8 October 2023</div>
+      <p>A building destroyed in Israeli airstrikes on Khan Younis, one day after the October 7 attack and the beginning of the bombing campaign.</p>
+      <div class="cap-credit">Photo: APA images · via <a href="https://commons.wikimedia.org/wiki/File:Damage_in_Gaza_Strip_during_the_October_2023_-_15.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 3.0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo">
+    <img src="img/gaza-strip-04.jpg" alt="A Gaza apartment block reduced to twisted concrete and rebar, with surrounding buildings showing blast damage." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">Gaza Strip</div>
+      <div class="cap-date">October 2023</div>
+      <p>A collapsed apartment block, one of hundreds flattened in the first weeks of the air campaign. More than half of all housing units in Gaza were damaged or destroyed by early 2024.</p>
+      <div class="cap-credit">Photo: APA images · via <a href="https://commons.wikimedia.org/wiki/File:Damage_in_Gaza_Strip_during_the_October_2023_-_04.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 3.0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo wide">
+    <img src="img/beach-camp-aerial.jpg" alt="Aerial photograph of the Beach refugee camp in Gaza showing whole blocks of buildings reduced to rubble, with few intact structures remaining." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">Beach (Al-Shati) refugee camp · Gaza</div>
+      <div class="cap-date">2024</div>
+      <p>Aerial view of the Beach refugee camp — one of the eight original UNRWA refugee camps, established in 1948 for Palestinians displaced from Jaffa and the coastal plain. By 2024, satellite analysis showed the majority of the camp had been destroyed.</p>
+      <div class="cap-credit">Photo: via <a href="https://commons.wikimedia.org/wiki/File:Aerial_view_of_destruction_in_Beach_refugee_camp,_Gaza_Strip.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · Public domain / CC0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo">
+    <img src="img/gaza-strip-11.jpg" alt="Street view of rubble piled several stories high between damaged buildings in Gaza." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">Gaza Strip</div>
+      <div class="cap-date">October 2023</div>
+      <p>Rubble in a residential street. UN estimates put the volume of debris in Gaza at more than 50 million tons by late 2024 — debris that will take years to clear and contains unexploded ordnance.</p>
+      <div class="cap-credit">Photo: APA images · via <a href="https://commons.wikimedia.org/wiki/File:Damage_in_Gaza_Strip_during_the_October_2023_-_11.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 3.0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo">
+    <img src="img/gaza-strip-27.jpg" alt="The hollowed-out shell of a multi-story building, with its façade sheared off exposing the interior rooms." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">Gaza Strip</div>
+      <div class="cap-date">October 2023</div>
+      <p>A residential building with its façade shorn away. Interior spaces that were kitchens, bedrooms, and living rooms are exposed to the street.</p>
+      <div class="cap-credit">Photo: APA images · via <a href="https://commons.wikimedia.org/wiki/File:Damage_in_Gaza_Strip_during_the_October_2023_-_27.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 3.0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo wide">
+    <img src="img/deir-al-balah.jpg" alt="Drone footage still showing aftermath of an airstrike in Deir al-Balah — a cloud of dust rising from a freshly destroyed building surrounded by already-damaged structures." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">Deir al-Balah · Central Gaza</div>
+      <div class="cap-date">2024</div>
+      <p>Drone imagery of airstrike aftermath in Deir al-Balah, one of the central Gaza towns that absorbed repeated displacement waves from the north and south.</p>
+      <div class="cap-credit">Photo: via <a href="https://commons.wikimedia.org/wiki/File:Drone_Shows_Airstrike_Aftermath_in_Deir_al-Balah_2.png" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 4.0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo">
+    <img src="img/unrwa-school.jpg" alt="The destroyed UNRWA Zaitoun Boys School — classroom blocks collapsed, schoolyard filled with debris." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">UNRWA Zaitoun Boys School · Gaza City</div>
+      <div class="cap-date">2024</div>
+      <p>The destroyed UNRWA Zaitoun Boys School. UNRWA reported that by 2024, the majority of its school buildings in Gaza had been damaged or destroyed, including those being used as shelters for displaced families.</p>
+      <div class="cap-credit">Photo: UNRWA · via <a href="https://commons.wikimedia.org/wiki/File:Destruction_of_UNRWA_Zaitoun_Boys_School,_Gaza_Strip.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-NC-ND 2.0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo">
+    <img src="img/unrwa-health-center.jpg" alt="The destroyed UNRWA Sheikh Radwan health center — the building's concrete roof has collapsed onto twisted metal and medical supplies." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">UNRWA Sheikh Radwan health center · Gaza</div>
+      <div class="cap-date">February 2024</div>
+      <p>The destroyed UNRWA Sheikh Radwan primary health care center. WHO recorded more than 800 attacks on health care in Gaza between October 2023 and the end of 2024.</p>
+      <div class="cap-credit">Photo: UNRWA · via <a href="https://commons.wikimedia.org/wiki/File:Destruction_of_UNRWA_el-Sheikh_Radwan_health_center,_February_2024.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-NC-ND 2.0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo">
+    <img src="img/khan-younis-ruins.jpg" alt="A panoramic street view in Khan Younis showing block after block of structurally compromised multi-story buildings." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">Khan Younis</div>
+      <div class="cap-date">7 December 2024</div>
+      <p>Ruins of Khan Younis, southern Gaza. By late 2024, satellite analysis estimated that more than 60% of Khan Younis's buildings had been damaged or destroyed.</p>
+      <div class="cap-credit">Photo: via <a href="https://commons.wikimedia.org/wiki/File:24-12-07_03_Khan_Younis_Ruins.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 4.0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo">
+    <img src="img/al-wahda-street.jpg" alt="A wide street in Gaza City with every visible building along it damaged or partially collapsed, cars and debris scattered in the roadway." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">Al-Wahda Street · Gaza City</div>
+      <div class="cap-date">2023–2025</div>
+      <p>Al-Wahda Street — one of Gaza City's main thoroughfares, lined before the war with apartment towers, cafés, and the Al-Wahda Medical Complex. The street was the site of the May 2021 airstrike that killed 42 people in a single building collapse; it was repeatedly hit again after October 2023.</p>
+      <div class="cap-credit">Photo: via <a href="https://commons.wikimedia.org/wiki/File:Al-Wahda_Street,_Gaza_war_23-25_(2).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 4.0</div>
+    </figcaption>
+  </figure>
+
+  <figure class="photo">
+    <img src="img/gaza-strip-30.jpg" alt="A smoke-filled street in Gaza during the early days of the war — concrete blown across the roadway, storefronts shuttered, one building leaning as if mid-collapse." loading="lazy" />
+    <figcaption>
+      <div class="cap-loc">Gaza Strip</div>
+      <div class="cap-date">October 2023</div>
+      <p>Smoke and debris in a Gaza street during the first weeks of the air campaign. Photographs from this period are among the few taken by local journalists before much of the Strip's press infrastructure was destroyed or its journalists killed.</p>
+      <div class="cap-credit">Photo: APA images · via <a href="https://commons.wikimedia.org/wiki/File:Damage_in_Gaza_Strip_during_the_October_2023_-_30.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 3.0</div>
+    </figcaption>
+  </figure>
+
+</section>
+
+<section class="note-panel">
+  <h2>About these photographs</h2>
+  <p>
+    Every image on this page is hosted on <a href="https://commons.wikimedia.org/wiki/Category:Damage_in_Gaza_City_during_the_Israel%E2%80%93Hamas_war" target="_blank" rel="noopener">Wikimedia Commons</a> under a Creative Commons or public-domain license. Originals are available at the credit link under each photograph. Many were taken by Palestinian photographers working for APA images or local outlets; others are official UNRWA documentation of destroyed facilities.
+  </p>
+  <p>
+    This gallery shows <em>physical destruction</em>, not the bodies of the dead. The choice to exclude the latter is not a judgment about its importance — those images are widely available and bear witness in a way photographs of buildings cannot — but a choice about what this page is for. For the broader visual record, the UN <a href="https://www.ochaopt.org/" target="_blank" rel="noopener">OCHA oPt</a>, <a href="https://www.unrwa.org/" target="_blank" rel="noopener">UNRWA</a>, <a href="https://www.aljazeera.com/" target="_blank" rel="noopener">Al Jazeera</a>, and the <a href="https://yaleconflictobservatory.org/" target="_blank" rel="noopener">Yale Conflict Observatory</a> maintain ongoing documentation.
+  </p>
+  <p>
+    Quantitative estimates of the destruction cited on this page come from the <a href="https://unosat.org/products/4075" target="_blank" rel="noopener">UN Satellite Centre (UNOSAT)</a> Gaza damage assessments and the <a href="https://yaleconflictobservatory.org/" target="_blank" rel="noopener">Yale Conflict Observatory</a>.
+  </p>
+</section>
+
+</main>
+
+<script>
+(function() {
+  const gate   = document.getElementById('cwGate');
+  const accept = document.getElementById('cwAccept');
+  const body   = document.body;
+
+  // Elements we want to hide from assistive tech while the gate is open.
+  // The gate is a modal dialog, so the site header / main / footer below it
+  // should not be reachable via AT until the user dismisses the warning.
+  const backdropEls = document.querySelectorAll('body > header, body > main, body > footer');
+  backdropEls.forEach(el => el.setAttribute('aria-hidden', 'true'));
+
+  // Always show the gate on page load — the warning should never be bypassed silently.
+  setTimeout(() => accept.focus(), 50);
+
+  // Collect all focusable elements inside the gate once, for the focus trap.
+  const focusableSelector =
+    'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  const trapKeydown = (e) => {
+    if (e.key !== 'Tab') return;
+    const focusables = gate.querySelectorAll(focusableSelector);
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last  = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+  gate.addEventListener('keydown', trapKeydown);
+
+  accept.addEventListener('click', function() {
+    gate.classList.add('dismissing');
+    body.classList.remove('locked');
+    // Un-hide the backdrop now that the modal is going away.
+    backdropEls.forEach(el => el.removeAttribute('aria-hidden'));
+    setTimeout(() => {
+      gate.classList.add('hidden');
+      // Return focus to the page heading so screen readers and keyboard
+      // users land in sensible context, not on a now-hidden Accept button.
+      const main = document.getElementById('main-content');
+      const firstHeading = main && main.querySelector('h1');
+      if (firstHeading) {
+        firstHeading.setAttribute('tabindex', '-1');
+        firstHeading.focus({ preventScroll: true });
+      }
+    }, 350);
+  });
+
+  // Escape key returns to dashboard while the gate is visible
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !gate.classList.contains('hidden')) {
+      window.location.href = 'index.html';
+    }
+  });
+})();
+</script>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-line">
+      <span class="foot-credit">Created with <a href="https://www.perplexity.ai/" target="_blank" rel="noopener">Perplexity</a> and <a href="https://www.claude.com/" target="_blank" rel="noopener">Claude</a> by Cody Heart.</span>
+      <span class="foot-meta-line">A photograph is not the thing itself · <a href="index.html">← Back to dashboard</a></span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

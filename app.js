@@ -56,7 +56,9 @@ const TOOLTIP = {
   titleFont: { family: '"Source Serif 4", serif', weight: '600', size: 13 },
   bodyFont: { family: '"Source Sans 3", sans-serif', size: 12 },
 };
-const MONO_TICKS = { color: C.ink3, font: { family: '"IBM Plex Mono", monospace', size: 10.5 } };
+const MONO_TICKS = { color: '#6b7078', font: { family: '"Source Sans 3", sans-serif', size: 12 } };
+const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (REDUCED_MOTION) Chart.defaults.animation = false;
 const GRID = { color: 'rgba(16,19,23,0.06)' };
 
 // --- Key events for annotations ---
@@ -107,12 +109,17 @@ function init() {
   buildPyramid();
   bindStoryNumbers();
   buildDots();
+  buildCenturyChart();
+  buildNames();
   setupScrolly();
   setupCentury();
   setupToc();
   buildLegendChips();
   bindControls();
 
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => Object.values(Chart.instances || {}).forEach(c => c.update('none')));
+  }
   document.getElementById('meta-date').textContent = fmtDate(DATA.meta.data_as_of);
   document.getElementById('meta-days').textContent = fmt(DATA.meta.days_of_data);
   updateAnnotations();
@@ -286,6 +293,7 @@ function setRange(startDate, endDate) {
 // --- Time series chart ---
 function buildTimeSeriesChart() {
   const ctx = document.getElementById('ts-chart').getContext('2d');
+  const narrow = ctx.canvas.parentElement.clientWidth < 640;
   tsChart = new Chart(ctx, {
     type: 'line',
     data: { datasets: getTimeSeriesDatasets() },
@@ -303,14 +311,14 @@ function buildTimeSeriesChart() {
           },
         },
       },
-      layout: { padding: { top: 26, right: 8 } },
+      layout: { padding: { top: 26, right: narrow ? 8 : 210 } },
       scales: {
         x: {
           type: 'time',
           time: { unit: 'month', tooltipFormat: 'PP' },
           grid: { display: false },
           border: { color: 'rgba(16,19,23,0.25)' },
-          ticks: { ...MONO_TICKS, maxRotation: 0, autoSkip: true, maxTicksLimit: 7 },
+          ticks: { ...MONO_TICKS, maxRotation: 0, autoSkip: true, maxTicksLimit: narrow ? 4 : 7 },
         },
         y: yScaleOptions(false),
       },
@@ -318,10 +326,10 @@ function buildTimeSeriesChart() {
       // Fewer x labels and no end labels on narrow screens.
       onResize: (c, size) => {
         c.options.scales.x.ticks.maxTicksLimit = size.width < 520 ? 4 : 7;
-        c.options.layout.padding.right = size.width < 640 ? 8 : 150;
+        c.options.layout.padding.right = size.width < 640 ? 8 : 210;
       },
     },
-    plugins: [eventMarkers, endLabels],
+    plugins: [truceBands, eventMarkers, endLabels],
   });
 }
 
@@ -342,6 +350,30 @@ function yScaleOptions(isLog) {
   };
 }
 
+// Truce and ceasefire periods, shaded behind the lines.
+const truceBands = {
+  id: 'truceBands',
+  beforeDatasetsDraw(chart) {
+    const { ctx, chartArea: area, scales: { x } } = chart;
+    ctx.save();
+    TRUCES.forEach(([a, b]) => {
+      const x0 = Math.max(area.left, x.getPixelForValue(toLocalDate(a).getTime()));
+      const end = b.startsWith('9999') ? x.max : toLocalDate(b).getTime();
+      const x1 = Math.min(area.right, x.getPixelForValue(end));
+      if (x1 <= x0) return;
+      ctx.fillStyle = 'rgba(16, 19, 23, 0.045)';
+      ctx.fillRect(x0, area.top, x1 - x0, area.bottom - area.top);
+      if (x1 - x0 > 30) {
+        ctx.fillStyle = '#6b7078';
+        ctx.font = `600 ${x1 - x0 > 44 ? 11 : 10}px "Source Sans 3", sans-serif`;
+        ctx.textBaseline = 'top';
+        ctx.fillText(b.startsWith('9999') ? 'Ceasefire' : 'Truce', x0 + 6, area.top + 6);
+      }
+    });
+    ctx.restore();
+  },
+};
+
 // Direct labels at the right end of each visible line, nudged apart so
 // the compressed Israeli and West Bank lines stay identifiable.
 const endLabels = {
@@ -354,7 +386,9 @@ const endLabels = {
       const meta = chart.getDatasetMeta(i);
       if (meta.hidden || ds.hidden || !meta.data.length) return;
       const pt = meta.data[meta.data.length - 1];
-      items.push({ y: pt.y, text: ds.label, color: ds.borderColor });
+      const last = ds.data[ds.data.length - 1];
+      const text = i === 0 && state.view === 'cum' ? `${ds.label} · ${fmt(last.y)}` : ds.label;
+      items.push({ y: pt.y, text, color: ds.borderColor });
     });
     // Stack upward from the baseline so labels of lines near zero don't collide.
     items.sort((a, b) => b.y - a.y);
@@ -443,7 +477,7 @@ function getTimeSeriesDatasets() {
     data: pick(arr, key),
     borderColor: color,
     backgroundColor: bg,
-    fill: !isDaily,
+    fill: false,
     tension: 0.25,
     pointRadius: 0,
     pointHoverRadius: 5,
@@ -656,12 +690,34 @@ function paceColors(months) {
 function buildPaceChart() {
   const months = monthlyDeaths();
 
-  // Label the tallest bar inside the spotlighted range.
+  // Label the tallest bar inside the spotlighted range, and when a story
+  // step is active, bracket its months with their total.
   const peakLabel = {
     id: 'peakLabel',
     afterDatasetsDraw(chart) {
       const inRange = months.filter(m => inPaceRange(m.key));
       if (!inRange.length) return;
+      if (paceRange) {
+        const meta = chart.getDatasetMeta(0).data;
+        const first = meta[months.indexOf(inRange[0])], lastBar = meta[months.indexOf(inRange[inRange.length - 1])];
+        if (first && lastBar) {
+          const { ctx: c, chartArea: area } = chart;
+          const x0 = first.x - first.width / 2, x1 = lastBar.x + lastBar.width / 2;
+          const y = area.top + 4;
+          const total = inRange.reduce((a, m) => a + m.total, 0);
+          c.save();
+          c.strokeStyle = C.ink; c.lineWidth = 1;
+          c.beginPath(); c.moveTo(x0, y + 6); c.lineTo(x0, y); c.lineTo(x1, y); c.lineTo(x1, y + 6); c.stroke();
+          c.fillStyle = C.ink;
+          c.font = '600 12px "Source Sans 3", sans-serif';
+          c.textBaseline = 'bottom';
+          const label = `${fmt(total)} deaths reported`;
+          const w = c.measureText(label).width;
+          c.fillText(label, Math.min(Math.max(area.left, (x0 + x1) / 2 - w / 2), area.right - w), y - 4);
+          c.restore();
+          return;
+        }
+      }
       const peak = inRange.reduce((a, b) => (b.total > a.total ? b : a));
       const bar = chart.getDatasetMeta(0).data[months.indexOf(peak)];
       if (!bar) return;
@@ -694,8 +750,8 @@ function buildPaceChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      layout: { padding: { top: 24 } },
-      animation: { duration: 450 },
+      layout: { padding: { top: 34 } },
+      animation: REDUCED_MOTION ? false : { duration: 450 },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -721,6 +777,7 @@ function buildPaceChart() {
             ...MONO_TICKS,
             maxRotation: 0,
             autoSkip: false,
+            source: 'labels',
             callback: (v, i, ticks) => {
               const d = new Date(ticks[i].value);
               return i === 0 ? 'Oct 2023' : d.getMonth() === 0 ? String(d.getFullYear()) : '';
@@ -738,6 +795,48 @@ function buildPaceChart() {
     plugins: [peakLabel],
   });
   paceChart.$months = months;
+}
+
+// --- A century on one scale: bar widths from each row's value ---
+function buildCenturyChart() {
+  const rows = Array.from(document.querySelectorAll('.cc-rows li'));
+  if (!rows.length) return;
+  const now = rows.find(r => r.classList.contains('is-now'));
+  if (now) now.dataset.value = DATA.summary.gaza.killed.total;
+  const max = Math.max(...rows.map(r => +r.dataset.value));
+  rows.forEach(r => r.style.setProperty('--w', `${(+r.dataset.value / max) * 100}%`));
+}
+
+// --- In memory: names of infants, English or Arabic ---
+async function buildNames() {
+  const wall = document.getElementById('names-wall');
+  if (!wall) return;
+  let data;
+  try {
+    data = await (await fetch('data/names-infants.json', { cache: 'no-cache' })).json();
+  } catch (e) { return; }
+  document.getElementById('names-count').textContent = fmt(data.count);
+  const render = lang => {
+    const idx = lang === 'ar' ? 1 : 0;
+    wall.lang = lang;
+    wall.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    wall.innerHTML = data.names.map(n => `<span>${n[idx]}</span>`).join(' ');
+  };
+  render('en');
+  document.querySelectorAll('#names-lang button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setRadioActive('#names-lang button', btn);
+      render(btn.dataset.lang);
+    });
+  });
+  const more = document.getElementById('names-more');
+  more.textContent = `Show all ${fmt(data.count)} names`;
+  more.addEventListener('click', () => {
+    const open = wall.classList.toggle('is-open');
+    more.setAttribute('aria-expanded', String(open));
+    more.textContent = open ? 'Show fewer' : `Show all ${fmt(data.count)} names`;
+    if (!open) wall.scrollIntoView({ block: 'nearest' });
+  });
 }
 
 // Calls onChange(el) whenever the element crossing the middle of the
@@ -814,9 +913,19 @@ function buildDots() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
     const r = size / 2;
+    // Landmarks: a rule and label every 10,000 people (1,000 dots).
+    const marks = canvas.parentElement.querySelector('.dots-marks');
+    if (marks) {
+      let html = '';
+      for (let d = 1000; d < dots.length; d += 1000) {
+        const row = Math.floor(d / cols);
+        html += `<div class="dots-mark" style="top:${row * step - gap / 2}px;--x:${((d % cols) / cols) * 100}%;--step:${step}px"><span>${fmt(d * 10)}</span></div>`;
+      }
+      marks.innerHTML = html;
+    }
     for (let i = 0; i < drawn; i++) {
       const on = active === 'all' || dots[i] === active;
-      ctx.fillStyle = on ? C.pal : '#dde1e5';
+      ctx.fillStyle = on ? C.pal : '#e3e6e9';
       ctx.beginPath();
       ctx.arc((i % cols) * step + r, Math.floor(i / cols) * step + r, r, 0, Math.PI * 2);
       ctx.fill();
@@ -882,8 +991,24 @@ function setupCentury() {
     });
     if (fill) fill.style.width = x;
     if (now) now.textContent = era.dataset.era || '';
+
   };
   trackMiddle(eras, setActive);
+
+  // The bar goes dark only while the dark 1948 feature is directly beneath it.
+  const bar = document.querySelector('.century-wrap');
+  const feature = document.querySelector('.era--feature');
+  if (bar && feature) {
+    let queued = false;
+    const check = () => {
+      queued = false;
+      const edge = bar.getBoundingClientRect().bottom;
+      const r = feature.getBoundingClientRect();
+      bar.classList.toggle('is-dark', r.top <= edge && r.bottom > edge);
+    };
+    window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(check); } }, { passive: true });
+    check();
+  }
 }
 
 // --- Floating chapter menu: shows where you are, jumps anywhere ---
@@ -894,7 +1019,11 @@ function setupToc() {
   const chapters = Array.from(document.querySelectorAll('[data-chapter]'));
   if (!toc || !chapters.length) return;
   const partTwo = document.getElementById('part-two');
-  const partOf = el => (partTwo && (partTwo.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) && !el.matches('.tracker, .foot-meta') ? 'Part two' : (el.matches('.tracker, .foot-meta') ? 'Method' : 'Part one'));
+  const partOf = el => {
+    if (el.matches('.coda')) return 'Closing';
+    if (el.matches('.tracker, .foot-meta')) return 'Method';
+    return partTwo && (partTwo.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) ? 'Part two' : 'Part one';
+  };
 
   chapters.forEach((el, i) => { if (!el.id) el.id = `chapter-${i + 1}`; });
   // One heading per part, then its chapters.
@@ -903,7 +1032,7 @@ function setupToc() {
     const part = partOf(el);
     const head = part !== lastPart ? `<div class="toc-group">${part}</div>` : '';
     lastPart = part;
-    return `${head}<a href="#${el.id}">${el.dataset.chapter}</a>`;
+    return `${head}<a href="#${el.id}"><b>${String(chapters.indexOf(el) + 1).padStart(2, '0')}</b>${el.dataset.chapter}</a>`;
   }).join('');
 
   const setOpen = open => {

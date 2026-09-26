@@ -17,11 +17,12 @@
 <meta name="description" content="A continuously updated dashboard of verified fatalities in the Israel–Palestine conflict since October 7, 2023." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&amp;family=Source+Sans+3:wght@400..700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=202609271000" />
-<link rel="stylesheet" href="resources.css?v=202609271000" />
+<link rel="preload" as="image" href="img/oct7-satellite-fires.jpg" fetchpriority="high" />
+<link rel="stylesheet" href="styles.css?v=202609272000" />
+<link rel="stylesheet" href="resources.css?v=202609272000" />
 </head>
 <body>
 
@@ -73,24 +74,24 @@
 
 <!-- HEADLINE KPI CARDS -->
 <section class="kpi-row" id="headline-totals" aria-label="Headline totals">
-  <div class="kpi kpi-pal">
+  <div class="kpi kpi-pal kpi--lead">
     <div class="kpi-label">Palestinians killed · Gaza</div>
-    <div class="kpi-value" id="kpi-gaza">—</div>
-    <div class="kpi-foot"><span id="kpi-gaza-children">—</span> children · <span id="kpi-gaza-women">—</span> women</div>
+    <div class="kpi-value" id="kpi-gaza">73,928</div>
+    <div class="kpi-foot">Gaza Ministry of Health · <span id="kpi-gaza-children">20,179</span> children · <span id="kpi-gaza-women">12,500</span> women</div>
   </div>
   <div class="kpi kpi-pal">
     <div class="kpi-label">Palestinians killed · West Bank</div>
-    <div class="kpi-value" id="kpi-wb">—</div>
-    <div class="kpi-foot"><span id="kpi-wb-children">—</span> children · <span id="kpi-wb-settler">—</span> settler attacks</div>
+    <div class="kpi-value" id="kpi-wb">1,123</div>
+    <div class="kpi-foot"><span id="kpi-wb-children">240</span> children · <span id="kpi-wb-settler">4,655</span> settler attacks</div>
   </div>
   <div class="kpi kpi-isr">
     <div class="kpi-label">Israelis killed · October 7</div>
-    <div class="kpi-value" id="kpi-oct7">—</div>
+    <div class="kpi-value" id="kpi-oct7">1,195</div>
     <div class="kpi-foot">724 civilians · 373 security · 98 foreign &amp; other</div>
   </div>
   <div class="kpi kpi-isr">
     <div class="kpi-label">Israeli soldiers · Gaza operations</div>
-    <div class="kpi-value" id="kpi-idf">—</div>
+    <div class="kpi-value" id="kpi-idf">477</div>
     <div class="kpi-foot">since ground invasion, Oct 27, 2023</div>
   </div>
 </section>
@@ -115,7 +116,7 @@
     <div class="panel-head">
       <div class="eyebrow">Chapter 1 · The scale</div>
       <h2>What <span data-bind="summary.gaza.killed.total">73,928</span> looks like</h2>
-      <p class="dek">Each dot is ten people killed in Gaza. Choose a group to see who they were.</p>
+      <p class="dek">Each dot is ten people killed in Gaza. A rule marks every 10,000. Choose a group to see who they were.</p>
     </div>
     <div class="dots-controls">
       <div class="segmented" id="dots-toggle" role="radiogroup" aria-label="Highlight a group">
@@ -127,6 +128,7 @@
       <p class="dots-readout" id="dots-readout" aria-live="polite"></p>
     </div>
     <div class="dots-box">
+      <div class="dots-marks" aria-hidden="true"></div>
       <canvas id="dots" role="img" aria-label="A grid of dots, one for every ten Palestinians killed in Gaza"></canvas>
     </div>
     <p class="chart-foot">Gaza Ministry of Health totals. “Men” is the remainder after children and women; the children and women counts have not been updated in months.</p>
@@ -286,7 +288,7 @@
 </section>
 
 <!-- CEASEFIRE CONTEXT -->
-<section class="context-card" data-chapter="The ceasefire">
+<section class="context-card context-card--band" data-chapter="The ceasefire">
   <div class="card card--pal">
     <div class="context-inner">
       <div class="context-lede">
@@ -295,19 +297,15 @@
         <p class="context-dek">The ceasefire is still nominally in force, but Israeli strikes continue. Far fewer people are killed each day than during the war.</p>
       </div>
 
-      <div class="viz-block">
-        <h3 class="viz-title">Average killed per day in Gaza</h3>
-        <div class="rate-bars">
-          <div class="rate-row">
-            <div class="rate-lbl">Resumed war<br><span>Mar – Oct 2025</span></div>
-            <div class="rate-track"><div class="rate-fill" style="--w:100%"></div></div>
-            <div class="rate-val">~88</div>
-          </div>
-          <div class="rate-row">
-            <div class="rate-lbl">Since ceasefire<br><span>Oct 2025 – now</span></div>
-            <div class="rate-track"><div class="rate-fill rate-fill--soft" style="--w:4.5%"></div></div>
-            <div class="rate-val">~4</div>
-          </div>
+      <div class="rate-moment" role="img" aria-label="About 88 people killed a day in Gaza during the resumed war, March to October 2025; about 4 a day since the ceasefire">
+        <div class="rm-col">
+          <div class="rm-num">~88</div>
+          <div class="rm-lbl">killed a day in Gaza during the resumed war<span>Mar – Oct 2025</span></div>
+        </div>
+        <div class="rm-rule" aria-hidden="true"></div>
+        <div class="rm-col rm-col--now">
+          <div class="rm-num">~4</div>
+          <div class="rm-lbl">killed a day since the ceasefire<span>Oct 2025 – now</span></div>
         </div>
       </div>
 
@@ -360,9 +358,8 @@
           <div class="cell"><div class="lbl">Civil defense</div><div class="val" id="who-civdef">—</div></div>
           <div class="cell"><div class="lbl">Died of starvation</div><div class="val" id="who-famine">—</div></div>
           <div class="cell"><div class="lbl">Aid-seekers killed</div><div class="val" id="who-aid">—</div></div>
-          <div class="cell"><div class="lbl">Injured</div><div class="val" id="who-injured">—</div></div>
         </div>
-        <p class="chart-foot">Ministry of Health totals: <span id="who-children">—</span> children, <span id="who-women">—</span> women. Also tracked by OCHA, CPJ, Healthcare Workers Watch, and UNRWA.</p>
+        <p class="chart-foot">Ministry of Health totals: <span id="who-children">—</span> children and <span id="who-women">—</span> women killed; <span id="who-injured">—</span> people injured. Also tracked by OCHA, CPJ, Healthcare Workers Watch, and UNRWA.</p>
       </div>
     </div>
   </div>
@@ -465,6 +462,10 @@
   <div class="era-body">
     <div class="era-years">Prologue · 1899</div>
     <h3>A letter to Herzl</h3>
+    <blockquote class="era-quote">
+      <p>In the name of God, let Palestine be left alone.</p>
+      <cite>Yusuf Diya al-Din al-Khalidi, letter to Theodor Herzl, 1899</cite>
+    </blockquote>
     <p>Khalidi opens with his own family. In 1899 his great-great-great-uncle, Yusuf Diya al-Din al-Khalidi, a former mayor of Jerusalem, wrote to Theodor Herzl, the founder of political Zionism. He wrote that he sympathized with the plight of the Jews of Europe, but that Palestine was already inhabited, and he urged Herzl, in the name of God, to leave it alone.</p>
     <p>Herzl replied that Jewish immigration would bring prosperity to the country’s non-Jewish inhabitants. He did not address the people living there as a nation with rights of its own. For Khalidi, that exchange holds the century to come in miniature.</p>
   </div>
@@ -622,6 +623,21 @@
     <div class="era-years">2017 – now · After the book</div>
     <h3>The chapter still being written</h3>
     <p>Khalidi’s book closes in 2017. Since October 7, 2023, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed in Gaza, more than all the death tolls above combined. That count is <a href="#part-one">where this page begins</a>, and it is updated as sources publish.</p>
+    <figure class="century-chart" aria-labelledby="cc-title">
+      <figcaption>
+        <h4 id="cc-title">A century of killing, on one scale</h4>
+        <p>Palestinians killed in each period, as given in the sections above</p>
+      </figcaption>
+      <ol class="cc-rows">
+        <li data-value="5000"><span class="cc-when">1936–39</span><span class="cc-what">Revolt against British rule</span><span class="cc-bar"><i></i></span><span class="cc-val">~5,000</span></li>
+        <li data-value="15000"><span class="cc-when">1947–49</span><span class="cc-what">Partition and al-Nakba</span><span class="cc-bar"><i></i></span><span class="cc-val">15,000</span></li>
+        <li data-value="18000"><span class="cc-when">1982</span><span class="cc-what">Invasion of Lebanon (all killed)</span><span class="cc-bar"><i></i></span><span class="cc-val">~18,000</span></li>
+        <li data-value="1100"><span class="cc-when">1987–93</span><span class="cc-what">First intifada</span><span class="cc-bar"><i></i></span><span class="cc-val">1,100+</span></li>
+        <li data-value="3000"><span class="cc-when">2000–05</span><span class="cc-what">Second intifada</span><span class="cc-bar"><i></i></span><span class="cc-val">~3,000</span></li>
+        <li data-value="2251"><span class="cc-when">2014</span><span class="cc-what">War on Gaza, 51 days</span><span class="cc-bar"><i></i></span><span class="cc-val">2,251</span></li>
+        <li class="is-now" data-bind-value="summary.gaza.killed.total" data-value="73928"><span class="cc-when">2023–</span><span class="cc-what">War on Gaza</span><span class="cc-bar"><i></i></span><span class="cc-val" data-bind="summary.gaza.killed.total">73,928</span></li>
+      </ol>
+    </figure>
   </div>
 </article>
 
@@ -633,7 +649,7 @@
 </aside>
 
 <!-- SOURCE COMPARISON TABLE CARD -->
-<section class="tracker" data-chapter="Sources">
+<section class="tracker" id="sources" data-chapter="Sources">
   <div class="card">
     <div class="panel-head">
       <div class="eyebrow">Method · The sources</div>
@@ -651,28 +667,8 @@
   </div>
 </section>
 
-<!-- DATA AS OF -->
-<section class="data-stamp">
-  <div class="card">
-    <div class="stamp-row">
-      <div class="stamp-col">
-        <div class="stamp-label">Data as of</div>
-        <div class="stamp-value" id="meta-date">—</div>
-      </div>
-      <div class="stamp-col">
-        <div class="stamp-label">Days of war</div>
-        <div class="stamp-value"><span id="meta-days">—</span></div>
-      </div>
-      <div class="stamp-col">
-        <div class="stamp-label">Build source</div>
-        <div class="stamp-value stamp-value--sm">Tech for Palestine API · UN OCHA · B’Tselem</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- METHODOLOGY CARD -->
-<section class="foot-meta" data-chapter="Notes">
+<section class="foot-meta" id="notes" data-chapter="Notes">
   <div class="card">
     <h3>Notes &amp; caveats</h3>
     <ul>
@@ -699,12 +695,34 @@
         <a href="https://www.aljazeera.com/features/2026/2/18/gaza-death-toll-exceeds-75000-as-independent-data-verify-loss" target="_blank" rel="noopener">The Lancet via Al Jazeera</a>
       </p>
     </details>
-    <p class="foot-closing">
-      Built to honor the dead with accurate counts. Data is reported as published — every source has limitations. Numbers differ, but the scale is not in doubt.
-    </p>
   </div>
 </section>
 
+
+<!-- CODA: in memory -->
+<section class="coda" data-chapter="In memory" aria-labelledby="coda-title">
+  <div class="coda-inner">
+    <div class="eyebrow">In memory</div>
+    <p class="coda-num" id="coda-title"><span data-bind="summary.gaza.killed.total">73,928</span></p>
+    <p class="coda-line">people killed in Gaza since October&nbsp;7, 2023, according to the Gaza Ministry of Health, as of <time data-bind="meta.data_as_of">Sep 24, 2026</time>.</p>
+    <p class="coda-lede">Of the dead identified by name, <span id="names-count">1,072</span> had not reached their first birthday. These are their names.</p>
+    <div class="names-controls">
+      <div class="segmented segmented--night" id="names-lang" role="radiogroup" aria-label="Language">
+        <button class="active" role="radio" aria-checked="true" data-lang="en">English</button>
+        <button role="radio" aria-checked="false" data-lang="ar" lang="ar">العربية</button>
+      </div>
+    </div>
+    <div class="names-wall" id="names-wall" lang="en" aria-label="Names of infants killed in Gaza"></div>
+    <button type="button" class="names-more" id="names-more" aria-expanded="false" aria-controls="names-wall">Show all names</button>
+    <p class="names-source">Names from the Gaza Ministry of Health’s list of identified dead, released through <time data-bind="summary.known_killed_in_gaza.includes_until">May 7, 2026</time>, via Tech for Palestine.</p>
+    <nav class="coda-links" aria-label="Continue">
+      <a href="resources.html">Read the history</a>
+      <a href="donate.html">Where to give</a>
+      <a href="#sources">How we count</a>
+    </nav>
+    <p class="coda-close">Built to honor the dead with accurate counts. Data is reported as published — every source has limitations. Numbers differ, but the scale is not in doubt.</p>
+  </div>
+</section>
 
 <!-- Floating chapter menu -->
 <div class="toc" id="toc" hidden>
@@ -718,14 +736,38 @@
 </main>
 
 <footer class="site-foot">
-  <div class="wrap">
-    <div class="foot-line">
-      <span class="foot-credit">Created with <a href="https://www.perplexity.ai/" target="_blank" rel="noopener">Perplexity</a> and <a href="https://www.claude.com/" target="_blank" rel="noopener">Claude.</a> Designed by Cody Heart.</span>
-      <span class="foot-meta-line">Data updated monthly · <a href="mailto:lacunae.us@gmail.com">lacunae.us@gmail.com</a></span>
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="16" cy="16" r="13" /><path d="M3 16 H29" /><path d="M16 3 Q 8 16 16 29 Q 24 16 16 3 Z" /></svg>
+      <div>
+        <div class="foot-title">Conflict Casualties</div>
+        <p>A running record of the dead in Israel and Palestine since October 7, 2023, and the century of history behind it.</p>
+      </div>
     </div>
+    <nav class="foot-col" aria-label="Pages">
+      <div class="foot-h">Pages</div>
+      <a href="index.html">The toll</a>
+      <a href="resources.html">Reading list</a>
+      <a href="destruction.html">Destruction</a>
+      <a href="donate.html">Donate</a>
+    </nav>
+    <div class="foot-col">
+      <div class="foot-h">Data</div>
+      <span>As of <span id="meta-date">Sep 24, 2026</span> · Day <span id="meta-days">1,084</span></span>
+      <span>Tech for Palestine · UN OCHA · B’Tselem</span>
+      <span>Updated monthly</span>
+    </div>
+    <div class="foot-col">
+      <div class="foot-h">Corrections</div>
+      <a href="mailto:lacunae.us@gmail.com">lacunae.us@gmail.com</a>
+    </div>
+  </div>
+  <div class="wrap foot-base">
+    <span>Created with <a href="https://www.perplexity.ai/" target="_blank" rel="noopener">Perplexity</a> and <a href="https://www.claude.com/" target="_blank" rel="noopener">Claude</a>. Designed by Cody Heart.</span>
+    <span>Set in Source Serif 4, Source Sans 3 and IBM Plex Mono</span>
   </div>
 </footer>
 
-<script src="app.js?v=202609271000"></script><script src="motion.js?v=202609271000" defer></script>
+<script src="app.js?v=202609272000"></script><script src="motion.js?v=202609272000" defer></script>
 </body>
 </html>

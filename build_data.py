@@ -216,3 +216,25 @@ with open('data.json', 'w') as f:
     json.dump(bundle, f, separators=(',', ':'))
 
 print(f"Wrote data.json — {days} days, Gaza cum: {gaza_series[-1]['killed_cum']:,}, WB cum: {wb_series[-1]['killed_cum']:,}, Israeli cum: {israeli_series[-1]['total_cum']:,}")
+
+# --- Names for the closing memorial: identified dead under one year old ---
+# Pulls the Ministry of Health list of identified dead from Tech for Palestine
+# and keeps only infants (age 0), English and Arabic names. Skipped quietly if
+# the network is unavailable, leaving the previous file in place.
+import urllib.request
+
+NAMES_URL = 'https://data.techforpalestine.org/api/v2/killed-in-gaza.min.json'
+try:
+    with urllib.request.urlopen(urllib.request.Request(NAMES_URL, headers={'User-Agent': 'conflict-casualties-build'}), timeout=60) as r:
+        people = json.load(r)
+    infants = [[p['en_name'], p['name']] for p in people if p.get('age') == 0 and p.get('en_name')]
+    with open('data/names-infants.json', 'w', encoding='utf-8') as f:
+        json.dump({
+            'count': len(infants),
+            'records': len(people),
+            'includes_until': summary.get('known_killed_in_gaza', {}).get('includes_until'),
+            'names': infants,
+        }, f, ensure_ascii=False, separators=(',', ':'))
+    print(f"Wrote data/names-infants.json — {len(infants):,} names of {len(people):,} identified")
+except Exception as e:
+    print(f"Skipped names list ({e})")

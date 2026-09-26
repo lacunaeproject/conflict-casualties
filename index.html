@@ -20,8 +20,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=202609261700" />
-<link rel="stylesheet" href="resources.css?v=202609261700" />
+<link rel="stylesheet" href="styles.css?v=202609262000" />
+<link rel="stylesheet" href="resources.css?v=202609262000" />
 </head>
 <body>
 
@@ -91,7 +91,7 @@
 </section>
 
 <!-- IN BRIEF: the story so far, numbers bound to data.json -->
-<section class="story story--lede" aria-labelledby="in-brief">
+<section class="story story--lede" aria-labelledby="in-brief" data-chapter="In brief">
   <div class="eyebrow" id="in-brief">In brief</div>
   <p>On October 7, 2023, Hamas-led fighters broke through the fence around Gaza and attacked towns, kibbutzim, army posts and a music festival in southern Israel. They killed <strong data-bind="oct7.total">1,195</strong> people, most of them civilians, and took <strong data-bind="oct7.hostages_taken">251</strong> hostages.</p>
   <p>Israel's war on Gaza began the same day. In the <span data-bind="meta.days_of_data">1,084</span> days since, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed and <span data-bind="summary.gaza.injured.total">175,030</span> injured. Of the dead identified by name, <strong data-bind="calc.namedChildShare">30%</strong> were children. In the occupied West Bank, Israeli forces and settlers have killed <strong data-bind="summary.west_bank.killed.total">1,123</strong> more Palestinians. <strong data-bind="calc.idfGaza">477</strong> Israeli soldiers have been killed in the Gaza ground operation.</p>
@@ -104,11 +104,35 @@
   <h2>The toll</h2>
 </header>
 
-<!-- MAIN TIME-SERIES CHART CARD (controls live inside, above the chart) -->
-<section class="panel">
+<!-- SCALE: one dot per ten people -->
+<section class="panel" data-chapter="The scale">
   <div class="card">
     <div class="panel-head">
-      <div class="eyebrow">Chapter 1 · The count</div>
+      <div class="eyebrow">Chapter 1 · The scale</div>
+      <h2>What <span data-bind="summary.gaza.killed.total">73,928</span> looks like</h2>
+      <p class="dek">Each dot is ten people killed in Gaza. Choose a group to see who they were.</p>
+    </div>
+    <div class="dots-controls">
+      <div class="segmented" id="dots-toggle" role="radiogroup" aria-label="Highlight a group">
+        <button class="active" role="radio" aria-checked="true"  data-group="all">Everyone</button>
+        <button            role="radio" aria-checked="false" data-group="children">Children</button>
+        <button            role="radio" aria-checked="false" data-group="women">Women</button>
+        <button            role="radio" aria-checked="false" data-group="men">Men</button>
+      </div>
+      <p class="dots-readout" id="dots-readout" aria-live="polite"></p>
+    </div>
+    <div class="dots-box">
+      <canvas id="dots" role="img" aria-label="A grid of dots, one for every ten Palestinians killed in Gaza"></canvas>
+    </div>
+    <p class="chart-foot">Gaza Ministry of Health totals. "Men" is the remainder after children and women; the children and women counts have not been updated in months.</p>
+  </div>
+</section>
+
+<!-- MAIN TIME-SERIES CHART CARD (controls live inside, above the chart) -->
+<section class="panel" data-chapter="The count">
+  <div class="card">
+    <div class="panel-head">
+      <div class="eyebrow">Chapter 2 · The count</div>
       <h2>Fatalities over time</h2>
       <p class="dek">How the reported toll has grown since October 7, 2023. Numbered markers show the turning points.</p>
     </div>
@@ -193,22 +217,62 @@
   </div>
 </section>
 
-<!-- PACE: MONTHLY DEATHS -->
-<section class="panel">
+<!-- PACE: scrollytelling over the monthly chart -->
+<section class="panel panel--scrolly" data-chapter="The pace">
   <div class="card">
     <div class="panel-head">
-      <div class="eyebrow">Chapter 2 · The pace</div>
-      <h2>Deaths reported each month in Gaza</h2>
-      <p class="dek">The cumulative line hides the rhythm of the war. Month by month, the deadliest period was the first; the toll rose again when fighting resumed in March 2025.</p>
+      <div class="eyebrow">Chapter 3 · The pace</div>
+      <h2>The war, month by month</h2>
+      <p class="dek">The running total hides the rhythm of the war. Scroll to walk through it.</p>
     </div>
-    <div class="phase-legend" aria-hidden="true">
-      <span><i class="sw sw--war"></i>Active war</span>
-      <span><i class="sw sw--truce"></i>Truce or ceasefire</span>
+    <div class="scrolly">
+      <div class="scrolly-graphic">
+        <div class="phase-legend" aria-hidden="true">
+          <span><i class="sw sw--war"></i>Active war</span>
+          <span><i class="sw sw--truce"></i>Truce or ceasefire</span>
+        </div>
+        <div class="chart-box chart-box--pace">
+          <canvas id="pace-chart" role="img" aria-label="Bar chart of Gaza deaths reported per month"></canvas>
+        </div>
+      </div>
+      <div class="scrolly-steps">
+        <div class="step" data-from="2023-10" data-to="2023-12">
+          <div class="step-card">
+            <div class="step-when">Oct – Dec 2023</div>
+            <h3>The first three months</h3>
+            <p>Nearly a third of all the deaths recorded so far came in the war's first three months: <strong data-step="total"></strong> people, about <strong data-step="perday"></strong> a day.</p>
+          </div>
+        </div>
+        <div class="step" data-from="2024-01" data-to="2024-12">
+          <div class="step-card">
+            <div class="step-when">2024</div>
+            <h3>A long, grinding year</h3>
+            <p>Through 2024 the monthly toll fell but never stopped: <strong data-step="total"></strong> deaths, about <strong data-step="perday"></strong> a day. In May, Israel launched its offensive on Rafah, where more than a million displaced people had sheltered.</p>
+          </div>
+        </div>
+        <div class="step" data-from="2025-01" data-to="2025-02">
+          <div class="step-card">
+            <div class="step-when">Jan – Mar 2025</div>
+            <h3>Eight weeks of truce</h3>
+            <p>A truce took hold on January 19, 2025, with an exchange of hostages and prisoners. In February the monthly count fell to its lowest point of the war to that date.</p>
+          </div>
+        </div>
+        <div class="step" data-from="2025-03" data-to="2025-09">
+          <div class="step-card">
+            <div class="step-when">Mar – Sep 2025</div>
+            <h3>The war resumes</h3>
+            <p>Israel resumed its offensive on March 18. Over the next seven months <strong data-step="total"></strong> more deaths were reported. In August, UN-backed experts confirmed famine in Gaza City; by mid-2026, <strong data-bind="summary.gaza.aid_seeker.killed">2,615</strong> people had been killed seeking food aid.</p>
+          </div>
+        </div>
+        <div class="step" data-from="2025-10" data-to="9999-12">
+          <div class="step-card">
+            <div class="step-when">Oct 2025 – now</div>
+            <h3>Ceasefire</h3>
+            <p>Since the October 10 ceasefire, about <strong data-step="permonth"></strong> deaths a month have been added. Most are not new killings but the dead being recovered from rubble or confirmed after review.</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="chart-box chart-box--pace">
-      <canvas id="pace-chart" role="img" aria-label="Bar chart of Gaza deaths reported per month"></canvas>
-    </div>
-    <div class="pace-facts" id="pace-facts"></div>
     <details class="more">
       <summary>Why ceasefire months aren't zero</summary>
       <p>Monthly figures are the change in the Ministry of Health's cumulative total. During truces that change includes new killings, bodies recovered from rubble, and earlier deaths confirmed after review, so the lighter bars overstate new violence. See the breakdown below.</p>
@@ -217,7 +281,7 @@
 </section>
 
 <!-- CEASEFIRE CONTEXT -->
-<section class="context-card">
+<section class="context-card" data-chapter="The ceasefire">
   <div class="card card--pal">
     <div class="context-inner">
       <div class="context-lede">
@@ -270,10 +334,10 @@
 </section>
 
 <!-- WHO WAS KILLED IN GAZA -->
-<section class="panel">
+<section class="panel" data-chapter="The people">
   <div class="card">
     <div class="panel-head">
-      <div class="eyebrow">Chapter 3 · The people</div>
+      <div class="eyebrow">Chapter 4 · The people</div>
       <h2>Who was killed in Gaza</h2>
       <p class="dek">Of the <span id="named-total">—</span> dead identified by name, <strong id="named-child-share">—</strong> were children.</p>
     </div>
@@ -300,7 +364,7 @@
 </section>
 
 <!-- SPLIT: OCT 7 + GAZA GOVERNORATE -->
-<section class="split">
+<section class="split" data-chapter="October 7 · Governorates">
   <div class="card">
     <div class="eyebrow eyebrow--isr">Israel</div>
     <h2>October 7</h2>
@@ -340,10 +404,10 @@
 </section>
 
 <!-- WEST BANK -->
-<section class="panel">
+<section class="panel" data-chapter="The West Bank">
   <div class="card">
     <div class="panel-head">
-      <div class="eyebrow">Chapter 4 · The West Bank</div>
+      <div class="eyebrow">Chapter 5 · The West Bank</div>
       <h2>Violence beyond Gaza</h2>
       <p class="dek">Palestinians killed and settler attacks in the West Bank and East Jerusalem, as reported by OCHA. Two charts, two scales.</p>
     </div>
@@ -372,8 +436,14 @@
     <p>In <em>The Hundred Years' War on Palestine</em> (2020), Khalidi divides that century into six "declarations of war." What follows summarizes his account in our own words, with the numbers from each period. For the full argument, <a href="resources.html">read the book</a>.</p>
   </div>
 
-  <nav class="century" aria-label="Timeline of the hundred years' war">
+</section>
+
+<div class="history" data-chapter="The hundred years' war">
+<div class="century-wrap">
+  <div class="century-now" id="century-now" aria-hidden="true"></div>
+  <nav class="century" id="century" aria-label="Timeline of the hundred years' war">
     <div class="century-line" aria-hidden="true"></div>
+    <div class="century-fill" aria-hidden="true"></div>
     <a class="century-mark" href="#era-1899" style="--x:0%"><span>1899</span></a>
     <a class="century-mark" href="#era-1917" style="--x:14.2%"><span>1917</span></a>
     <a class="century-mark" href="#era-1947" style="--x:37.8%"><span>1947</span></a>
@@ -383,10 +453,10 @@
     <a class="century-mark is-low" href="#era-2000" style="--x:79.5%"><span>2000</span></a>
     <a class="century-mark is-now" href="#era-2023" style="--x:97.6%"><span>2023</span></a>
   </nav>
-</section>
+</div>
 
 <!-- Prologue -->
-<article class="era era--text" id="era-1899">
+<article class="era era--text" id="era-1899" data-era="Prologue · A letter to Herzl">
   <div class="era-body">
     <div class="era-years">Prologue · 1899</div>
     <h3>A letter to Herzl</h3>
@@ -396,7 +466,7 @@
 </article>
 
 <!-- I -->
-<article class="era" id="era-1917">
+<article class="era" id="era-1917" data-era="1917 – 1939 · The first declaration">
   <figure class="era-fig era-fig--doc">
     <img src="img/balfour-declaration-1917.jpg" alt="The typed Balfour Declaration letter, signed by Arthur Balfour" width="1215" height="1600" loading="lazy" />
     <figcaption>The Balfour Declaration, November 2, 1917: a letter from Foreign Secretary Arthur Balfour to Lord Rothschild. <span class="credit">UK Government · via <a href="https://commons.wikimedia.org/wiki/File:Balfour_declaration_unmarked.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</span></figcaption>
@@ -423,7 +493,7 @@
 </article>
 
 <!-- II: full-bleed feature -->
-<article class="era era--feature" id="era-1947">
+<article class="era era--feature" id="era-1947" data-era="1947 – 1948 · The second declaration">
   <div class="era-feature-inner">
     <div class="era-body">
       <div class="era-years">1947 – 1948 · The second declaration</div>
@@ -447,7 +517,7 @@
 </article>
 
 <!-- III -->
-<article class="era era--flip" id="era-1967">
+<article class="era era--flip" id="era-1967" data-era="1967 · The third declaration">
   <figure class="era-fig">
     <img src="img/allenby-bridge-refugees-1967.jpg" alt="Palestinian refugees carrying bundles climb across the twisted wreckage of the Allenby Bridge" width="1523" height="1600" loading="lazy" />
     <figcaption>Palestinian refugees cross the wrecked Allenby Bridge into Jordan, 1967. <span class="credit">UNRWA Archive · via <a href="https://commons.wikimedia.org/wiki/File:Palestinian_refugees_crossing_the_destroyed_Allenby_Bridge_in_1967.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</span></figcaption>
@@ -470,7 +540,7 @@
 </article>
 
 <!-- IV -->
-<article class="era" id="era-1982">
+<article class="era" id="era-1982" data-era="1982 · The fourth declaration">
   <figure class="era-fig">
     <img src="img/beirut-outskirts-1982.jpg" alt="A column of Israeli tanks loaded with gear parked along a dusty road" width="1600" height="1067" loading="lazy" />
     <figcaption>Israeli tanks on the outskirts of Beirut, June 21, 1982. <span class="credit">Israel Press and Photo Agency (I.P.P.A.) · via <a href="https://commons.wikimedia.org/wiki/File:Israeli_Magach_Tanks_On_the_Outskirts_of_Beirut,_1982.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 4.0</span></figcaption>
@@ -492,7 +562,7 @@
 </article>
 
 <!-- V -->
-<article class="era era--flip" id="era-1987">
+<article class="era era--flip" id="era-1987" data-era="1987 – 1995 · The fifth declaration">
   <figure class="era-fig">
     <img src="img/intifada-gaza-1987.jpg" alt="Israeli soldiers in helmets face a crowd of Palestinians raising a Palestinian flag on a Gaza street" width="1600" height="1043" loading="lazy" />
     <figcaption>Israeli soldiers face Palestinian protesters in the Gaza Strip, December 21, 1987, two weeks into the first intifada. <span class="credit">Efi Sharir · via <a href="https://commons.wikimedia.org/wiki/File:Intifada_in_Gaza_Strip_(FL45956268).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 4.0</span></figcaption>
@@ -519,7 +589,7 @@
 </article>
 
 <!-- VI -->
-<article class="era" id="era-2000">
+<article class="era" id="era-2000" data-era="2000 – 2014 · The sixth declaration">
   <figure class="era-fig">
     <img src="img/west-bank-barrier-2004.jpg" alt="A tall concrete wall of the separation barrier curving across rocky ground under a blue sky" width="1600" height="1064" loading="lazy" />
     <figcaption>The separation barrier in the occupied West Bank, August 2004. <span class="credit">Justin McIntosh · via <a href="https://commons.wikimedia.org/wiki/File:Israeli_West_Bank_Barrier.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 2.0</span></figcaption>
@@ -542,7 +612,7 @@
 </article>
 
 <!-- Epilogue: back to the numbers -->
-<article class="era era--text era--now" id="era-2023">
+<article class="era era--text era--now" id="era-2023" data-era="2017 – now · After the book">
   <div class="era-body">
     <div class="era-years">2017 – now · After the book</div>
     <h3>The chapter still being written</h3>
@@ -550,13 +620,15 @@
   </div>
 </article>
 
+</div><!-- /.history -->
+
 <!-- PULL QUOTE (repeats the closing line of the notes below) -->
 <aside class="pullquote" aria-hidden="true">
   <p>Numbers differ, but the scale is not in doubt.</p>
 </aside>
 
 <!-- SOURCE COMPARISON TABLE CARD -->
-<section class="tracker">
+<section class="tracker" data-chapter="Sources">
   <div class="card">
     <div class="panel-head">
       <div class="eyebrow">Method · The sources</div>
@@ -595,7 +667,7 @@
 </section>
 
 <!-- METHODOLOGY CARD -->
-<section class="foot-meta">
+<section class="foot-meta" data-chapter="Notes">
   <div class="card">
     <h3>Notes &amp; caveats</h3>
     <ul>
@@ -628,6 +700,16 @@
   </div>
 </section>
 
+
+<!-- Floating chapter menu -->
+<div class="toc" id="toc" hidden>
+  <button type="button" class="toc-btn" id="toc-btn" aria-expanded="false" aria-controls="toc-list">
+    <span class="toc-part" id="toc-part">Part one</span>
+    <span class="toc-title" id="toc-title">In brief</span>
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 10l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <nav class="toc-list" id="toc-list" aria-label="Chapters" hidden></nav>
+</div>
 </main>
 
 <footer class="site-foot">
@@ -639,6 +721,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=202609261700"></script><script src="motion.js?v=202609261700" defer></script>
+<script src="app.js?v=202609262000"></script><script src="motion.js?v=202609262000" defer></script>
 </body>
 </html>

@@ -101,6 +101,10 @@ function init() {
   buildPaceChart();
   buildPyramid();
   bindStoryNumbers();
+  buildDots();
+  setupScrolly();
+  setupCentury();
+  setupToc();
   buildLegendChips();
   bindControls();
 
@@ -574,26 +578,39 @@ function isTruceMonth(key) {
   return inTruce > daysIn / 2;
 }
 
+// Months currently spotlighted by the scrolly story (null = all).
+let paceRange = null;
+const inPaceRange = key => !paceRange || (key >= paceRange[0] && key <= paceRange[1]);
+const monthLabel = key => toLocalDate(`${key}-01`).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+
+function paceColors(months) {
+  return months.map(m => {
+    if (!inPaceRange(m.key)) return '#dde1e5';
+    return isTruceMonth(m.key) ? C.palSoft : C.pal;
+  });
+}
+
 function buildPaceChart() {
   const months = monthlyDeaths();
-  const peak = months.reduce((a, b) => (b.total > a.total ? b : a));
-  const colors = months.map(m => (isTruceMonth(m.key) ? C.palSoft : C.pal));
-  const monthLabel = key => toLocalDate(`${key}-01`).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 
-  // Label only the peak bar, directly above it.
+  // Label the tallest bar inside the spotlighted range.
   const peakLabel = {
     id: 'peakLabel',
     afterDatasetsDraw(chart) {
-      const i = months.indexOf(peak);
-      const bar = chart.getDatasetMeta(0).data[i];
+      const inRange = months.filter(m => inPaceRange(m.key));
+      if (!inRange.length) return;
+      const peak = inRange.reduce((a, b) => (b.total > a.total ? b : a));
+      const bar = chart.getDatasetMeta(0).data[months.indexOf(peak)];
       if (!bar) return;
-      const { ctx } = chart;
+      const { ctx, chartArea } = chart;
+      const text = `${fmt(peak.total)} in ${monthLabel(peak.key)}`;
       ctx.save();
       ctx.fillStyle = C.ink;
       ctx.font = '600 12px "Source Sans 3", sans-serif';
-      ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(`${fmt(peak.total)} in ${monthLabel(peak.key)}`, bar.x - bar.width / 2, bar.y - 6);
+      const w = ctx.measureText(text).width;
+      const x = Math.min(bar.x - bar.width / 2, chartArea.right - w);
+      ctx.fillText(text, x, bar.y - 6);
       ctx.restore();
     },
   };
@@ -604,7 +621,7 @@ function buildPaceChart() {
       labels: months.map(m => toLocalDate(`${m.key}-01`)),
       datasets: [{
         data: months.map(m => m.total),
-        backgroundColor: colors,
+        backgroundColor: paceColors(months),
         borderRadius: { topLeft: 4, topRight: 4 },
         borderSkipped: 'bottom',
         barPercentage: 0.78,
@@ -615,6 +632,7 @@ function buildPaceChart() {
       responsive: true,
       maintainAspectRatio: false,
       layout: { padding: { top: 24 } },
+      animation: { duration: 450 },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -647,18 +665,195 @@ function buildPaceChart() {
     },
     plugins: [peakLabel],
   });
+  paceChart.$months = months;
+}
 
-  // Three plain-language takeaways computed from the same series.
-  const first3 = months.slice(0, 3).reduce((s, m) => s + m.total, 0);
-  const total = DATA.gaza_daily[DATA.gaza_daily.length - 1].killed_cum;
-  const facts = [
-    [pct(first3, total), 'of all reported deaths came in the first three months'],
-    [fmt(peak.total / peak.days), `killed a day on average in ${monthLabel(peak.key)}, the deadliest month`],
-    [fmt(months.length), 'months of reporting so far'],
+// Calls onChange(el) whenever the element crossing the middle of the
+// viewport changes (null when none does). One rAF-throttled scroll listener.
+function trackMiddle(elements, onChange) {
+  let current, queued = false;
+  const check = () => {
+    queued = false;
+    const mid = window.innerHeight / 2;
+    const hit = elements.find(el => {
+      const r = el.getBoundingClientRect();
+      return r.top <= mid && r.bottom >= mid;
+    }) || null;
+    if (hit !== current) { current = hit; onChange(hit); }
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(check); } };
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+  check();
+}
+
+// --- Scrolly: each step spotlights its months on the pace chart ---
+function setupScrolly() {
+  const steps = Array.from(document.querySelectorAll('.scrolly .step'));
+  if (!steps.length || !paceChart) return;
+  const months = paceChart.$months;
+
+  // Fill each step's numbers from the same monthly series.
+  steps.forEach(step => {
+    const from = step.dataset.from, to = step.dataset.to;
+    const sel = months.filter(m => m.key >= from && m.key <= to);
+    const total = sel.reduce((a, m) => a + m.total, 0);
+    const days = sel.reduce((a, m) => a + m.days, 0);
+    const vals = { total: fmt(total), perday: fmt(total / Math.max(days, 1)), permonth: fmt(total / Math.max(sel.length, 1)) };
+    step.querySelectorAll('[data-step]').forEach(el => { el.textContent = vals[el.dataset.step]; });
+  });
+
+  const activate = step => {
+    steps.forEach(s => s.classList.toggle('is-active', s === step));
+    paceRange = step ? [step.dataset.from, step.dataset.to] : null;
+    paceChart.data.datasets[0].backgroundColor = paceColors(months);
+    paceChart.update('none');
+  };
+  // Outside the story (above or below) every month shows again.
+  trackMiddle(steps, activate);
+}
+
+// --- Scale: one dot per ten people, highlight a group ---
+function buildDots() {
+  const canvas = document.getElementById('dots');
+  if (!canvas) return;
+  const g = DATA.summary.gaza.killed;
+  const groups = [
+    { key: 'children', n: Math.round(g.children / 10), label: 'children' },
+    { key: 'women', n: Math.round(g.women / 10), label: 'women' },
+    { key: 'men', n: Math.round((g.total - g.children - g.women) / 10), label: 'men' },
   ];
-  document.getElementById('pace-facts').innerHTML = facts
-    .map(([v, l]) => `<div class="pace-fact"><div class="pf-val">${v}</div><div class="pf-lbl">${l}</div></div>`)
-    .join('');
+  const counts = { children: g.children, women: g.women, men: g.total - g.children - g.women };
+  const dots = groups.flatMap(gr => Array(gr.n).fill(gr.key));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let active = 'all';
+  let drawn = reduce ? dots.length : 0;
+
+  const draw = () => {
+    const w = canvas.parentElement.clientWidth;
+    const size = w < 520 ? 5 : 6, gap = w < 520 ? 2 : 3, step = size + gap;
+    const cols = Math.floor((w + gap) / step);
+    const rows = Math.ceil(dots.length / cols);
+    const h = rows * step;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    const r = size / 2;
+    for (let i = 0; i < drawn; i++) {
+      const on = active === 'all' || dots[i] === active;
+      ctx.fillStyle = on ? C.pal : '#dde1e5';
+      ctx.beginPath();
+      ctx.arc((i % cols) * step + r, Math.floor(i / cols) * step + r, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  };
+
+  const readout = document.getElementById('dots-readout');
+  const setReadout = () => {
+    readout.innerHTML = active === 'all'
+      ? `<strong>${fmt(g.total)}</strong> people killed in Gaza`
+      : `<strong>${fmt(counts[active])}</strong> ${active} · ${pct(counts[active], g.total)} of the dead`;
+  };
+
+  document.querySelectorAll('#dots-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setRadioActive('#dots-toggle button', btn);
+      active = btn.dataset.group;
+      setReadout();
+      draw();
+    });
+  });
+
+  // Dots fill in, row by row, the first time the grid scrolls into view.
+  const grow = () => {
+    const t0 = performance.now(), dur = 2200;
+    const tick = now => {
+      const p = Math.min(1, (now - t0) / dur);
+      drawn = Math.round(dots.length * (1 - Math.pow(1 - p, 2)));
+      draw();
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); grow(); } }, { threshold: 0.15 });
+    io.observe(canvas);
+  } else {
+    drawn = dots.length;
+  }
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(draw, 120); });
+  setReadout();
+  draw();
+}
+
+// --- History: the timeline pins to the top and tracks the era in view ---
+function setupCentury() {
+  const eras = Array.from(document.querySelectorAll('.history .era'));
+  const marks = Array.from(document.querySelectorAll('#century .century-mark'));
+  const fill = document.querySelector('#century .century-fill');
+  const now = document.getElementById('century-now');
+  if (!eras.length) return;
+  const setActive = era => {
+    if (!era) return;
+    const id = '#' + era.id;
+    let x = '0%';
+    let passed = true;
+    marks.forEach(m => {
+      const isActive = m.getAttribute('href') === id;
+      m.classList.toggle('is-active', isActive);
+      m.classList.toggle('is-past', passed && !isActive);
+      if (isActive) { passed = false; x = m.style.getPropertyValue('--x'); }
+    });
+    if (fill) fill.style.width = x;
+    if (now) now.textContent = era.dataset.era || '';
+  };
+  trackMiddle(eras, setActive);
+}
+
+// --- Floating chapter menu: shows where you are, jumps anywhere ---
+function setupToc() {
+  const toc = document.getElementById('toc');
+  const btn = document.getElementById('toc-btn');
+  const list = document.getElementById('toc-list');
+  const chapters = Array.from(document.querySelectorAll('[data-chapter]'));
+  if (!toc || !chapters.length) return;
+  const partTwo = document.getElementById('part-two');
+  const partOf = el => (partTwo && (partTwo.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) && !el.matches('.tracker, .foot-meta') ? 'Part two' : (el.matches('.tracker, .foot-meta') ? 'Method' : 'Part one'));
+
+  chapters.forEach((el, i) => { if (!el.id) el.id = `chapter-${i + 1}`; });
+  list.innerHTML = chapters.map(el => `<a href="#${el.id}"><span>${partOf(el)}</span>${el.dataset.chapter}</a>`).join('');
+
+  const setOpen = open => {
+    list.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+  };
+  btn.addEventListener('click', () => setOpen(list.hidden));
+  list.addEventListener('click', e => { if (e.target.closest('a')) setOpen(false); });
+  document.addEventListener('pointerdown', e => { if (!toc.contains(e.target)) setOpen(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !list.hidden) { setOpen(false); btn.focus(); } });
+
+  const setCurrent = el => {
+    if (!el) return;
+    document.getElementById('toc-part').textContent = partOf(el);
+    document.getElementById('toc-title').textContent = el.dataset.chapter;
+    list.querySelectorAll('a').forEach(a => a.classList.toggle('is-current', a.getAttribute('href') === '#' + el.id));
+  };
+  // The history wrapper contains no other chapters, so a flat list works.
+  trackMiddle(chapters, setCurrent);
+
+  // Appear once the reader is past the opener.
+  const hero = document.querySelector('.hero');
+  const showPastHero = () => {
+    const past = hero.getBoundingClientRect().bottom < 0;
+    if (toc.hidden === past) toc.hidden = !past;
+    if (!past) setOpen(false);
+  };
+  window.addEventListener('scroll', showPastHero, { passive: true });
+  showPastHero();
 }
 
 // --- Age & sex of identified dead (butterfly chart, plain HTML) ---

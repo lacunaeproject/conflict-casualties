@@ -1493,3 +1493,28 @@ html.motion .reveal.in { opacity: 1; transform: none; }
   z-index: 100;
   background: var(--pal-on-night);
 }
+
+/* =========================================================
+   Accessibility — text on photographs (WCAG AA, measured
+   against the rendered images at desktop and phone widths).
+   ========================================================= */
+/* Small secondary text on imagery uses the brighter ink */
+.hero .hero-credit,
+.hero .byline,
+.tracker + .context-card .stat-lbl,
+.tracker + .context-card .feature-credit,
+.tracker + .context-card .context-footnote { color: var(--night-ink-2); }
+/* Kickers on photo openers: a lighter coral that clears 4.5:1 on the images */
+.hero:has(+ .kpi-row) .eyebrow,
+.destruction-body .hero .eyebrow { color: #f19a8c; }
+/* Nakba photo: deepen the bright right-hand side behind the stats */
+.tracker + .context-card .card {
+  background:
+    linear-gradient(90deg, var(--night-2) 0%, rgba(23, 27, 33, 0.96) 38%, rgba(23, 27, 33, 0.8) 70%, rgba(23, 27, 33, 0.74) 100%),
+    linear-gradient(0deg, var(--night-2) 0%, transparent 45%),
+    url("img/nakba-refugees-galilee-1948.jpg") right center / cover no-repeat,
+    var(--night-2);
+}
+/* Headroom for the lede on photo openers (lowest measured: 4.72:1 on phones) */
+.hero:has(+ .kpi-row) p:not(.hero-credit),
+.destruction-body .hero p:not(.hero-credit) { color: #e1e5ea; }

@@ -61,7 +61,7 @@ const state = {
 };
 
 async function loadData() {
-  const res = await fetch('data.json');
+  const res = await fetch('data.json', { cache: 'no-cache' });
   DATA = await res.json();
   state.endIdx = DATA.gaza_daily.length - 1;
   init();

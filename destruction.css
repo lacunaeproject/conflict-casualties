@@ -18,7 +18,7 @@ body.locked {
   align-items: center;
   justify-content: center;
   padding: var(--space-6);
-  background: rgba(28, 25, 23, 0.94);
+  background: rgba(22, 24, 27, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   animation: cw-fade-in 0.4s ease-out;
@@ -172,7 +172,7 @@ body.locked {
 
 .photo {
   margin: 0;
-  background: #fcfaf6;
+  background: var(--card);
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -182,7 +182,7 @@ body.locked {
 }
 .photo:hover {
   border-color: var(--rule-2);
-  box-shadow: 0 8px 28px -12px rgba(28, 25, 23, 0.18);
+  box-shadow: 0 8px 28px -12px rgba(22, 24, 27, 0.18);
 }
 .photo.wide {
   grid-column: 1 / -1;
@@ -250,7 +250,7 @@ body.locked {
 .note-panel {
   margin-bottom: var(--space-16);
   padding: var(--space-8);
-  background: #fcfaf6;
+  background: var(--card);
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
   max-width: 820px;

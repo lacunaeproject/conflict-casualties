@@ -4,23 +4,23 @@
 
 // --- Color tokens (mirror CSS) ---
 const C = {
-  pal: '#8b3a2f',
-  palSoft: '#c68b7b',
-  palBg: 'rgba(139, 58, 47, 0.08)',
-  isr: '#3b4f6b',
-  isrSoft: '#8697ae',
-  isrBg: 'rgba(59, 79, 107, 0.08)',
-  children: '#a9693e',
-  women: '#6b5c3a',
-  press: '#4a5b3e',
-  medical: '#5b4a6b',
-  ink: '#1c1917',
-  ink3: '#6b665d',
-  rule: '#d6cec0',
-  paper: '#f5f1ea',
+  pal: '#9b2f24',
+  palSoft: '#c98276',
+  palBg: 'rgba(155, 47, 36, 0.07)',
+  isr: '#2f5577',
+  isrSoft: '#7891a8',
+  isrBg: 'rgba(47, 85, 119, 0.07)',
+  children: '#9a6420',
+  women: '#6e5a3c',
+  press: '#3f6446',
+  medical: '#5e4a70',
+  ink: '#16181b',
+  ink3: '#5c6168',
+  rule: '#e2dfd8',
+  paper: '#f4f3f0',
 };
 
-Chart.defaults.font.family = 'Inter, sans-serif';
+Chart.defaults.font.family = '"Source Sans 3", sans-serif';
 Chart.defaults.font.size = 12;
 Chart.defaults.color = C.ink3;
 Chart.defaults.borderColor = C.rule;
@@ -230,11 +230,11 @@ function buildTimeSeriesChart() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#1c1917',
-          titleColor: '#f5f1ea',
-          bodyColor: '#f5f1ea',
+          backgroundColor: '#16181b',
+          titleColor: '#f4f3f0',
+          bodyColor: '#f4f3f0',
           padding: 12,
-          borderColor: '#3d3a34',
+          borderColor: '#33373d',
           borderWidth: 1,
           titleFont: { family: 'Newsreader', weight: '600', size: 13 },
           bodyFont: { family: 'Inter', size: 12 },
@@ -315,9 +315,9 @@ function getTimeSeriesDatasets() {
 
   const sets = [
     mkPal('Palestinians — Gaza', DATA.gaza_daily, 'killed_cum', C.pal, C.palBg),
-    mkPal('Palestinians — West Bank', DATA.west_bank_daily, 'killed_cum', C.palSoft, 'rgba(198, 139, 123, 0.06)'),
+    mkPal('Palestinians — West Bank', DATA.west_bank_daily, 'killed_cum', C.palSoft, 'rgba(201, 130, 118, 0.06)'),
     mkPal('Israelis — total (Oct 7 + IDF)', DATA.israeli_daily, 'total_cum', C.isr, C.isrBg),
-    mkPal('Israeli soldiers — Gaza', DATA.israeli_daily, 'idf_gaza_cum', C.isrSoft, 'rgba(134, 151, 174, 0.06)'),
+    mkPal('Israeli soldiers — Gaza', DATA.israeli_daily, 'idf_gaza_cum', C.isrSoft, 'rgba(120, 145, 168, 0.06)'),
   ];
 
   return sets.map(s => {
@@ -376,7 +376,7 @@ function buildGovChart() {
         data: data.map(d => d.estimated_killed),
         backgroundColor: data.map((_, i) => {
           // graduated shades of the palestinian accent
-          const shades = ['#6d2d24', '#8b3a2f', '#a74d3f', '#c68b7b', '#d7a89b'];
+          const shades = ['#74221a', '#9b2f24', '#b0493c', '#c98276', '#dcb0a8'];
           return shades[i % shades.length];
         }),
         borderRadius: 3,
@@ -392,9 +392,9 @@ function buildGovChart() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#1c1917',
-          titleColor: '#f5f1ea',
-          bodyColor: '#f5f1ea',
+          backgroundColor: '#16181b',
+          titleColor: '#f4f3f0',
+          bodyColor: '#f4f3f0',
           padding: 10,
           callbacks: {
             title: (items) => data[items[0].dataIndex].name,
@@ -464,9 +464,9 @@ function buildWBChart() {
           labels: { color: C.ink3, font: { size: 11 }, boxWidth: 16, usePointStyle: true, pointStyle: 'line' },
         },
         tooltip: {
-          backgroundColor: '#1c1917',
-          titleColor: '#f5f1ea',
-          bodyColor: '#f5f1ea',
+          backgroundColor: '#16181b',
+          titleColor: '#f4f3f0',
+          bodyColor: '#f4f3f0',
           padding: 10,
           callbacks: {
             title: (items) => fmtDate(items[0].parsed.x),

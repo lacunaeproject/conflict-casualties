@@ -47,7 +47,7 @@
   margin-bottom: var(--space-8);
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
-  background-color: rgba(245, 241, 234, 0.92);
+  background-color: rgba(253, 253, 252, 0.92);
   backdrop-filter: blur(6px);
 }
 .jump-nav a {
@@ -106,7 +106,7 @@
 .book {
   display: grid;
   grid-template-columns: 160px 1fr;
-  background: #fcfaf6;
+  background: var(--card);
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -114,7 +114,7 @@
 }
 .book:hover {
   border-color: var(--rule-2);
-  box-shadow: 0 6px 20px -8px rgba(28, 25, 23, 0.12);
+  box-shadow: 0 6px 20px -8px rgba(22, 24, 27, 0.12);
   transform: translateY(-1px);
 }
 
@@ -179,10 +179,10 @@
   font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(245, 241, 234, 0.75);
+  color: rgba(253, 253, 252, 0.75);
   margin-top: var(--space-3);
   padding-top: var(--space-3);
-  border-top: 1px solid rgba(245, 241, 234, 0.25);
+  border-top: 1px solid rgba(253, 253, 252, 0.25);
   font-family: var(--font-body);
   font-weight: 500;
 }
@@ -247,7 +247,7 @@
   padding: 3px 10px;
   background: var(--pal-bg);
   color: var(--pal);
-  border: 1px solid rgba(139, 58, 47, 0.25);
+  border: 1px solid rgba(155, 47, 36, 0.25);
   border-radius: 40px;
   font-size: 11px;
   letter-spacing: 0.06em;
@@ -297,7 +297,7 @@
   margin-top: var(--space-12);
   margin-bottom: var(--space-16);
   padding: var(--space-8);
-  background: #fcfaf6;
+  background: var(--card);
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
 }

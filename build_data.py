@@ -88,6 +88,7 @@ israeli_milestones = [
     ('2025-03-18', {'oct7': 1195, 'idf_gaza': 410, 'civilians_post': 25}),
     ('2025-10-10', {'oct7': 1195, 'idf_gaza': 466, 'civilians_post': 30}),  # Oct 2025 ceasefire
     ('2026-04-16', {'oct7': 1195, 'idf_gaza': 475, 'civilians_post': 32}),
+    ('2026-09-24', {'oct7': 1195, 'idf_gaza': 477, 'civilians_post': 32}),  # ToI: 479 incl. 2 killed 25 Sep 2026
 ]
 
 # Linear interpolation between milestones for daily time series
@@ -167,7 +168,7 @@ trackers = [
         'palestinian_killed': summary['gaza']['killed']['total'],  # OCHA relies on GHM
         'palestinian_injured': summary['gaza']['injured']['total'],
         'scope': 'Relies on Gaza MoH for Gaza; independent verification for West Bank.',
-        'as_of': '2026-04-10',
+        'as_of': '2026-09-18',
         'url': 'https://www.ochaopt.org/',
     },
     {
@@ -179,12 +180,12 @@ trackers = [
         'url': 'https://statistics.btselem.org/en/all-fatalities/by-date-of-incident',
     },
     {
-        'name': 'Al Jazeera Tracker',
-        'palestinian_killed': 72345,
-        'palestinian_injured': 172250,
-        'scope': 'Aggregates Gaza MoH + independent reports.',
-        'as_of': '2026-04-16',
-        'url': 'https://www.aljazeera.com/news/2025/3/18/gaza-tracker',
+        'name': 'Wikipedia (Casualties of the Gaza war)',
+        'palestinian_killed': 75131,
+        'palestinian_injured': None,
+        'scope': 'Gaza MoH (73,922) plus West Bank (1,209). Aggregates official and independent reports.',
+        'as_of': '2026-09-22',
+        'url': 'https://en.wikipedia.org/wiki/Casualties_of_the_Gaza_war',
     },
     {
         'name': 'Lancet (peer-reviewed est.)',

@@ -16,8 +16,8 @@ const C = {
   medical: '#5e4a70',
   ink: '#16181b',
   ink3: '#5c6168',
-  rule: '#e2dfd8',
-  paper: '#f4f3f0',
+  rule: '#e2e5e9',
+  paper: '#f3f4f6',
 };
 
 Chart.defaults.font.family = '"Source Sans 3", sans-serif';
@@ -231,8 +231,8 @@ function buildTimeSeriesChart() {
         legend: { display: false },
         tooltip: {
           backgroundColor: '#16181b',
-          titleColor: '#f4f3f0',
-          bodyColor: '#f4f3f0',
+          titleColor: '#f3f4f6',
+          bodyColor: '#f3f4f6',
           padding: 12,
           borderColor: '#33373d',
           borderWidth: 1,
@@ -393,8 +393,8 @@ function buildGovChart() {
         legend: { display: false },
         tooltip: {
           backgroundColor: '#16181b',
-          titleColor: '#f4f3f0',
-          bodyColor: '#f4f3f0',
+          titleColor: '#f3f4f6',
+          bodyColor: '#f3f4f6',
           padding: 10,
           callbacks: {
             title: (items) => data[items[0].dataIndex].name,
@@ -465,8 +465,8 @@ function buildWBChart() {
         },
         tooltip: {
           backgroundColor: '#16181b',
-          titleColor: '#f4f3f0',
-          bodyColor: '#f4f3f0',
+          titleColor: '#f3f4f6',
+          bodyColor: '#f3f4f6',
           padding: 10,
           callbacks: {
             title: (items) => fmtDate(items[0].parsed.x),

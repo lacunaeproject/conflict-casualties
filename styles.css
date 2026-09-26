@@ -1,25 +1,25 @@
 /* =========================================================
    Conflict Casualties — editorial card system
    Source Serif 4 (display) + Source Sans 3 (body) + IBM Plex Mono (numeric)
-   Quiet archival neutrals, near-white cards, oxblood and navy series
+   Cool neutral gray-white page, white cards, oxblood and navy series
    of matched lightness so neither side reads visually heavier.
    ========================================================= */
 
 :root {
-  /* Paper / ink — quiet, lightly warm neutral */
-  --paper:    #f4f3f0;          /* page background */
-  --paper-2:  #e9e7e2;
-  --paper-3:  #e3e0da;
-  --card:     #fdfdfc;          /* card surface */
-  --card-2:   #f8f7f4;
+  /* Paper / ink — cool, neutral gray-white */
+  --paper:    #f3f4f6;          /* page background */
+  --paper-2:  #e8eaed;
+  --paper-3:  #e1e4e8;
+  --card:     #ffffff;          /* card surface */
+  --card-2:   #f8f9fa;
   --ink:      #16181b;
   --ink-2:    #33373d;
   --ink-3:    #5c6168;
   --ink-4:    #767b82;
   --ink-5:    #a9adb3;
-  --rule:     #e2dfd8;
-  --rule-2:   #cfcbc2;
-  --rule-3:   #b8b3a8;
+  --rule:     #e2e5e9;
+  --rule-2:   #cdd2d8;
+  --rule-3:   #b4bac2;
 
   /* Series palette — matched lightness (L ≈ 0.09) */
   --pal:       #9b2f24;          /* oxblood — Palestinian series */
@@ -114,7 +114,7 @@ em { font-style: italic; }
 /* ========== Site header ========== */
 .site-head {
   border-bottom: 1px solid var(--rule);
-  background: rgba(244, 243, 240, 0.9);
+  background: rgba(243, 244, 246, 0.9);
   position: sticky;
   top: 0;
   z-index: 30;

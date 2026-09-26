@@ -47,7 +47,7 @@
   margin-bottom: var(--space-8);
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
-  background-color: rgba(253, 253, 252, 0.92);
+  background-color: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(6px);
 }
 .jump-nav a {
@@ -179,10 +179,10 @@
   font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(253, 253, 252, 0.75);
+  color: rgba(255, 255, 255, 0.75);
   margin-top: var(--space-3);
   padding-top: var(--space-3);
-  border-top: 1px solid rgba(253, 253, 252, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
   font-family: var(--font-body);
   font-weight: 500;
 }

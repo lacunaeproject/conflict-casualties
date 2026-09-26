@@ -88,7 +88,7 @@
 }
 .section-head p {
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: normal;
   font-size: var(--text-lg);
   color: var(--ink-3);
   margin: 0;
@@ -234,7 +234,7 @@
 }
 .book-body p em {
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: normal;
   color: var(--ink);
 }
 
@@ -350,7 +350,7 @@
 
 .lists-section .note {
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: normal;
   font-size: var(--text-base);
   color: var(--ink-3);
   line-height: 1.6;

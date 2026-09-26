@@ -88,7 +88,7 @@ israeli_milestones = [
     ('2025-03-18', {'oct7': 1195, 'idf_gaza': 410, 'civilians_post': 25}),
     ('2025-10-10', {'oct7': 1195, 'idf_gaza': 466, 'civilians_post': 30}),  # Oct 2025 ceasefire
     ('2026-04-16', {'oct7': 1195, 'idf_gaza': 475, 'civilians_post': 32}),
-    ('2026-09-24', {'oct7': 1195, 'idf_gaza': 477, 'civilians_post': 32}),  # ToI: 479 incl. 2 killed 25 Sep 2026
+    ('2026-09-24', {'oct7': 1195, 'idf_gaza': 477, 'civilians_post': 32}),  # ToI: 479 incl. 2 killed Sep 25, 2026
 ]
 
 # Linear interpolation between milestones for daily time series

@@ -22,10 +22,10 @@
   --rule-3:   #b4bac2;
 
   /* Series palette — matched lightness (L ≈ 0.09) */
-  --pal:       #9f1d35;          /* crimson — Palestinian series */
-  --pal-soft:  #d58393;
-  --pal-bg:    rgba(159, 29, 53, 0.07);
-  --pal-deep:  #751427;
+  --pal:       #4a5831;          /* olive — Palestinian series */
+  --pal-soft:  #9aa67c;
+  --pal-bg:    rgba(74, 88, 49, 0.07);
+  --pal-deep:  #3a4424;
   --isr:       #2f5577;          /* deep navy — Israeli series */
   --isr-soft:  #7891a8;
   --isr-bg:    rgba(47, 85, 119, 0.07);
@@ -46,7 +46,7 @@
   --night-ink:    #f3f4f6;
   --night-ink-2:  #c5cad2;
   --night-ink-3:  #8d949e;
-  --pal-on-night: #f07c8e;       /* crimson lifted for dark grounds (AA on --night) */
+  --pal-on-night: #b4c290;       /* sage lifted for dark grounds (AA on --night) */
 
   --radius:     12px;
   --radius-lg:  20px;
@@ -109,7 +109,7 @@ body {
 }
 h1, h2, h3, h4 { text-wrap: balance; }
 p, li { text-wrap: pretty; hanging-punctuation: first; }
-::selection { background: rgba(159, 29, 53, 0.16); }
+::selection { background: rgba(74, 88, 49, 0.16); }
 a { color: inherit; }
 em { font-style: italic; }
 
@@ -1112,7 +1112,7 @@ em { font-style: italic; }
 /* Lead story card */
 .hero .card {
   background:
-    radial-gradient(120% 140% at 100% 0%, rgba(159, 29, 53, 0.16), transparent 55%),
+    radial-gradient(120% 140% at 100% 0%, rgba(74, 88, 49, 0.16), transparent 55%),
     var(--night-2);
   border-color: var(--night);
   box-shadow: 0 24px 60px -30px rgba(16, 19, 23, 0.55);
@@ -1236,7 +1236,7 @@ html { background: var(--night); }
 /* Feature: the Nakba essay set as a dark long-read block */
 .tracker + .context-card .card {
   background:
-    radial-gradient(90% 120% at 0% 0%, rgba(159, 29, 53, 0.18), transparent 60%),
+    radial-gradient(90% 120% at 0% 0%, rgba(74, 88, 49, 0.18), transparent 60%),
     var(--night-2);
   border-color: var(--night);
 }
@@ -1299,7 +1299,7 @@ body { overflow-x: clip; }
   padding-top: clamp(var(--space-10), 8vw, var(--space-16));
   padding-bottom: clamp(var(--space-10), 7vw, var(--space-14));
   background:
-    radial-gradient(70% 120% at 85% 0%, rgba(159, 29, 53, 0.22), transparent 60%),
+    radial-gradient(70% 120% at 85% 0%, rgba(74, 88, 49, 0.22), transparent 60%),
     linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
 }
 .hero h1 {
@@ -1504,9 +1504,9 @@ html.motion .reveal.in { opacity: 1; transform: none; }
 .tracker + .context-card .stat-lbl,
 .tracker + .context-card .feature-credit,
 .tracker + .context-card .context-footnote { color: var(--night-ink-2); }
-/* Kickers on photo openers: a lighter coral that clears 4.5:1 on the images */
+/* Kickers on photo openers: a pale sage that clears 4.5:1 on the images */
 .hero:has(+ .kpi-row) .eyebrow,
-.destruction-body .hero .eyebrow { color: #f5a3b0; }
+.destruction-body .hero .eyebrow { color: #c6d3a6; }
 /* Nakba photo: deepen the bright right-hand side behind the stats */
 .tracker + .context-card .card {
   background:

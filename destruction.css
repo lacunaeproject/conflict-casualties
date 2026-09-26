@@ -376,14 +376,7 @@ body.locked {
     linear-gradient(0deg, rgba(16, 19, 23, 0.9) 0%, rgba(16, 19, 23, 0.25) 60%),
     rgba(16, 19, 23, 0.55);
 }
-.hero .hero-credit {
-  font-family: var(--font-body);
-  font-style: normal;
-  margin-top: var(--space-6);
-  font-size: var(--text-xs);
-  color: var(--night-ink-3);
-  letter-spacing: 0.02em;
-}
+
 
 /* Wide photos settle from a slight zoom as they arrive */
 html.motion .photo.wide.reveal img {

@@ -1421,3 +1421,42 @@ html.motion .reveal.in { opacity: 1; transform: none; }
       var(--night-2);
   }
 }
+
+/* =========================================================
+   Imagery — dashboard opener: from Nahal Oz toward Gaza City.
+   Kibbutz and fence in the foreground, Gaza on the horizon:
+   both sides in one frame.
+   ========================================================= */
+.hero .card { position: relative; isolation: isolate; }
+.hero:has(+ .kpi-row) .card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("img/nahal-oz-view-of-gaza-2015.jpg") center 22% / cover no-repeat;
+  filter: grayscale(1) contrast(1.1) brightness(0.62);
+}
+.hero:has(+ .kpi-row) .card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(16, 19, 23, 0.9) 0%, rgba(16, 19, 23, 0.72) 45%, rgba(16, 19, 23, 0.35) 100%),
+    linear-gradient(0deg, rgba(16, 19, 23, 0.95) 0%, rgba(16, 19, 23, 0) 45%),
+    radial-gradient(70% 120% at 85% 0%, rgba(155, 47, 36, 0.16), transparent 60%);
+}
+.hero:has(+ .kpi-row) h1,
+.hero:has(+ .kpi-row) p { text-shadow: 0 1px 14px rgba(0, 0, 0, 0.5); }
+
+.hero .hero-credit {
+  margin-top: var(--space-5);
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--night-ink-3);
+  letter-spacing: 0.02em;
+  text-shadow: none;
+}
+.hero .hero-credit a { color: var(--night-ink-2); text-decoration-color: var(--pal-on-night); text-underline-offset: 3px; }

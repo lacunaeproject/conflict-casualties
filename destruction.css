@@ -332,3 +332,23 @@ body.locked {
 .gallery-head h2 { font-weight: 600; letter-spacing: -0.022em; }
 .gallery-head { padding-bottom: 0; }
 .gallery-head--isr h2 { color: var(--ink); }
+
+/* Full-bleed wide photographs; captions stay on the text column */
+.photo.wide {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.photo.wide:hover { box-shadow: none; }
+.photo.wide img { aspect-ratio: 21 / 9; max-height: 82vh; }
+.photo.wide figcaption {
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+.gallery-head { margin-top: var(--space-4); }

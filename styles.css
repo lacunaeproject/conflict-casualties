@@ -1266,3 +1266,96 @@ html { background: var(--night); }
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
+
+/* =========================================================
+   Editorial layout — full-bleed openers and features,
+   pull quotes. Content unchanged.
+   ========================================================= */
+:root { --gutter: var(--space-6); }
+@media (max-width: 640px) { :root { --gutter: var(--space-4); } }
+
+body { overflow-x: clip; }
+.site-head { border-bottom-color: rgba(255, 255, 255, 0.06); }
+
+/* Content edge of .wrap, for aligning full-bleed interiors */
+.hero .card,
+.tracker + .context-card .card {
+  padding-left:  max(var(--gutter), calc((100vw - 1260px) / 2 + var(--gutter)));
+  padding-right: max(var(--gutter), calc((100vw - 1260px) / 2 + var(--gutter)));
+}
+
+/* Full-bleed opener, continuous with the masthead */
+.hero,
+.tracker + .context-card {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+.hero { margin-top: 0; margin-bottom: var(--space-9); }
+.hero .card {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding-top: clamp(var(--space-10), 8vw, var(--space-16));
+  padding-bottom: clamp(var(--space-10), 7vw, var(--space-14));
+  background:
+    radial-gradient(70% 120% at 85% 0%, rgba(155, 47, 36, 0.22), transparent 60%),
+    linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
+}
+.hero h1 {
+  font-size: clamp(2.8rem, 7.2vw, 6rem);
+  max-width: 16ch;
+  letter-spacing: -0.032em;
+}
+.hero p { font-size: clamp(1.1rem, 1.7vw, 1.4rem); max-width: 700px; }
+.hero .byline { max-width: 700px; }
+
+/* Dashboard: headline numbers ride up over the opener's edge */
+.hero:has(+ .kpi-row) { margin-bottom: 0; }
+.hero:has(+ .kpi-row) .card { padding-bottom: calc(clamp(var(--space-10), 7vw, var(--space-14)) + 72px); }
+.hero + .kpi-row {
+  position: relative;
+  z-index: 2;
+  margin-top: -72px;
+}
+.hero + .kpi-row .kpi { box-shadow: 0 18px 40px -24px rgba(16, 19, 23, 0.45); }
+
+/* Nakba feature: full-bleed dark band */
+.tracker + .context-card { margin-top: var(--space-12); margin-bottom: var(--space-12); }
+.tracker + .context-card .card {
+  border: 0;
+  border-radius: 0;
+  padding-top: var(--space-14);
+  padding-bottom: var(--space-14);
+}
+.tracker + .context-card .card::before { display: none; }
+.tracker + .context-card .context-lede h2 { font-size: clamp(2.2rem, 4.6vw, 3.75rem); max-width: 24ch; }
+
+/* Pull quotes */
+.pullquote {
+  margin: var(--space-12) auto;
+  max-width: 900px;
+  padding: 0 var(--gutter);
+  text-align: center;
+}
+.pullquote::before {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  margin: 0 auto var(--space-6);
+  background: var(--pal);
+}
+.pullquote p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3.6vw, 2.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.pullquote p::before { content: "\201C"; color: var(--pal); }
+.pullquote p::after  { content: "\201D"; color: var(--pal); }

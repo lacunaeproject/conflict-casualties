@@ -1359,3 +1359,65 @@ body { overflow-x: clip; }
 }
 .pullquote p::before { content: "\201C"; color: var(--pal); }
 .pullquote p::after  { content: "\201D"; color: var(--pal); }
+
+/* =========================================================
+   Motion — gated by html.motion (set by motion.js, which
+   bails out under prefers-reduced-motion).
+   ========================================================= */
+html.motion .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+html.motion .reveal.in { opacity: 1; transform: none; }
+
+/* Reading-progress rule along the masthead's lower edge */
+.read-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--pal-on-night);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* Opener entrance — pure CSS so it runs from first paint */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .hero .eyebrow { animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s both; }
+  .hero h1       { animation: rise 1.0s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both; }
+  .hero p,
+  .hero .byline  { animation: rise 1.0s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s both; }
+}
+
+/* =========================================================
+   Imagery — archival photograph behind the Nakba feature
+   ========================================================= */
+.tracker + .context-card .card {
+  background:
+    linear-gradient(90deg, var(--night-2) 0%, rgba(23, 27, 33, 0.96) 38%, rgba(23, 27, 33, 0.72) 70%, rgba(23, 27, 33, 0.6) 100%),
+    linear-gradient(0deg, var(--night-2) 0%, transparent 45%),
+    url("img/nakba-refugees-galilee-1948.jpg") right center / cover no-repeat,
+    var(--night-2);
+}
+.feature-credit {
+  margin-top: var(--space-6);
+  font-size: var(--text-xs);
+  color: var(--night-ink-3);
+  letter-spacing: 0.02em;
+}
+.feature-credit a { color: var(--night-ink-2); text-decoration-color: var(--pal-on-night); text-underline-offset: 3px; }
+@media (max-width: 800px) {
+  .tracker + .context-card .card {
+    background:
+      linear-gradient(180deg, rgba(23, 27, 33, 0.55) 0%, var(--night-2) 55%),
+      url("img/nakba-refugees-galilee-1948.jpg") center top / 100% auto no-repeat,
+      var(--night-2);
+  }
+}

@@ -352,3 +352,44 @@ body.locked {
   padding-right: var(--gutter);
 }
 .gallery-head { margin-top: var(--space-4); }
+
+/* Opener imagery: Be'eri (left) and Gaza City (right), toned down
+   behind the headline — one frame from each side. */
+.destruction-body .hero .card { position: relative; isolation: isolate; }
+.destruction-body .hero .card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    url("img/beeri-burned-home.jpg") left center / 50% auto no-repeat,
+    url("img/rimal-gaza-city.jpg") right center / 50% auto no-repeat;
+  background-size: 50% 100%, 50% 100%;
+  filter: grayscale(1) contrast(1.05) brightness(0.55);
+}
+.destruction-body .hero .card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(0deg, rgba(16, 19, 23, 0.9) 0%, rgba(16, 19, 23, 0.25) 60%),
+    rgba(16, 19, 23, 0.55);
+}
+.hero .hero-credit {
+  font-family: var(--font-body);
+  font-style: normal;
+  margin-top: var(--space-6);
+  font-size: var(--text-xs);
+  color: var(--night-ink-3);
+  letter-spacing: 0.02em;
+}
+
+/* Wide photos settle from a slight zoom as they arrive */
+html.motion .photo.wide.reveal img {
+  transform: scale(1.06);
+  transition: transform 2.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+html.motion .photo.wide.reveal.in img { transform: none; }
+.destruction-body .hero h1,
+.destruction-body .hero p { text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55); }

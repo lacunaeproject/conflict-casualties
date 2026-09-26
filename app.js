@@ -190,6 +190,14 @@ function buildRangeSlider() {
       b.setAttribute('aria-checked', 'false');
     });
   };
+  // Year ticks under the track, so the handles have landmarks.
+  const ticks = document.getElementById('range-ticks');
+  if (ticks) {
+    const days = DATA.gaza_daily.map(r => r.date);
+    ticks.innerHTML = days
+      .map((d, i) => (d.endsWith('-01-01') ? `<span style="left:${(i / max) * 100}%">${d.slice(0, 4)}</span>` : ''))
+      .join('');
+  }
   startEl.addEventListener('input', () => update(false));
   endEl.addEventListener('input', () => update(true));
   update(false);
@@ -200,6 +208,8 @@ function updateReadouts() {
   const endDate = DATA.gaza_daily[state.endIdx].date;
   document.getElementById('readout-start').textContent = fmtDate(startDate);
   document.getElementById('readout-end').textContent = fmtDate(endDate);
+  document.getElementById('pop-start').textContent = fmtDate(startDate);
+  document.getElementById('pop-end').textContent = fmtDate(endDate);
   // Screen-reader-only announcement so users dragging the slider with
   // assistive tech hear the actual range, not just the raw index.
   const live = document.getElementById('range-announce');
@@ -704,7 +714,32 @@ function setRadioActive(groupSelector, clickedBtn) {
   clickedBtn.setAttribute('aria-checked', 'true');
 }
 
+// Date range lives in a popover: trigger shows the current range,
+// the panel holds quick ranges and the dual-handle slider.
+function bindRangeDropdown() {
+  const trigger = document.getElementById('range-trigger');
+  const pop = document.getElementById('range-pop');
+  if (!trigger || !pop) return;
+  const setOpen = (open, { focusTrigger = false, focusInside = false } = {}) => {
+    pop.hidden = !open;
+    trigger.setAttribute('aria-expanded', String(open));
+    if (open && focusInside) (pop.querySelector('.preset.active') || pop.querySelector('.preset')).focus();
+    else if (focusTrigger) trigger.focus();
+  };
+  // event.detail is 0 for keyboard-activated clicks: only then move focus inside.
+  trigger.addEventListener('click', e => setOpen(pop.hidden, { focusInside: e.detail === 0 }));
+  document.getElementById('range-done').addEventListener('click', () => setOpen(false, { focusTrigger: true }));
+  pop.querySelectorAll('.preset').forEach(b => b.addEventListener('click', () => setOpen(false, { focusTrigger: true })));
+  document.addEventListener('pointerdown', e => {
+    if (!pop.hidden && !pop.contains(e.target) && !trigger.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !pop.hidden) setOpen(false, { focusTrigger: true });
+  });
+}
+
 function bindControls() {
+  bindRangeDropdown();
   // Presets
   document.querySelectorAll('.preset').forEach(btn => {
     btn.addEventListener('click', () => {

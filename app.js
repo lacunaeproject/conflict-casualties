@@ -1035,6 +1035,19 @@ function setupToc() {
     return `${head}<a href="#${el.id}"><b>${String(chapters.indexOf(el) + 1).padStart(2, '0')}</b>${el.dataset.chapter}</a>`;
   }).join('');
 
+  // The same chapters, as an "In this article" list under the lede.
+  const groupsEl = document.getElementById('contents-groups');
+  if (groupsEl) {
+    const groups = [];
+    chapters.forEach((el, i) => {
+      const part = partOf(el);
+      let g = groups.find(x => x.part === part);
+      if (!g) { g = { part, items: [] }; groups.push(g); }
+      g.items.push(`<li><a href="#${el.id}"><b>${String(i + 1).padStart(2, '0')}</b><span>${el.dataset.chapter}</span></a></li>`);
+    });
+    groupsEl.innerHTML = groups.map(g => `<div class="contents-group"><div class="contents-part">${g.part}</div><ol>${g.items.join('')}</ol></div>`).join('');
+  }
+
   const setOpen = open => {
     list.hidden = !open;
     btn.setAttribute('aria-expanded', String(open));

@@ -21,8 +21,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <link rel="preload" as="image" href="img/oct7-satellite-fires.jpg" fetchpriority="high" />
-<link rel="stylesheet" href="styles.css?v=202609272000" />
-<link rel="stylesheet" href="resources.css?v=202609272000" />
+<link rel="stylesheet" href="styles.css?v=202609272200" />
+<link rel="stylesheet" href="resources.css?v=202609272200" />
 </head>
 <body>
 
@@ -30,21 +30,19 @@
 
 <header class="site-head">
   <div class="wrap">
-    <div class="brand">
-      <a href="index.html" style="display:flex;align-items:center;gap:var(--space-3);color:inherit;text-decoration:none">
-        <svg class="brand-mark" viewBox="0 0 32 32" aria-label="Conflict Casualties mark" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="16" cy="16" r="13" />
-          <path d="M3 16 H29" />
-          <path d="M16 3 Q 8 16 16 29 Q 24 16 16 3 Z" />
+    <a class="brand" href="index.html" aria-label="Conflict Casualties, home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.25" />
+          <circle cx="16" cy="16" r="3.4" fill="currentColor" />
         </svg>
-        <div>
-          <div class="brand-title">Conflict Casualties</div>
-          <div class="brand-sub">Israel · Palestine · since October 7, 2023</div>
-        </div>
-      </a>
-    </div>
-    <nav class="site-nav">
-      <a href="index.html" class="active">Dashboard</a>
+        <span class="brand-text">
+          <span class="brand-title">Conflict Casualties</span>
+          <span class="brand-sub">Israel · Palestine · since October 7, 2023</span>
+        </span>
+    </a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="index.html" class="active" aria-current="page">The toll</a>
+      <a href="index.html#part-two">History</a>
       <a href="resources.html">Reading list</a>
       <a href="destruction.html">Destruction</a>
       <a href="donate.html">Donate</a>
@@ -60,7 +58,7 @@
     <div class="hero-inner">
       <div class="eyebrow">The toll · since October 7, 2023</div>
       <h1>Every Life Is a Universe</h1>
-      <p class="hero-dek">A continuously updated count of reported fatalities in Gaza, the West Bank, and Israel — drawn from the Gaza Ministry of Health, UN OCHA, B’Tselem, and <em>The Lancet</em>. Totals differ by source; all figures are reported as <em>killed</em>, not injured.</p>
+      <p class="hero-dek">A running count of reported fatalities in Gaza, the West Bank, and Israel — drawn from the Gaza Ministry of Health, UN OCHA, B’Tselem, and <em>The Lancet</em>. Totals differ by source; all figures are reported as <em>killed</em>, not injured.</p>
       <div class="byline">
         <span class="byline-live"><i class="live-dot" aria-hidden="true"></i>Updated <time data-bind="meta.data_as_of">Sep 24, 2026</time></span>
         <span>Day <span data-bind="meta.days_of_data">1,084</span> of the war</span>
@@ -102,7 +100,11 @@
   <p>On October 7, 2023, Hamas-led fighters broke through the fence around Gaza and attacked towns, kibbutzim, army posts and a music festival in southern Israel. They killed <strong data-bind="oct7.total">1,195</strong> people, most of them civilians, and took <strong data-bind="oct7.hostages_taken">251</strong> hostages.</p>
   <p>Israel’s war on Gaza began the same day. In the <span data-bind="meta.days_of_data">1,084</span> days since, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed and <span data-bind="summary.gaza.injured.total">175,030</span> injured. Of the dead identified by name, <strong data-bind="calc.namedChildShare">30%</strong> were children. In the occupied West Bank, Israeli forces and settlers have killed <strong data-bind="summary.west_bank.killed.total">1,123</strong> more Palestinians. <strong data-bind="calc.idfGaza">477</strong> Israeli soldiers have been killed in the Gaza ground operation.</p>
   <p>A ceasefire took hold on October 10, 2025. The killing slowed. It has not stopped.</p>
-  <p class="story-map">This page tracks those numbers as sources publish them. <a href="#part-one">Part one</a> charts the toll: when, where, and who. <a href="#part-two">Part two</a> steps back a century, following the historian Rashid Khalidi’s account of how Palestine came to this.</p>
+  <p class="story-map">This page tracks those numbers as sources publish them. Part one charts the toll: when, where, and who. Part two steps back a century, following the historian Rashid Khalidi’s account of how Palestine came to this.</p>
+  <nav class="contents" aria-labelledby="contents-title">
+    <div class="eyebrow" id="contents-title">In this article</div>
+    <div class="contents-groups" id="contents-groups"></div>
+  </nav>
 </section>
 
 <header class="part-head" id="part-one">
@@ -738,7 +740,10 @@
 <footer class="site-foot">
   <div class="wrap foot-grid">
     <div class="foot-brand">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="16" cy="16" r="13" /><path d="M3 16 H29" /><path d="M16 3 Q 8 16 16 29 Q 24 16 16 3 Z" /></svg>
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.25" />
+        <circle cx="16" cy="16" r="3.4" fill="currentColor" />
+      </svg>
       <div>
         <div class="foot-title">Conflict Casualties</div>
         <p>A running record of the dead in Israel and Palestine since October 7, 2023, and the century of history behind it.</p>
@@ -747,6 +752,7 @@
     <nav class="foot-col" aria-label="Pages">
       <div class="foot-h">Pages</div>
       <a href="index.html">The toll</a>
+      <a href="index.html#part-two">History</a>
       <a href="resources.html">Reading list</a>
       <a href="destruction.html">Destruction</a>
       <a href="donate.html">Donate</a>
@@ -768,6 +774,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=202609272000"></script><script src="motion.js?v=202609272000" defer></script>
+<script src="app.js?v=202609272200"></script><script src="motion.js?v=202609272200" defer></script>
 </body>
 </html>

@@ -21,8 +21,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <link rel="preload" as="image" href="img/oct7-satellite-fires.jpg" fetchpriority="high" />
-<link rel="stylesheet" href="styles.css?v=202609272200" />
-<link rel="stylesheet" href="resources.css?v=202609272200" />
+<link rel="stylesheet" href="styles.css?v=202609281000" />
+<link rel="stylesheet" href="resources.css?v=202609281000" />
 </head>
 <body>
 
@@ -52,45 +52,42 @@
 
 <main class="wrap" id="main-content">
 
-<!-- HERO: full-screen opener over the October 7 satellite image -->
+<!-- HERO: full-screen opener over the October 7 satellite image, with the headline totals -->
 <section class="hero hero--opener">
   <div class="card">
+    <div class="hero-grain" aria-hidden="true"></div>
     <div class="hero-inner">
-      <div class="eyebrow">The toll · since October 7, 2023</div>
-      <h1>Every Life Is a Universe</h1>
-      <p class="hero-dek">A running count of reported fatalities in Gaza, the West Bank, and Israel — drawn from the Gaza Ministry of Health, UN OCHA, B’Tselem, and <em>The Lancet</em>. Totals differ by source; all figures are reported as <em>killed</em>, not injured.</p>
-      <div class="byline">
+      <div class="hero-dateline">
         <span class="byline-live"><i class="live-dot" aria-hidden="true"></i>Updated <time data-bind="meta.data_as_of">Sep 24, 2026</time></span>
         <span>Day <span data-bind="meta.days_of_data">1,084</span> of the war</span>
-        <span>Sources: Gaza MoH · UN OCHA · B’Tselem · The Lancet · IDF press releases</span>
       </div>
+      <h1>Every Life Is a Universe</h1>
+      <p class="hero-dek">A running count of reported fatalities in Gaza, the West Bank, and Israel — drawn from the Gaza Ministry of Health, UN OCHA, B’Tselem, and <em>The Lancet</em>. Totals differ by source; all figures are reported as <em>killed</em>, not injured.</p>
+      <p class="hero-sources">Sources: Gaza MoH · UN OCHA · B’Tselem · The Lancet · IDF press releases</p>
     </div>
-    <a class="hero-cue" href="#headline-totals"><span>Read</span><i aria-hidden="true"></i></a>
-    <p class="hero-credit">Satellite view of the Gaza Strip and southern Israel, October 7, 2023; yellow marks are fires detected in infrared. Contains modified Copernicus Sentinel data (2023), processed by Pierre Markuse · via <a href="https://commons.wikimedia.org/wiki/File:Fires_in_Israel_and_the_Gaza_strip_-_7_October_2023_(53245908850).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 2.0</p>
-  </div>
-</section>
-
-<!-- HEADLINE KPI CARDS -->
-<section class="kpi-row" id="headline-totals" aria-label="Headline totals">
-  <div class="kpi kpi-pal kpi--lead">
-    <div class="kpi-label">Palestinians killed · Gaza</div>
-    <div class="kpi-value" id="kpi-gaza">73,928</div>
-    <div class="kpi-foot">Gaza Ministry of Health · <span id="kpi-gaza-children">20,179</span> children · <span id="kpi-gaza-women">12,500</span> women</div>
-  </div>
-  <div class="kpi kpi-pal">
-    <div class="kpi-label">Palestinians killed · West Bank</div>
-    <div class="kpi-value" id="kpi-wb">1,123</div>
-    <div class="kpi-foot"><span id="kpi-wb-children">240</span> children · <span id="kpi-wb-settler">4,655</span> settler attacks</div>
-  </div>
-  <div class="kpi kpi-isr">
-    <div class="kpi-label">Israelis killed · October 7</div>
-    <div class="kpi-value" id="kpi-oct7">1,195</div>
-    <div class="kpi-foot">724 civilians · 373 security · 98 foreign &amp; other</div>
-  </div>
-  <div class="kpi kpi-isr">
-    <div class="kpi-label">Israeli soldiers · Gaza operations</div>
-    <div class="kpi-value" id="kpi-idf">477</div>
-    <div class="kpi-foot">since ground invasion, Oct 27, 2023</div>
+    <section class="kpi-row" id="headline-totals" aria-label="Headline totals">
+      <div class="kpi kpi-pal kpi--lead">
+        <div class="kpi-label">Palestinians killed · Gaza</div>
+        <div class="kpi-value" id="kpi-gaza">73,928</div>
+        <div class="kpi-foot">Gaza Ministry of Health · <span id="kpi-gaza-children">20,179</span> children · <span id="kpi-gaza-women">12,500</span> women</div>
+      </div>
+      <div class="kpi kpi-pal">
+        <div class="kpi-label">Palestinians killed · West Bank</div>
+        <div class="kpi-value" id="kpi-wb">1,123</div>
+        <div class="kpi-foot"><span id="kpi-wb-children">240</span> children · <span id="kpi-wb-settler">4,655</span> settler attacks</div>
+      </div>
+      <div class="kpi kpi-isr">
+        <div class="kpi-label">Israelis killed · October 7</div>
+        <div class="kpi-value" id="kpi-oct7">1,195</div>
+        <div class="kpi-foot">724 civilians · 373 security · 98 foreign &amp; other</div>
+      </div>
+      <div class="kpi kpi-isr">
+        <div class="kpi-label">Israeli soldiers · Gaza operations</div>
+        <div class="kpi-value" id="kpi-idf">477</div>
+        <div class="kpi-foot">since ground invasion, Oct 27, 2023</div>
+      </div>
+    </section>
+    <p class="hero-credit">Satellite view of the Gaza Strip and southern Israel, October 7, 2023. <span class="fire-key"><i aria-hidden="true"></i>Fires detected in infrared</span> Contains modified Copernicus Sentinel data (2023), processed by Pierre Markuse · via <a href="https://commons.wikimedia.org/wiki/File:Fires_in_Israel_and_the_Gaza_strip_-_7_October_2023_(53245908850).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 2.0</p>
   </div>
 </section>
 
@@ -774,6 +771,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=202609272200"></script><script src="motion.js?v=202609272200" defer></script>
+<script src="app.js?v=202609281000"></script><script src="motion.js?v=202609281000" defer></script>
 </body>
 </html>

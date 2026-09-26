@@ -38,7 +38,7 @@
   // put, so nothing blinks out and back in on first paint.
   const fold = window.innerHeight;
   const targets = Array.from(document.querySelectorAll([
-    '.kpi', '.panel .card', '.split .card',
+    '.panel .card', '.split .card',
     '.tracker .card', '.context-card .card', '.data-stamp .card', '.foot-meta .card',
     '.pullquote', '.gallery-head', '.photo', '.note-panel',
     '.section-head', '.book', '.donate-card', '.jump-nav',

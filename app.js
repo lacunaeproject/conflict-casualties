@@ -133,6 +133,10 @@ function bindStoryNumbers() {
     if (path[0] === 'calc') { if (calc[path[1]] != null) el.textContent = calc[path[1]]; return; }
     const v = path.reduce((o, k) => (o == null ? o : o[k]), DATA);
     if (typeof v === 'number') el.textContent = fmt(v);
+    else if (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}/.test(v)) {
+      el.textContent = fmtDate(v);
+      if (el.tagName === 'TIME') el.setAttribute('datetime', v.slice(0, 10));
+    }
   });
 }
 

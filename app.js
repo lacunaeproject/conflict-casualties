@@ -4,9 +4,9 @@
 
 // --- Color tokens (mirror CSS) ---
 const C = {
-  pal: '#9b2f24',
-  palSoft: '#c98276',
-  palBg: 'rgba(155, 47, 36, 0.07)',
+  pal: '#9f1d35',
+  palSoft: '#d58393',
+  palBg: 'rgba(159, 29, 53, 0.07)',
   isr: '#2f5577',
   isrSoft: '#7891a8',
   isrBg: 'rgba(47, 85, 119, 0.07)',
@@ -376,7 +376,7 @@ function buildGovChart() {
         data: data.map(d => d.estimated_killed),
         backgroundColor: data.map((_, i) => {
           // graduated shades of the palestinian accent
-          const shades = ['#74221a', '#9b2f24', '#b0493c', '#c98276', '#dcb0a8'];
+          const shades = ['#751427', '#9f1d35', '#b8404f', '#d58393', '#e8b7c0'];
           return shades[i % shades.length];
         }),
         borderRadius: 3,

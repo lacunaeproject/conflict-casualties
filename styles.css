@@ -39,6 +39,15 @@
 
   --red:  var(--pal);
 
+  /* Masthead — dark ink bookends (header, hero, footer) */
+  --night:        #101317;
+  --night-2:      #171b21;
+  --night-rule:   rgba(255, 255, 255, 0.12);
+  --night-ink:    #f3f4f6;
+  --night-ink-2:  #c5cad2;
+  --night-ink-3:  #8d949e;
+  --pal-on-night: #e2786a;       /* brick red lifted for dark grounds (AA on --night) */
+
   --radius:     6px;
   --radius-lg:  10px;
   --radius-xl:  14px;
@@ -78,7 +87,7 @@
 
   --shadow-sm:   0 1px 2px rgba(22, 24, 27, 0.04);
   --shadow:      0 1px 2px rgba(22, 24, 27, 0.04), 0 8px 24px -12px rgba(22, 24, 27, 0.10);
-  --shadow-card: 0 1px 0 rgba(22, 24, 27, 0.04), 0 1px 3px rgba(22, 24, 27, 0.04), 0 14px 40px -18px rgba(22, 24, 27, 0.14);
+  --shadow-card: 0 1px 2px rgba(22, 24, 27, 0.04), 0 10px 30px -22px rgba(22, 24, 27, 0.12);
   --shadow-lg:   0 12px 32px -8px rgba(22, 24, 27, 0.18), 0 4px 8px rgba(22, 24, 27, 0.06);
 }
 
@@ -1077,3 +1086,80 @@ em { font-style: italic; }
     scroll-behavior: auto !important;
   }
 }
+
+/* =========================================================
+   Editorial layer — dark masthead, dark lead, dark footer.
+   Colors and type only; no layout changes.
+   ========================================================= */
+
+/* Masthead */
+.site-head {
+  background: rgba(16, 19, 23, 0.97);
+  border-bottom: 1px solid var(--night);
+  box-shadow: inset 0 3px 0 var(--pal);
+}
+.site-head .brand-mark { color: var(--pal-on-night); }
+.site-head .brand-title {
+  color: var(--night-ink);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+.site-head .brand-sub { color: var(--night-ink-3); letter-spacing: 0.1em; }
+.site-head .site-nav a { color: var(--night-ink-2); }
+.site-head .site-nav a:hover { color: #fff; }
+.site-head .site-nav a.active { color: #fff; border-bottom-color: var(--pal-on-night); }
+
+/* Lead story card */
+.hero .card {
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(155, 47, 36, 0.16), transparent 55%),
+    var(--night-2);
+  border-color: var(--night);
+  box-shadow: 0 24px 60px -30px rgba(16, 19, 23, 0.55);
+}
+.hero .eyebrow { color: var(--pal-on-night); }
+.hero h1 {
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  line-height: 1.02;
+}
+.hero p { color: var(--night-ink-2); }
+.hero p em { color: #fff; }
+.hero .byline { border-top-color: var(--night-rule); color: var(--night-ink-3); }
+.hero .byline strong { color: var(--night-ink); }
+
+/* Headlines: firmer, tighter, more newsroom */
+.panel-head h2,
+.split h2,
+.context-lede h2,
+.foot-meta h3,
+.gallery-head h2,
+.note-panel h2 {
+  font-weight: 600;
+  letter-spacing: -0.022em;
+}
+.kpi-value,
+.context-stat .stat-val { font-weight: 600; letter-spacing: -0.02em; }
+
+/* Kickers: heavier, tracked */
+main .eyebrow { font-weight: 700; letter-spacing: 0.13em; }
+.kpi-label { color: var(--ink-2); font-weight: 700; }
+
+/* Deks and captions in the serif italic read as editorial asides */
+.panel-head .dek,
+.split .dek { color: var(--ink-3); }
+
+/* Footer bookend */
+.site-foot {
+  background: var(--night);
+  border-top: 3px solid var(--pal);
+}
+.foot-line { color: var(--night-ink-3); }
+.foot-credit a,
+.site-foot .foot-sources a { color: var(--night-ink); }
+.foot-credit a:hover { border-bottom-color: var(--pal-on-night); }
+.foot-meta-line { color: var(--night-ink-3); }
+.foot-meta-line a { color: var(--night-ink-2); }
+/* Below-footer canvas on short pages matches the footer */
+html { background: var(--night); }

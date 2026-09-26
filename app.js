@@ -976,39 +976,61 @@ function setupCentury() {
   const eras = Array.from(document.querySelectorAll('.history .era'));
   const marks = Array.from(document.querySelectorAll('#century .century-mark'));
   const fill = document.querySelector('#century .century-fill');
-  const now = document.getElementById('century-now');
-  if (!eras.length) return;
-  const setActive = era => {
-    if (!era) return;
-    const id = '#' + era.id;
-    let x = '0%';
-    let passed = true;
-    marks.forEach(m => {
-      const isActive = m.getAttribute('href') === id;
-      m.classList.toggle('is-active', isActive);
-      m.classList.toggle('is-past', passed && !isActive);
-      if (isActive) { passed = false; x = m.style.getPropertyValue('--x'); }
-    });
-    if (fill) fill.style.width = x;
-    if (now) now.textContent = era.dataset.era || '';
-
-  };
-  trackMiddle(eras, setActive);
-
-  // The bar goes dark only while the dark 1948 feature is directly beneath it.
   const bar = document.querySelector('.century-wrap');
+  if (!eras.length || !bar) return;
+  const kicker = document.getElementById('century-kicker');
+  const title = document.getElementById('century-title');
+  const count = document.getElementById('century-count');
   const feature = document.querySelector('.era--feature');
-  if (bar && feature) {
-    let queued = false;
-    const check = () => {
-      queued = false;
-      const edge = bar.getBoundingClientRect().bottom;
-      const r = feature.getBoundingClientRect();
-      bar.classList.toggle('is-dark', r.top <= edge && r.bottom > edge);
-    };
-    window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(check); } }, { passive: true });
-    check();
-  }
+  const last = eras.length - 1;
+  let active = -1;
+
+  const setActive = i => {
+    if (i === active) return;
+    active = i;
+    const era = eras[i];
+    marks.forEach((m, j) => {
+      m.classList.toggle('is-active', j === i);
+      m.classList.toggle('is-past', j < i);
+      if (j === i) m.setAttribute('aria-current', 'step'); else m.removeAttribute('aria-current');
+    });
+    if (kicker) kicker.textContent = era.dataset.era || '';
+    const h = era.querySelector('h3');
+    if (title) title.textContent = h ? h.textContent : '';
+    if (count) count.textContent = `${i + 1} of ${eras.length}`;
+    document.getElementById('century-prev').disabled = i === 0;
+    document.getElementById('century-next').disabled = i === last;
+  };
+
+  // The fill follows reading position continuously: the active era's index
+  // plus how far through that era the middle of the screen has travelled.
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const mid = window.innerHeight / 2;
+    let i = 0;
+    eras.forEach((e, j) => { if (e.getBoundingClientRect().top <= mid) i = j; });
+    const r = eras[i].getBoundingClientRect();
+    const frac = Math.min(1, Math.max(0, (mid - r.top) / Math.max(r.height, 1)));
+    setActive(i);
+    if (fill) fill.style.width = `${Math.min(100, ((i + (i < last ? frac : 0)) / last) * 100)}%`;
+    // Dark only while the dark 1948 photograph fills the screen behind it.
+    if (feature) {
+      const f = feature.getBoundingClientRect();
+      bar.classList.toggle('is-dark', f.top <= bar.getBoundingClientRect().bottom && f.bottom > mid);
+    }
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+  update();
+
+  const go = i => {
+    const target = eras[Math.max(0, Math.min(last, i))];
+    target.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'start' });
+  };
+  document.getElementById('century-prev').addEventListener('click', () => go(active - 1));
+  document.getElementById('century-next').addEventListener('click', () => go(active + 1));
 }
 
 // --- Floating chapter menu: shows where you are, jumps anywhere ---

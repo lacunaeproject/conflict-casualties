@@ -3485,3 +3485,224 @@ main:has(.coda) + .site-foot { margin-top: 0; }
 .hero.hero--opener .card { padding-top: calc(var(--head-h) + clamp(var(--space-7), 6vh, var(--space-12))); }
 .hero.hero--opener .kpi-row { margin-top: clamp(var(--space-8), 6vh, 80px); }
 .hero.hero--opener .hero-credit { margin-top: var(--space-5); }
+
+/* =========================================================
+   History timeline, round 2 — a proper reading instrument.
+   Era label · evenly spaced years with a continuous fill ·
+   position and previous / next.
+   ========================================================= */
+.century-wrap {
+  padding: 0 var(--gutter);
+  background: rgba(255, 255, 255, 0.96);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid var(--rule);
+}
+.century-bar {
+  max-width: 1260px;
+  margin: 0 auto;
+  min-height: 68px;
+  display: grid;
+  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-8);
+}
+.century-label { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.century-kicker {
+  font: 700 0.7rem/1.2 var(--font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.century-title {
+  font: 600 1.05rem/1.2 var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variation-settings: "opsz" 24;
+}
+
+/* Track: evenly spaced years, one row */
+.century-wrap .century {
+  position: relative;
+  height: 40px;
+  margin: 0 12px;
+  max-width: none;
+}
+.century-wrap .century-line,
+.century-wrap .century-fill {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+}
+.century-wrap .century-line { right: 0; background: var(--rule-2); }
+.century-wrap .century-fill { width: 0; background: var(--ink); transition: width 0.12s linear; }
+.century-wrap .century-mark {
+  position: absolute;
+  top: 0;
+  left: var(--x);
+  width: 44px;
+  height: 40px;
+  margin: 0 0 0 -22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  transform: none;
+  text-decoration: none;
+}
+.century-wrap .century-mark i {
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--rule-3);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+.century-wrap .century-mark span {
+  position: static;
+  transform: none;
+  margin-top: 5px;
+  font: 500 0.72rem/1 var(--font-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-4);
+  opacity: 1;
+  transition: color 0.2s ease;
+}
+.century-wrap .century-mark.is-past i { background: var(--ink); border-color: var(--ink); }
+.century-wrap .century-mark.is-past span { color: var(--ink-2); }
+.century-wrap .century-mark.is-active i {
+  background: var(--card);
+  border-color: var(--ink);
+  border-width: 2.5px;
+  transform: scale(1.35);
+  box-shadow: 0 0 0 4px rgba(22, 24, 27, 0.08);
+}
+.century-wrap .century-mark.is-active span { color: var(--ink); font-weight: 700; }
+.century-wrap .century-mark.is-now i { border-color: var(--pal); }
+.century-wrap .century-mark.is-now span { color: var(--pal); }
+.century-wrap .century-mark:hover i { transform: scale(1.25); border-color: var(--ink); }
+.century-wrap .century-mark:hover span { color: var(--ink); }
+.century-wrap .century-mark:focus-visible { outline: none; }
+.century-wrap .century-mark:focus-visible i { box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--ink); }
+
+/* Position and stepping */
+.century-step { display: flex; align-items: center; gap: var(--space-2); }
+.century-count {
+  margin-right: var(--space-2);
+  font: 500 0.78rem/1 var(--font-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.century-btn {
+  appearance: none;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--rule-2);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.century-btn svg { width: 16px; height: 16px; }
+.century-btn:hover:not(:disabled) { border-color: var(--ink); }
+.century-btn:disabled { opacity: 0.35; cursor: default; }
+
+/* Over the dark 1948 photograph */
+.century-wrap.is-dark { background: rgba(16, 19, 23, 0.94); border-bottom-color: var(--night-rule); }
+.century-wrap.is-dark .century-kicker { color: var(--pal-on-night); }
+.century-wrap.is-dark .century-title { color: #fff; }
+.century-wrap.is-dark .century-count { color: var(--night-ink-2); }
+.century-wrap.is-dark .century-line { background: rgba(255, 255, 255, 0.22); }
+.century-wrap.is-dark .century-fill { background: #fff; }
+.century-wrap.is-dark .century-mark i { background: var(--night-2); border-color: var(--night-ink-3); }
+.century-wrap.is-dark .century-mark span { color: var(--night-ink-3); }
+.century-wrap.is-dark .century-mark.is-past i { background: #fff; border-color: #fff; }
+.century-wrap.is-dark .century-mark.is-past span { color: var(--night-ink-2); }
+.century-wrap.is-dark .century-mark.is-active i { background: var(--night-2); border-color: #fff; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12); }
+.century-wrap.is-dark .century-mark.is-active span { color: #fff; }
+.century-wrap.is-dark .century-btn { background: transparent; border-color: var(--night-rule); color: #fff; }
+.century-wrap.is-dark .century-btn:hover:not(:disabled) { border-color: #fff; }
+
+.history .era { scroll-margin-top: 96px; }
+
+@media (max-width: 900px) {
+  .century-bar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "label step" "track track";
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-3) 0 var(--space-1);
+  }
+  .century-label { grid-area: label; }
+  .century-step { grid-area: step; }
+  .century-wrap .century { grid-area: track; margin: 0 14px; }
+  .century-count { display: none; }
+  .history .era { scroll-margin-top: 128px; }
+}
+@media (max-width: 640px) {
+  .century-title { font-size: 0.98rem; }
+  .century-wrap .century-mark span { font-size: 0.66rem; }
+  .century-wrap .century-mark i { width: 9px; height: 9px; }
+}
+/* Neutralize the previous timeline's rules on the link boxes themselves */
+.century-wrap .century-mark,
+.century-wrap .century-mark.is-past,
+.century-wrap .century-mark.is-active,
+.century-wrap .century-mark.is-now,
+.century-wrap .century-mark.is-now.is-active,
+.century-wrap.is-dark .century-mark,
+.century-wrap.is-dark .century-mark.is-past,
+.century-wrap.is-dark .century-mark.is-active {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  transform: none;
+}
+.century-wrap .century-mark.is-now.is-active i { border-color: var(--pal); background: var(--card); }
+.century-btn svg { color: inherit; }
+.century-btn path { stroke: currentColor; }
+.century-wrap.is-dark .century-btn svg { color: #fff; }
+.century-btn { transition: none; }
+.century-wrap.is-dark .century-btn { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.28); }
+.century-wrap.is-dark .century-btn path { stroke: #fff; }
+
+/* Timeline spacing: on the page grid, track centred on the label */
+.century-bar {
+  max-width: calc(1260px - 2 * var(--gutter));
+  min-height: 64px;
+  grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr) auto;
+  gap: var(--space-7);
+  padding: 10px 0;
+}
+.century-wrap .century { height: 38px; margin: 0 20px; }
+.century-wrap .century-line,
+.century-wrap .century-fill { top: 11px; }
+.century-wrap .century-mark { height: 38px; }
+.century-wrap .century-mark i { margin-top: 7px; }
+.century-wrap .century-mark span { margin-top: 6px; }
+.century-label { padding-bottom: 2px; }
+.century-step { gap: 6px; }
+.century-count { margin-right: var(--space-3); }
+.history-intro { margin-bottom: var(--space-12); }
+.century-wrap { margin-bottom: var(--space-12); }
+@media (max-width: 900px) {
+  .century-bar { gap: 6px var(--space-4); padding: 10px 0 4px; }
+  .century-wrap .century { margin: 2px 14px 0; }
+}

@@ -21,8 +21,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <link rel="preload" as="image" href="img/oct7-satellite-fires.jpg" fetchpriority="high" />
-<link rel="stylesheet" href="styles.css?v=202609281000" />
-<link rel="stylesheet" href="resources.css?v=202609281000" />
+<link rel="stylesheet" href="styles.css?v=202609281400" />
+<link rel="stylesheet" href="resources.css?v=202609281400" />
 </head>
 <body>
 
@@ -441,19 +441,29 @@
 
 <div class="history" data-chapter="The hundred years’ war">
 <div class="century-wrap">
-  <div class="century-now" id="century-now" aria-hidden="true"></div>
-  <nav class="century" id="century" aria-label="Timeline of the hundred years’ war">
-    <div class="century-line" aria-hidden="true"></div>
-    <div class="century-fill" aria-hidden="true"></div>
-    <a class="century-mark" href="#era-1899" style="--x:0%"><span>1899</span></a>
-    <a class="century-mark" href="#era-1917" style="--x:14.2%"><span>1917</span></a>
-    <a class="century-mark" href="#era-1947" style="--x:37.8%"><span>1947</span></a>
-    <a class="century-mark" href="#era-1967" style="--x:53.5%"><span>1967</span></a>
-    <a class="century-mark is-low" href="#era-1982" style="--x:65.4%"><span>1982</span></a>
-    <a class="century-mark" href="#era-1987" style="--x:69.3%"><span>1987</span></a>
-    <a class="century-mark is-low" href="#era-2000" style="--x:79.5%"><span>2000</span></a>
-    <a class="century-mark is-now" href="#era-2023" style="--x:97.6%"><span>2023</span></a>
-  </nav>
+  <div class="century-bar">
+    <div class="century-label" aria-live="polite">
+      <span class="century-kicker" id="century-kicker">Prologue · 1899</span>
+      <span class="century-title" id="century-title">A letter to Herzl</span>
+    </div>
+    <nav class="century" id="century" aria-label="Timeline of the hundred years’ war">
+      <div class="century-line" aria-hidden="true"></div>
+      <div class="century-fill" aria-hidden="true"></div>
+      <a class="century-mark" href="#era-1899" style="--x:0.0000%"><i aria-hidden="true"></i><span>1899</span></a>
+      <a class="century-mark" href="#era-1917" style="--x:14.2857%"><i aria-hidden="true"></i><span>1917</span></a>
+      <a class="century-mark" href="#era-1947" style="--x:28.5714%"><i aria-hidden="true"></i><span>1947</span></a>
+      <a class="century-mark" href="#era-1967" style="--x:42.8571%"><i aria-hidden="true"></i><span>1967</span></a>
+      <a class="century-mark" href="#era-1982" style="--x:57.1429%"><i aria-hidden="true"></i><span>1982</span></a>
+      <a class="century-mark" href="#era-1987" style="--x:71.4286%"><i aria-hidden="true"></i><span>1987</span></a>
+      <a class="century-mark" href="#era-2000" style="--x:85.7143%"><i aria-hidden="true"></i><span>2000</span></a>
+      <a class="century-mark is-now" href="#era-2023" style="--x:100.0000%"><i aria-hidden="true"></i><span>2023</span></a>
+    </nav>
+    <div class="century-step">
+      <span class="century-count" id="century-count">1 of 8</span>
+      <button type="button" class="century-btn" id="century-prev" aria-label="Previous era"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button type="button" class="century-btn" id="century-next" aria-label="Next era"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
 </div>
 
 <!-- Prologue -->
@@ -771,6 +781,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=202609281000"></script><script src="motion.js?v=202609281000" defer></script>
+<script src="app.js?v=202609281400"></script><script src="motion.js?v=202609281400" defer></script>
 </body>
 </html>

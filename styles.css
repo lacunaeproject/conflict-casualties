@@ -1163,3 +1163,106 @@ main .eyebrow { font-weight: 700; letter-spacing: 0.13em; }
 .foot-meta-line a { color: var(--night-ink-2); }
 /* Below-footer canvas on short pages matches the footer */
 html { background: var(--night); }
+
+/* =========================================================
+   Editorial layer II — rhythm, data-desk details, features.
+   ========================================================= */
+
+/* Lead headline: a touch larger, more commanding */
+.hero h1 { font-size: clamp(2.6rem, 6vw, 4.75rem); }
+
+/* Section heads get a short brick rule above them — a newsroom kicker.
+   Absolutely positioned, so nothing in the flow moves. */
+.panel-head h2,
+.split h2,
+.foot-meta h3 { position: relative; }
+.panel-head h2::before,
+.split h2::before,
+.foot-meta h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -14px;
+  width: 28px;
+  height: 2px;
+  background: var(--pal);
+}
+
+/* Headline numbers: larger, lining, tabular */
+.kpi-value {
+  font-size: clamp(2.4rem, 3.8vw, 3.25rem);
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.kpi-label { letter-spacing: 0.12em; }
+.kpi-foot { color: var(--ink-3); }
+.kpi-foot span { color: var(--ink); }
+
+/* Fact grids: numbers colored by side, labels as tracked kickers */
+.oct7-grid .cell .val { color: var(--isr); font-weight: 600; }
+.who-grid  .cell .val { color: var(--pal); font-weight: 600; }
+.oct7-grid .cell .lbl,
+.who-grid  .cell .lbl { color: var(--ink-3); font-weight: 600; letter-spacing: 0.1em; }
+
+/* Source table: data-desk styling */
+.tracker-table th,
+#gov-table th {
+  background: transparent;
+  color: var(--ink-2);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border-bottom: 2px solid var(--ink);
+}
+.tracker-table td.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.tracker-table td a {
+  color: var(--ink);
+  text-decoration-color: var(--pal);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* Chart annotations read like a timeline index */
+.annotations .ann strong {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+
+/* Feature: the Nakba essay set as a dark long-read block */
+.tracker + .context-card .card {
+  background:
+    radial-gradient(90% 120% at 0% 0%, rgba(155, 47, 36, 0.18), transparent 60%),
+    var(--night-2);
+  border-color: var(--night);
+}
+.tracker + .context-card .card::before { background: var(--pal-on-night); }
+.tracker + .context-card .eyebrow { color: var(--pal-on-night); }
+.tracker + .context-card .context-lede h2 { color: #fff; }
+.tracker + .context-card .context-dek { color: var(--night-ink-2); }
+.tracker + .context-card .context-dek em { color: #fff; }
+.tracker + .context-card .context-stats { border-color: var(--night-rule); }
+.tracker + .context-card .stat-val { color: var(--pal-on-night); }
+.tracker + .context-card .stat-lbl { color: var(--night-ink-3); }
+.tracker + .context-card .context-body { color: var(--night-ink-2); }
+.tracker + .context-card .context-body em { color: #fff; }
+.tracker + .context-card .context-body a { color: #fff; text-decoration-color: var(--pal-on-night); }
+.tracker + .context-card .context-body a:hover { color: var(--pal-on-night); }
+.tracker + .context-card .context-footnote { border-top-color: var(--night-rule); color: var(--night-ink-3); }
+
+/* Dateline strip: set like a wire-service slug */
+.data-stamp .card { background: var(--card); border-top: 2px solid var(--ink); }
+.stamp-label { color: var(--pal); font-weight: 700; letter-spacing: 0.12em; }
+.stamp-value { color: var(--ink); font-weight: 500; }
+
+/* Body links: quiet ink with a brick underline */
+.foot-meta a,
+.context-body a {
+  text-decoration-color: var(--pal);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}

@@ -325,3 +325,10 @@ body.locked {
   color: var(--ink-2);
   margin: 0;
 }
+
+/* Editorial captions: datelines in mono, locations as serif heads */
+.cap-date { font-family: var(--font-mono); letter-spacing: 0.02em; text-transform: none; }
+.cap-credit a { text-decoration-color: var(--pal); }
+.gallery-head h2 { font-weight: 600; letter-spacing: -0.022em; }
+.gallery-head { padding-bottom: 0; }
+.gallery-head--isr h2 { color: var(--ink); }

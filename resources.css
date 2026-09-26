@@ -403,3 +403,17 @@
   .site-nav { gap: var(--space-3); }
   .site-nav a { font-size: var(--text-xs); }
 }
+
+/* Editorial: section heads set like newspaper section fronts */
+.section-head { border-bottom: 2px solid var(--ink); }
+.section-head h2 { position: relative; letter-spacing: -0.022em; }
+.section-head h2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -14px;
+  width: 28px;
+  height: 2px;
+  background: var(--pal);
+}
+.jump-nav a:hover { color: var(--pal); }

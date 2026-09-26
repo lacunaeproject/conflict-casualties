@@ -230,14 +230,14 @@ function buildTimeSeriesChart() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#16181b',
+          backgroundColor: '#101317',
           titleColor: '#f3f4f6',
           bodyColor: '#f3f4f6',
           padding: 12,
-          borderColor: '#33373d',
+          borderColor: 'rgba(255,255,255,0.12)',
           borderWidth: 1,
-          titleFont: { family: 'Newsreader', weight: '600', size: 13 },
-          bodyFont: { family: 'Inter', size: 12 },
+          titleFont: { family: '"Source Serif 4", serif', weight: '600', size: 13 },
+          bodyFont: { family: '"Source Sans 3", sans-serif', size: 12 },
           callbacks: {
             title: (items) => fmtDate(items[0].parsed.x),
             label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`,
@@ -248,14 +248,14 @@ function buildTimeSeriesChart() {
         x: {
           type: 'time',
           time: { unit: 'month', tooltipFormat: 'PP' },
-          grid: { color: 'rgba(0,0,0,0.04)' },
-          ticks: { color: C.ink3, font: { size: 11 }, maxRotation: 0 },
+          grid: { color: 'rgba(16,19,23,0.045)' },
+          ticks: { color: C.ink3, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 }, maxRotation: 0 },
         },
         y: {
           type: 'linear',
           beginAtZero: true,
-          grid: { color: 'rgba(0,0,0,0.06)' },
-          ticks: { color: C.ink3, font: { size: 11 }, callback: v => fmt(v) },
+          grid: { color: 'rgba(16,19,23,0.07)' },
+          ticks: { color: C.ink3, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 }, callback: v => fmt(v) },
         },
       },
       animation: { duration: 600, easing: 'easeOutQuart' },
@@ -270,7 +270,7 @@ function applyScale() {
     type: isLog ? 'logarithmic' : 'linear',
     beginAtZero: !isLog,
     min: isLog ? 1 : 0,
-    grid: { color: 'rgba(0,0,0,0.06)' },
+    grid: { color: 'rgba(16,19,23,0.07)' },
     ticks: {
       color: C.ink3,
       font: { size: 11 },
@@ -392,7 +392,7 @@ function buildGovChart() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#16181b',
+          backgroundColor: '#101317',
           titleColor: '#f3f4f6',
           bodyColor: '#f3f4f6',
           padding: 10,
@@ -404,8 +404,8 @@ function buildGovChart() {
       },
       scales: {
         x: {
-          grid: { color: 'rgba(0,0,0,0.05)' },
-          ticks: { callback: v => fmt(v), color: C.ink3, font: { size: 11 } },
+          grid: { color: 'rgba(16,19,23,0.06)' },
+          ticks: { callback: v => fmt(v), color: C.ink3, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 } },
         },
         y: {
           grid: { display: false },
@@ -464,7 +464,7 @@ function buildWBChart() {
           labels: { color: C.ink3, font: { size: 11 }, boxWidth: 16, usePointStyle: true, pointStyle: 'line' },
         },
         tooltip: {
-          backgroundColor: '#16181b',
+          backgroundColor: '#101317',
           titleColor: '#f3f4f6',
           bodyColor: '#f3f4f6',
           padding: 10,
@@ -478,21 +478,21 @@ function buildWBChart() {
         x: {
           type: 'time',
           time: { unit: 'month' },
-          grid: { color: 'rgba(0,0,0,0.04)' },
-          ticks: { color: C.ink3, font: { size: 11 }, maxRotation: 0 },
+          grid: { color: 'rgba(16,19,23,0.045)' },
+          ticks: { color: C.ink3, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 }, maxRotation: 0 },
         },
         y: {
           beginAtZero: true,
           position: 'left',
-          grid: { color: 'rgba(0,0,0,0.06)' },
-          ticks: { color: C.pal, font: { size: 11 }, callback: v => fmt(v) },
+          grid: { color: 'rgba(16,19,23,0.07)' },
+          ticks: { color: C.pal, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 }, callback: v => fmt(v) },
           title: { display: true, text: 'Killed', color: C.pal, font: { size: 11 } },
         },
         y1: {
           beginAtZero: true,
           position: 'right',
           grid: { display: false },
-          ticks: { color: C.women, font: { size: 11 }, callback: v => fmt(v) },
+          ticks: { color: C.women, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 }, callback: v => fmt(v) },
           title: { display: true, text: 'Settler attacks', color: C.women, font: { size: 11 } },
         },
       },

@@ -16,6 +16,7 @@ const C = {
   medical: '#5e4a70',
   ink: '#16181b',
   ink3: '#5c6168',
+  ink4: '#767b82',
   rule: '#e2e5e9',
   paper: '#f3f4f6',
 };
@@ -37,6 +38,21 @@ const toLocalDate = d => {
 };
 const fmtDate = d => toLocalDate(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 const shortDate = d => toLocalDate(d).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+const pct = (n, total) => `${Math.round((n / total) * 100)}%`;
+
+// Shared chart chrome: dark tooltip, mono ticks, hairline grid.
+const TOOLTIP = {
+  backgroundColor: '#101317',
+  titleColor: '#f3f4f6',
+  bodyColor: '#f3f4f6',
+  padding: 12,
+  borderColor: 'rgba(255,255,255,0.12)',
+  borderWidth: 1,
+  titleFont: { family: '"Source Serif 4", serif', weight: '600', size: 13 },
+  bodyFont: { family: '"Source Sans 3", sans-serif', size: 12 },
+};
+const MONO_TICKS = { color: C.ink3, font: { family: '"IBM Plex Mono", monospace', size: 10.5 } };
+const GRID = { color: 'rgba(16,19,23,0.06)' };
 
 // --- Key events for annotations ---
 const EVENTS = [
@@ -49,7 +65,13 @@ const EVENTS = [
 ];
 
 let DATA = null;
-let tsChart = null, govChart = null, wbChart = null;
+let tsChart = null, govChart = null, wbChart = null, wbAttacksChart = null, paceChart = null;
+
+// Phases of the war, used to color the monthly pace chart.
+const TRUCES = [
+  ['2025-01-19', '2025-03-18'],
+  ['2025-10-10', '9999-12-31'],
+];
 
 // Current filter state
 const state = {
@@ -76,6 +98,8 @@ function init() {
   buildTimeSeriesChart();
   buildGovChart();
   buildWBChart();
+  buildPaceChart();
+  buildPyramid();
   buildLegendChips();
   bindControls();
 
@@ -230,20 +254,14 @@ function buildTimeSeriesChart() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#101317',
-          titleColor: '#f3f4f6',
-          bodyColor: '#f3f4f6',
-          padding: 12,
-          borderColor: 'rgba(255,255,255,0.12)',
-          borderWidth: 1,
-          titleFont: { family: '"Source Serif 4", serif', weight: '600', size: 13 },
-          bodyFont: { family: '"Source Sans 3", sans-serif', size: 12 },
+          ...TOOLTIP,
           callbacks: {
             title: (items) => fmtDate(items[0].parsed.x),
             label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`,
           },
         },
       },
+      layout: { padding: { top: 26 } },
       scales: {
         x: {
           type: 'time',
@@ -260,8 +278,50 @@ function buildTimeSeriesChart() {
       },
       animation: { duration: 600, easing: 'easeOutQuart' },
     },
+    plugins: [eventMarkers],
   });
 }
+
+// Numbered hairlines at key dates. Numbers match the list under the chart,
+// so labels never collide on the plot itself.
+const eventMarkers = {
+  id: 'eventMarkers',
+  afterDatasetsDraw(chart) {
+    const { ctx, chartArea: area, scales: { x } } = chart;
+    const visible = visibleEvents();
+    ctx.save();
+    let lastBadge = -Infinity;
+    visible.forEach((e, i) => {
+      const px = x.getPixelForValue(toLocalDate(e.date).getTime());
+      if (px < area.left - 1 || px > area.right + 1) return;
+      // Nudge a badge sideways when two events sit close together (Oct 7 / Oct 27).
+      const bx = Math.max(px, lastBadge + 21);
+      lastBadge = bx;
+      ctx.strokeStyle = 'rgba(22,24,27,0.28)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(px, area.top);
+      ctx.lineTo(px, area.bottom);
+      ctx.stroke();
+      if (bx !== px) {
+        ctx.beginPath();
+        ctx.moveTo(px, area.top);
+        ctx.lineTo(bx, area.top - 4);
+        ctx.stroke();
+      }
+      ctx.fillStyle = '#16181b';
+      ctx.beginPath();
+      ctx.arc(bx, area.top - 12, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '600 10px "Source Sans 3", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(String(i + 1), bx, area.top - 11.5);
+    });
+    ctx.restore();
+  },
+};
 
 function applyScale() {
   if (!tsChart) return;
@@ -364,7 +424,7 @@ function buildLegendChips() {
 // --- Governorate chart (horizontal bar) ---
 function buildGovChart() {
   const ctx = document.getElementById('gov-chart').getContext('2d');
-  const data = DATA.governorate_estimates;
+  const data = [...DATA.governorate_estimates].sort((a, b) => b.estimated_killed - a.estimated_killed);
   govChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -374,13 +434,9 @@ function buildGovChart() {
       }),
       datasets: [{
         data: data.map(d => d.estimated_killed),
-        backgroundColor: data.map((_, i) => {
-          // graduated shades of the palestinian accent
-          const shades = ['#3a4424', '#4a5831', '#6d7a4f', '#9aa67c', '#c5cdb0'];
-          return shades[i % shades.length];
-        }),
-        borderRadius: 3,
-        barPercentage: 0.72,
+        backgroundColor: C.pal,
+        borderRadius: 4,
+        barPercentage: 0.62,
         categoryPercentage: 0.85,
       }],
     },
@@ -392,10 +448,7 @@ function buildGovChart() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#101317',
-          titleColor: '#f3f4f6',
-          bodyColor: '#f3f4f6',
-          padding: 10,
+          ...TOOLTIP,
           callbacks: {
             title: (items) => data[items[0].dataIndex].name,
             label: (ctx) => `~${fmt(ctx.parsed.x)} killed · ${data[ctx.dataIndex].share_pct}% of total`,
@@ -422,55 +475,128 @@ function buildGovChart() {
   });
 }
 
-// --- West Bank chart ---
+// --- West Bank: two small multiples, one scale each ---
 function buildWBChart() {
-  const ctx = document.getElementById('wb-chart').getContext('2d');
   const wb = DATA.west_bank_daily;
-  wbChart = new Chart(ctx, {
+  const last = wb[wb.length - 1];
+  document.getElementById('wb-killed-total').textContent = fmt(last.killed_cum);
+  document.getElementById('wb-attacks-total').textContent = fmt(last.settler_attacks_cum);
+  wbChart = smallLine('wb-chart', wb.map(r => ({ x: r.date, y: r.killed_cum })), 'Palestinians killed', C.pal, C.palBg);
+  wbAttacksChart = smallLine('wb-attacks-chart', wb.map(r => ({ x: r.date, y: r.settler_attacks_cum })), 'Settler attacks', C.women, 'rgba(110, 90, 60, 0.07)');
+}
+
+function smallLine(id, points, label, color, bg) {
+  return new Chart(document.getElementById(id).getContext('2d'), {
     type: 'line',
     data: {
-      datasets: [
-        {
-          label: 'Palestinians killed (cum.)',
-          data: wb.map(r => ({ x: r.date, y: r.killed_cum })),
-          borderColor: C.pal,
-          backgroundColor: C.palBg,
-          fill: true,
-          tension: 0.25,
-          pointRadius: 0,
-          borderWidth: 2,
-          yAxisID: 'y',
-        },
-        {
-          label: 'Settler attacks (cum.)',
-          data: wb.map(r => ({ x: r.date, y: r.settler_attacks_cum })),
-          borderColor: C.women,
-          borderDash: [5, 4],
-          fill: false,
-          tension: 0.2,
-          pointRadius: 0,
-          borderWidth: 1.8,
-          yAxisID: 'y1',
-        },
-      ],
+      datasets: [{
+        label, data: points,
+        borderColor: color, backgroundColor: bg, fill: true,
+        tension: 0.25, pointRadius: 0, pointHoverRadius: 4,
+        pointHoverBackgroundColor: color, pointHoverBorderColor: '#fff', pointHoverBorderWidth: 2,
+        borderWidth: 2,
+      }],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: {
-          position: 'bottom',
-          labels: { color: C.ink3, font: { size: 11 }, boxWidth: 16, usePointStyle: true, pointStyle: 'line' },
-        },
+        legend: { display: false },
         tooltip: {
-          backgroundColor: '#101317',
-          titleColor: '#f3f4f6',
-          bodyColor: '#f3f4f6',
-          padding: 10,
+          ...TOOLTIP,
           callbacks: {
             title: (items) => fmtDate(items[0].parsed.x),
-            label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`,
+            label: (ctx) => `${label}: ${fmt(ctx.parsed.y)}`,
+          },
+        },
+      },
+      scales: {
+        x: { type: 'time', time: { unit: 'year' }, grid: { display: false }, ticks: { ...MONO_TICKS, maxRotation: 0 } },
+        y: { beginAtZero: true, grid: GRID, border: { display: false }, ticks: { ...MONO_TICKS, maxTicksLimit: 4, callback: v => fmt(v) } },
+      },
+    },
+  });
+}
+
+// --- Pace: deaths reported per month in Gaza ---
+function monthlyDeaths() {
+  const out = [];
+  const g = DATA.gaza_daily;
+  g.forEach((r, i) => {
+    const key = r.date.slice(0, 7);
+    const delta = i === 0 ? r.killed_cum : Math.max(0, r.killed_cum - g[i - 1].killed_cum);
+    const lastBucket = out[out.length - 1];
+    if (lastBucket && lastBucket.key === key) { lastBucket.total += delta; lastBucket.days += 1; }
+    else out.push({ key, total: delta, days: 1 });
+  });
+  return out;
+}
+
+// A month counts as truce when most of its days fall inside a truce window.
+function isTruceMonth(key) {
+  const [y, m] = key.split('-').map(Number);
+  const daysIn = new Date(y, m, 0).getDate();
+  let inTruce = 0;
+  for (let d = 1; d <= daysIn; d++) {
+    const iso = `${key}-${String(d).padStart(2, '0')}`;
+    if (TRUCES.some(([a, b]) => iso >= a && iso < b)) inTruce++;
+  }
+  return inTruce > daysIn / 2;
+}
+
+function buildPaceChart() {
+  const months = monthlyDeaths();
+  const peak = months.reduce((a, b) => (b.total > a.total ? b : a));
+  const colors = months.map(m => (isTruceMonth(m.key) ? C.palSoft : C.pal));
+  const monthLabel = key => toLocalDate(`${key}-01`).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+
+  // Label only the peak bar, directly above it.
+  const peakLabel = {
+    id: 'peakLabel',
+    afterDatasetsDraw(chart) {
+      const i = months.indexOf(peak);
+      const bar = chart.getDatasetMeta(0).data[i];
+      if (!bar) return;
+      const { ctx } = chart;
+      ctx.save();
+      ctx.fillStyle = C.ink;
+      ctx.font = '600 12px "Source Sans 3", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(`${fmt(peak.total)} in ${monthLabel(peak.key)}`, bar.x - bar.width / 2, bar.y - 6);
+      ctx.restore();
+    },
+  };
+
+  paceChart = new Chart(document.getElementById('pace-chart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: months.map(m => toLocalDate(`${m.key}-01`)),
+      datasets: [{
+        data: months.map(m => m.total),
+        backgroundColor: colors,
+        borderRadius: { topLeft: 4, topRight: 4 },
+        borderSkipped: 'bottom',
+        barPercentage: 0.78,
+        categoryPercentage: 0.92,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 24 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          ...TOOLTIP,
+          callbacks: {
+            title: (items) => monthLabel(months[items[0].dataIndex].key),
+            label: (ctx) => {
+              const m = months[ctx.dataIndex];
+              return `${fmt(m.total)} reported · ~${fmt(m.total / m.days)} a day`;
+            },
+            afterLabel: (ctx) => (isTruceMonth(months[ctx.dataIndex].key) ? 'Truce: includes recovered and newly confirmed deaths' : ''),
           },
         },
       },
@@ -478,43 +604,90 @@ function buildWBChart() {
         x: {
           type: 'time',
           time: { unit: 'month' },
-          grid: { color: 'rgba(16,19,23,0.045)' },
-          ticks: { color: C.ink3, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 }, maxRotation: 0 },
+          offset: true,
+          grid: { display: false },
+          ticks: { ...MONO_TICKS, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 },
         },
         y: {
           beginAtZero: true,
-          position: 'left',
-          grid: { color: 'rgba(16,19,23,0.07)' },
-          ticks: { color: C.pal, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 }, callback: v => fmt(v) },
-          title: { display: true, text: 'Killed', color: C.pal, font: { size: 11 } },
-        },
-        y1: {
-          beginAtZero: true,
-          position: 'right',
-          grid: { display: false },
-          ticks: { color: C.women, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 }, callback: v => fmt(v) },
-          title: { display: true, text: 'Settler attacks', color: C.women, font: { size: 11 } },
+          grid: GRID,
+          border: { display: false },
+          ticks: { ...MONO_TICKS, maxTicksLimit: 5, callback: v => fmt(v) },
         },
       },
     },
+    plugins: [peakLabel],
   });
+
+  // Three plain-language takeaways computed from the same series.
+  const first3 = months.slice(0, 3).reduce((s, m) => s + m.total, 0);
+  const total = DATA.gaza_daily[DATA.gaza_daily.length - 1].killed_cum;
+  const facts = [
+    [pct(first3, total), 'of all reported deaths came in the first three months'],
+    [fmt(peak.total / peak.days), `killed a day on average in ${monthLabel(peak.key)}, the deadliest month`],
+    [fmt(months.length), 'months of reporting so far'],
+  ];
+  document.getElementById('pace-facts').innerHTML = facts
+    .map(([v, l]) => `<div class="pace-fact"><div class="pf-val">${v}</div><div class="pf-lbl">${l}</div></div>`)
+    .join('');
+}
+
+// --- Age & sex of identified dead (butterfly chart, plain HTML) ---
+function buildPyramid() {
+  const k = DATA.summary.known_killed_in_gaza;
+  const rows = [
+    { lbl: 'Children', m: k.male.child, f: k.female.child, focus: true },
+    { lbl: 'Adults', m: k.male.adult, f: k.female.adult },
+    { lbl: 'Seniors', m: k.male.senior, f: k.female.senior },
+  ];
+  const total = rows.reduce((s, r) => s + r.m + r.f, 0);
+  const children = rows[0].m + rows[0].f;
+  const max = Math.max(...rows.flatMap(r => [r.m, r.f]));
+  const w = n => `${(n / max) * 100}%`;
+
+  document.getElementById('named-total').textContent = fmt(total);
+  document.getElementById('named-child-share').textContent = `${fmt(children)} (${pct(children, total)})`;
+
+  const el = document.getElementById('pyramid');
+  el.setAttribute('aria-label', rows.map(r => `${r.lbl}: ${fmt(r.m)} male, ${fmt(r.f)} female`).join('; '));
+  el.innerHTML = `
+    <div class="pyr-head"><span>Male</span><span></span><span>Female</span></div>
+    ${rows.map(r => `
+      <div class="pyr-row${r.focus ? ' is-focus' : ''}">
+        <div class="pyr-side pyr-side--m">
+          <span class="pyr-num">${fmt(r.m)}</span>
+          <div class="pyr-bar" style="--w:${w(r.m)}"></div>
+        </div>
+        <div class="pyr-lbl">${r.lbl}<span>${pct(r.m + r.f, total)}</span></div>
+        <div class="pyr-side pyr-side--f">
+          <div class="pyr-bar" style="--w:${w(r.f)}"></div>
+          <span class="pyr-num">${fmt(r.f)}</span>
+        </div>
+      </div>`).join('')}
+  `;
+  document.getElementById('pyramid-foot').textContent =
+    `Children are under 18; seniors 60 and over. Names released through ${fmtDate(k.includes_until)}.`;
 }
 
 // --- Annotations (key dates within current range) ---
-function updateAnnotations() {
+function visibleEvents() {
   const startD = toLocalDate(DATA.gaza_daily[state.startIdx].date);
   const endD = toLocalDate(DATA.gaza_daily[state.endIdx].date);
-  const visible = EVENTS.filter(e => {
+  return EVENTS.filter(e => {
     const d = toLocalDate(e.date);
     return d >= startD && d <= endD;
   });
+}
+
+function updateAnnotations() {
+  const visible = visibleEvents();
   const container = document.getElementById('annotations');
   if (visible.length === 0) {
-    container.innerHTML = '<span style="color:var(--ink-4);font-style:italic">No marker events in selected range</span>';
+    container.innerHTML = '<li class="ann-empty">No marker events in selected range</li>';
     return;
   }
-  container.innerHTML = visible.map(e => `
-    <span><strong>${fmtDate(e.date)}</strong> · ${e.label}</span>
+  container.innerHTML = visible.map((e, i) => `
+    <li><span class="ann-num" aria-hidden="true">${i + 1}</span><span><strong>${fmtDate(e.date)}</strong>${e.label}</span></li>
   `).join('');
 }
 

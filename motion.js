@@ -38,7 +38,7 @@
   // put, so nothing blinks out and back in on first paint.
   const fold = window.innerHeight;
   const targets = Array.from(document.querySelectorAll([
-    '.kpi', '.controls-card .card', '.panel .card', '.split .card',
+    '.kpi', '.panel .card', '.split .card',
     '.tracker .card', '.context-card .card', '.data-stamp .card', '.foot-meta .card',
     '.pullquote', '.gallery-head', '.photo', '.note-panel',
     '.section-head', '.book', '.donate-card', '.jump-nav',
@@ -62,7 +62,7 @@
   targets.forEach(el => io.observe(el));
 
   // --- Charts draw in when first seen ------------------------------------
-  const canvases = document.querySelectorAll('#ts-chart, #gov-chart, #wb-chart');
+  const canvases = document.querySelectorAll('#ts-chart, #gov-chart, #wb-chart, #wb-attacks-chart, #pace-chart');
   if (canvases.length && window.Chart) {
     const replay = (canvas, tries = 0) => {
       const chart = window.Chart.getChart(canvas);

@@ -20,8 +20,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=202609252301" />
-<link rel="stylesheet" href="resources.css?v=202609252301" />
+<link rel="stylesheet" href="styles.css?v=202609261200" />
+<link rel="stylesheet" href="resources.css?v=202609261200" />
 </head>
 <body>
 
@@ -90,11 +90,17 @@
   </div>
 </section>
 
-<!-- CONTROLS CARD -->
-<section class="controls-card">
+<!-- MAIN TIME-SERIES CHART CARD (controls live inside, above the chart) -->
+<section class="panel">
   <div class="card">
+    <div class="panel-head">
+      <div class="eyebrow">Chapter 1 · The count</div>
+      <h2>Fatalities over time</h2>
+      <p class="dek">How the reported toll has grown since October 7, 2023. Numbered markers show the turning points.</p>
+    </div>
+
     <div class="controls" aria-label="Filters">
-      <div class="control-group">
+      <div class="control-group control-group--range">
         <label class="control-label" id="label-date-range">Date range</label>
         <div class="range-presets" role="radiogroup" aria-labelledby="label-date-range">
           <button class="preset active" role="radio" aria-checked="true"  data-preset="all">All</button>
@@ -135,28 +141,46 @@
       </div>
       <div class="control-group">
         <label class="control-label" id="label-scale">Scale</label>
-        <div class="segmented toggle-group" id="scale-toggle" role="radiogroup" aria-labelledby="label-scale">
+        <div class="segmented toggle-group" id="scale-toggle" role="radiogroup" aria-labelledby="label-scale" title="Log scale helps compare sides with very different magnitudes.">
           <button class="toggle active" role="radio" aria-checked="true"  data-scale="linear">Linear</button>
           <button class="toggle"        role="radio" aria-checked="false" data-scale="log">Log</button>
         </div>
-        <p class="scale-help">Log scale helps compare sides with very different magnitudes.</p>
       </div>
     </div>
+
+    <div class="legend-chips" id="legend-chips"></div>
+    <div class="chart-box chart-box--hero">
+      <canvas id="ts-chart" role="img" aria-label="Line chart of cumulative fatalities over time, by side"></canvas>
+    </div>
+    <ol class="annotations" id="annotations"></ol>
+
+    <details class="more">
+      <summary>About this data</summary>
+      <p>Palestinian figures are Gaza Ministry of Health cumulative totals via Tech for Palestine. Israeli figures include the October 7 attacks baseline plus IDF soldier deaths in Gaza operations. Log scale helps compare sides with very different magnitudes.</p>
+    </details>
   </div>
 </section>
 
-<!-- MAIN TIME-SERIES CHART CARD -->
+<!-- PACE: MONTHLY DEATHS -->
 <section class="panel">
   <div class="card">
     <div class="panel-head">
-      <h2>Fatalities over time</h2>
-      <p class="dek">Palestinian figures are Gaza MoH cumulative totals via Tech for Palestine. Israeli figures include the October 7 attacks baseline plus IDF soldier deaths in Gaza operations.</p>
+      <div class="eyebrow">Chapter 2 · The pace</div>
+      <h2>Deaths reported each month in Gaza</h2>
+      <p class="dek">The cumulative line hides the rhythm of the war. Month by month, the deadliest period was the first; the toll rose again when fighting resumed in March 2025.</p>
     </div>
-    <div class="legend-chips" id="legend-chips"></div>
-    <div class="chart-box">
-      <canvas id="ts-chart"></canvas>
+    <div class="phase-legend" aria-hidden="true">
+      <span><i class="sw sw--war"></i>Active war</span>
+      <span><i class="sw sw--truce"></i>Truce or ceasefire</span>
     </div>
-    <div class="annotations" id="annotations"></div>
+    <div class="chart-box chart-box--pace">
+      <canvas id="pace-chart" role="img" aria-label="Bar chart of Gaza deaths reported per month"></canvas>
+    </div>
+    <div class="pace-facts" id="pace-facts"></div>
+    <details class="more">
+      <summary>Why ceasefire months aren't zero</summary>
+      <p>Monthly figures are the change in the Ministry of Health's cumulative total. During truces that change includes new killings, bodies recovered from rubble, and earlier deaths confirmed after review, so the lighter bars overstate new violence. See the breakdown below.</p>
+    </details>
   </div>
 </section>
 
@@ -167,82 +191,139 @@
       <div class="context-lede">
         <div class="eyebrow">Since the ceasefire · October 10, 2025</div>
         <h2>The killing has slowed. It has not stopped.</h2>
-        <p class="context-dek">Since the October 2025 ceasefire, far fewer people have been killed each day than during the war. The ceasefire is still nominally in force, but Israeli strikes continue. Most of the recent rise in the total comes from the dead now being counted: bodies recovered from rubble and earlier deaths confirmed after review.</p>
+        <p class="context-dek">The ceasefire is still nominally in force, but Israeli strikes continue. Far fewer people are killed each day than during the war.</p>
       </div>
-      <div class="context-stats">
-        <div class="context-stat">
-          <div class="stat-val">1,408</div>
-          <div class="stat-lbl">Palestinians killed in new attacks since the ceasefire (Gaza MoH, Sep 24, 2026)</div>
-        </div>
-        <div class="context-stat">
-          <div class="stat-val">~4 / day</div>
-          <div class="stat-lbl">Average killed per day since the ceasefire, vs. ~88 / day from March to October 2025</div>
-        </div>
-        <div class="context-stat">
-          <div class="stat-val">~890</div>
-          <div class="stat-lbl">Bodies recovered from rubble and added to the toll</div>
-        </div>
-        <div class="context-stat">
-          <div class="stat-val">~4,460</div>
-          <div class="stat-lbl">Earlier deaths added after review by the Ministry's verification committee</div>
+
+      <div class="viz-block">
+        <h3 class="viz-title">Average killed per day in Gaza</h3>
+        <div class="rate-bars">
+          <div class="rate-row">
+            <div class="rate-lbl">Resumed war<br><span>Mar – Oct 2025</span></div>
+            <div class="rate-track"><div class="rate-fill" style="--w:100%"></div></div>
+            <div class="rate-val">~88</div>
+          </div>
+          <div class="rate-row">
+            <div class="rate-lbl">Since ceasefire<br><span>Oct 2025 – now</span></div>
+            <div class="rate-track"><div class="rate-fill rate-fill--soft" style="--w:4.5%"></div></div>
+            <div class="rate-val">~4</div>
+          </div>
         </div>
       </div>
-      <div class="context-body">
-        <p>The official Gaza toll has risen by roughly 6,700 since the ceasefire. Only about a fifth of that is new killing. The rest are people killed before the ceasefire who are only now being counted: bodies pulled from the rubble, and deaths added to the record after the Ministry of Health's committee verified them. Those additions arrive in weekly batches, so the steps they create in the cumulative chart above are not new surges in violence.</p>
-        <p>Under the ceasefire, Israeli forces were to hold 53% of the Strip behind the so-called "Yellow Line." By March 2026 they held about 64%, and on May 28, 2026, Prime Minister Netanyahu ordered the army to take 70%. The last Israeli hostage held in Gaza, the body of Ran Gvili, was returned on January 26, 2026. None remain in Gaza.</p>
-        <p class="context-footnote">Sources: <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine daily reports (Gaza MoH)</a> · <a href="https://www.ochaopt.org/content/humanitarian-situation-report-18-september-2026" target="_blank" rel="noopener">OCHA situation report, Sep 18, 2026</a> · <a href="https://www.aljazeera.com/news/2026/5/28/israels-netanyahu-directs-army-to-seize-70-percent-of-gaza-strip" target="_blank" rel="noopener">Al Jazeera</a> · <a href="https://www.timesofisrael.com/all-of-them-home-now-body-of-last-hostage-ran-gvili-found-in-gaza-returned-to-israel/" target="_blank" rel="noopener">Times of Israel</a></p>
+
+      <div class="viz-block">
+        <h3 class="viz-title">Where the ~6,760 added to the toll since the ceasefire come from</h3>
+        <p class="viz-sub">Only about a fifth is new killing. The rest are earlier deaths now being counted.</p>
+        <div class="stackbar" role="img" aria-label="1,408 killed in new attacks, about 890 bodies recovered from rubble, about 4,460 earlier deaths added after review">
+          <div class="seg seg--1" style="--w:20.8%"></div>
+          <div class="seg seg--2" style="--w:13.2%"></div>
+          <div class="seg seg--3" style="--w:66%"></div>
+        </div>
+        <ul class="stack-key">
+          <li><i class="sw seg--1"></i><strong>1,408</strong> killed in new attacks</li>
+          <li><i class="sw seg--2"></i><strong>~890</strong> bodies recovered from rubble</li>
+          <li><i class="sw seg--3"></i><strong>~4,460</strong> earlier deaths added after review</li>
+        </ul>
+      </div>
+
+      <details class="more">
+        <summary>Read more</summary>
+        <div class="context-body">
+          <p>The official Gaza toll has risen by roughly 6,700 since the ceasefire. Only about a fifth of that is new killing. The rest are people killed before the ceasefire who are only now being counted: bodies pulled from the rubble, and deaths added to the record after the Ministry of Health's committee verified them. Those additions arrive in weekly batches, so the steps they create in the cumulative chart above are not new surges in violence.</p>
+          <p>Under the ceasefire, Israeli forces were to hold 53% of the Strip behind the so-called "Yellow Line." By March 2026 they held about 64%, and on May 28, 2026, Prime Minister Netanyahu ordered the army to take 70%. The last Israeli hostage held in Gaza, the body of Ran Gvili, was returned on January 26, 2026. None remain in Gaza.</p>
+          <p class="context-footnote">Sources: <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine daily reports (Gaza MoH)</a> · <a href="https://www.ochaopt.org/content/humanitarian-situation-report-18-september-2026" target="_blank" rel="noopener">OCHA situation report, Sep 18, 2026</a> · <a href="https://www.aljazeera.com/news/2026/5/28/israels-netanyahu-directs-army-to-seize-70-percent-of-gaza-strip" target="_blank" rel="noopener">Al Jazeera</a> · <a href="https://www.timesofisrael.com/all-of-them-home-now-body-of-last-hostage-ran-gvili-found-in-gaza-returned-to-israel/" target="_blank" rel="noopener">Times of Israel</a></p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WAS KILLED IN GAZA -->
+<section class="panel">
+  <div class="card">
+    <div class="panel-head">
+      <div class="eyebrow">Chapter 3 · The people</div>
+      <h2>Who was killed in Gaza</h2>
+      <p class="dek">Of the <span id="named-total">—</span> dead identified by name, <strong id="named-child-share">—</strong> were children.</p>
+    </div>
+    <div class="people">
+      <div class="people-viz">
+        <h3 class="viz-title">Identified dead, by age and sex</h3>
+        <div class="pyramid" id="pyramid" role="img"></div>
+        <p class="chart-foot" id="pyramid-foot"></p>
+      </div>
+      <div class="people-facts">
+        <h3 class="viz-title">Also among the dead</h3>
+        <div class="who-grid">
+          <div class="cell"><div class="lbl">Journalists</div><div class="val" id="who-press">—</div></div>
+          <div class="cell"><div class="lbl">Medical personnel</div><div class="val" id="who-medical">—</div></div>
+          <div class="cell"><div class="lbl">Civil defense</div><div class="val" id="who-civdef">—</div></div>
+          <div class="cell"><div class="lbl">Died of starvation</div><div class="val" id="who-famine">—</div></div>
+          <div class="cell"><div class="lbl">Aid-seekers killed</div><div class="val" id="who-aid">—</div></div>
+          <div class="cell"><div class="lbl">Injured</div><div class="val" id="who-injured">—</div></div>
+        </div>
+        <p class="chart-foot">Ministry of Health totals: <span id="who-children">—</span> children, <span id="who-women">—</span> women. Also tracked by OCHA, CPJ, Healthcare Workers Watch, and UNRWA.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SPLIT: GAZA GOVERNORATE + WEST BANK -->
+<!-- SPLIT: OCT 7 + GAZA GOVERNORATE -->
 <section class="split">
   <div class="card">
-    <h2>Gaza by governorate</h2>
-    <p class="dek">Modeled share of Gaza fatalities — pre-war population weighted by UNOSAT damage assessment. Directional estimate only; the MoH publishes no official geographic breakdown.</p>
-    <div class="chart-box chart-box--tall">
-      <canvas id="gov-chart"></canvas>
+    <div class="eyebrow eyebrow--isr">Israel</div>
+    <h2>October 7</h2>
+    <p class="dek">The deadliest day for Israelis since the state's founding.</p>
+    <div class="viz-block">
+      <div class="stackbar stackbar--isr" role="img" aria-label="Of 1,195 killed: 724 Israeli civilians, 373 security forces, 98 foreign nationals and other">
+        <div class="seg seg--1" style="--w:60.6%"></div>
+        <div class="seg seg--2" style="--w:31.2%"></div>
+        <div class="seg seg--3" style="--w:8.2%"></div>
+      </div>
+      <ul class="stack-key">
+        <li><i class="sw seg--1"></i><strong>724</strong> Israeli civilians</li>
+        <li><i class="sw seg--2"></i><strong>373</strong> security forces</li>
+        <li><i class="sw seg--3"></i><strong>98</strong> foreign nationals &amp; other</li>
+      </ul>
     </div>
-    <p class="chart-foot">Share of modeled total next to each governorate. Hover bars for estimated counts.</p>
-  </div>
-  <div class="card">
-    <h2>West Bank settler violence</h2>
-    <p class="dek">Cumulative settler attacks and Palestinian fatalities in the West Bank and East Jerusalem, reported by OCHA.</p>
-    <div class="chart-box">
-      <canvas id="wb-chart"></canvas>
-    </div>
-  </div>
-</section>
-
-<!-- SPLIT: OCT 7 + WHO WAS KILLED -->
-<section class="split">
-  <div class="card">
-    <h2>October 7 — baseline</h2>
-    <p class="dek">The single deadliest day for Israelis since the state's founding. Figures consolidated from the Israeli MFA, INSS, and B'Tselem.</p>
     <div class="oct7-grid">
-      <div class="cell"><div class="lbl">Total killed</div><div class="val">1,195</div></div>
-      <div class="cell"><div class="lbl">Israeli civilians</div><div class="val">724</div></div>
-      <div class="cell"><div class="lbl">Security forces</div><div class="val">373</div></div>
-      <div class="cell"><div class="lbl">Foreign &amp; other</div><div class="val">98</div></div>
       <div class="cell"><div class="lbl">Taken hostage</div><div class="val">251</div></div>
       <div class="cell"><div class="lbl">Killed at Nova festival</div><div class="val">364</div></div>
       <div class="cell"><div class="lbl">Children killed</div><div class="val">36</div></div>
       <div class="cell"><div class="lbl">Injured</div><div class="val">8,730</div></div>
     </div>
+    <p class="chart-foot">1,195 killed in total. Figures consolidated from the Israeli MFA, INSS, and B'Tselem.</p>
   </div>
   <div class="card">
-    <h2>Among those killed in Gaza</h2>
-    <p class="dek">Specific categories tracked by Gaza MoH, OCHA, CPJ, Healthcare Workers Watch, and UNRWA.</p>
-    <div class="who-grid">
-      <div class="cell"><div class="lbl">Children</div><div class="val" id="who-children">—</div></div>
-      <div class="cell"><div class="lbl">Women</div><div class="val" id="who-women">—</div></div>
-      <div class="cell"><div class="lbl">Journalists</div><div class="val" id="who-press">—</div></div>
-      <div class="cell"><div class="lbl">Medical personnel</div><div class="val" id="who-medical">—</div></div>
-      <div class="cell"><div class="lbl">Civil defense</div><div class="val" id="who-civdef">—</div></div>
-      <div class="cell"><div class="lbl">Died of starvation</div><div class="val" id="who-famine">—</div></div>
-      <div class="cell"><div class="lbl">Aid-seekers killed</div><div class="val" id="who-aid">—</div></div>
-      <div class="cell"><div class="lbl">Total injured</div><div class="val" id="who-injured">—</div></div>
+    <div class="eyebrow">Gaza</div>
+    <h2>By governorate</h2>
+    <p class="dek">A modeled estimate of where people were killed. Directional only.</p>
+    <div class="chart-box chart-box--gov">
+      <canvas id="gov-chart" role="img" aria-label="Bar chart of modeled Gaza fatalities by governorate"></canvas>
+    </div>
+    <details class="more">
+      <summary>How this is modeled</summary>
+      <p>The Ministry of Health publishes no official geographic breakdown. These shares weight each governorate's pre-war population by the UNOSAT damage assessment. Hover bars for estimated counts.</p>
+    </details>
+  </div>
+</section>
+
+<!-- WEST BANK -->
+<section class="panel">
+  <div class="card">
+    <div class="panel-head">
+      <div class="eyebrow">Chapter 4 · The West Bank</div>
+      <h2>Violence beyond Gaza</h2>
+      <p class="dek">Palestinians killed and settler attacks in the West Bank and East Jerusalem, as reported by OCHA. Two charts, two scales.</p>
+    </div>
+    <div class="multiples">
+      <div>
+        <h3 class="viz-title">Palestinians killed <span class="viz-total" id="wb-killed-total"></span></h3>
+        <div class="chart-box chart-box--small"><canvas id="wb-chart" role="img" aria-label="Cumulative Palestinians killed in the West Bank"></canvas></div>
+      </div>
+      <div>
+        <h3 class="viz-title">Settler attacks <span class="viz-total" id="wb-attacks-total"></span></h3>
+        <div class="chart-box chart-box--small"><canvas id="wb-attacks-chart" role="img" aria-label="Cumulative settler attacks in the West Bank"></canvas></div>
+      </div>
     </div>
   </div>
 </section>
@@ -256,8 +337,9 @@
 <section class="tracker">
   <div class="card">
     <div class="panel-head">
+      <div class="eyebrow">Chapter 5 · The sources</div>
       <h2>Source comparison</h2>
-      <p class="dek">Different authorities count differently — by scope, verification standard, and methodology. The gap between official tolls and independent epidemiological estimates continues to widen.</p>
+      <p class="dek">Different authorities count differently — by scope, verification standard, and methodology. Independent estimates run higher than official tolls.</p>
     </div>
     <div class="table-scroll">
       <table class="tracker-table">
@@ -297,12 +379,15 @@
           <div class="stat-lbl">Registered Palestinian refugees today, descendants of 1948</div>
         </div>
       </div>
-      <div class="context-body">
-        <p>Between the UN Partition Plan of November 1947 and the armistice of 1949, Zionist militias and the newly-formed Israeli military carried out a coordinated campaign — documented as <a href="https://en.wikipedia.org/wiki/Plan_Dalet" target="_blank" rel="noopener">Plan Dalet</a> — that emptied more than half of Mandatory Palestine's Arab population. Villages were razed. Survivors were barred from returning under Israeli law. Their land, homes, and bank accounts were absorbed into the new state.</p>
-        <p>What began in 1948 never ended. The 1967 occupation extended it into the West Bank and Gaza. Decades of settlement expansion, home demolitions, and displacement in East Jerusalem, the Naqab, and the Jordan Valley continued it. Gaza has been under blockade since 2007. Palestinian scholars and UN experts increasingly describe the events since October 2023 as a <em>second Nakba</em> — this time televised, this time with more than 73,000 dead.</p>
-        <p class="context-footnote">Learn more: <a href="https://www.palestineremembered.com/" target="_blank" rel="noopener">Palestine Remembered</a> · <a href="https://www.decolonizepalestine.com/the-nakba/" target="_blank" rel="noopener">Decolonize Palestine · The Nakba</a> · <a href="https://en.wikipedia.org/wiki/Nakba" target="_blank" rel="noopener">Wikipedia · Nakba</a> · <a href="https://www.unrwa.org/palestine-refugees" target="_blank" rel="noopener">UNRWA · Palestine Refugees</a></p>
-        <p class="feature-credit">Background: Palestinian refugees leaving Galilee for Lebanon, October–November 1948. Photo: Fred Csasznik · via <a href="https://commons.wikimedia.org/wiki/File:Refugees_in_Galilee.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</p>
-      </div>
+      <details class="more more--night">
+        <summary>Read the history</summary>
+        <div class="context-body">
+          <p>Between the UN Partition Plan of November 1947 and the armistice of 1949, Zionist militias and the newly-formed Israeli military carried out a coordinated campaign — documented as <a href="https://en.wikipedia.org/wiki/Plan_Dalet" target="_blank" rel="noopener">Plan Dalet</a> — that emptied more than half of Mandatory Palestine's Arab population. Villages were razed. Survivors were barred from returning under Israeli law. Their land, homes, and bank accounts were absorbed into the new state.</p>
+          <p>What began in 1948 never ended. The 1967 occupation extended it into the West Bank and Gaza. Decades of settlement expansion, home demolitions, and displacement in East Jerusalem, the Naqab, and the Jordan Valley continued it. Gaza has been under blockade since 2007. Palestinian scholars and UN experts increasingly describe the events since October 2023 as a <em>second Nakba</em> — this time televised, this time with more than 73,000 dead.</p>
+          <p class="context-footnote">Learn more: <a href="https://www.palestineremembered.com/" target="_blank" rel="noopener">Palestine Remembered</a> · <a href="https://www.decolonizepalestine.com/the-nakba/" target="_blank" rel="noopener">Decolonize Palestine · The Nakba</a> · <a href="https://en.wikipedia.org/wiki/Nakba" target="_blank" rel="noopener">Wikipedia · Nakba</a> · <a href="https://www.unrwa.org/palestine-refugees" target="_blank" rel="noopener">UNRWA · Palestine Refugees</a></p>
+        </div>
+      </details>
+      <p class="feature-credit">Background: Palestinian refugees leaving Galilee for Lebanon, October–November 1948. Photo: Fred Csasznik · via <a href="https://commons.wikimedia.org/wiki/File:Refugees_in_Galilee.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</p>
     </div>
   </div>
 </section>
@@ -333,25 +418,31 @@
     <h3>Notes &amp; caveats</h3>
     <ul>
       <li><strong>No figure is complete.</strong> Gaza MoH itself states thousands of dead remain under rubble. Peer-reviewed research published in <em>The Lancet Global Health</em> estimated <strong>75,200 violent deaths</strong> through January 2025 — roughly 35% higher than the MoH count for the same period — and did not capture deaths from starvation, disease, or collapsed healthcare. As of September 24, 2026, Gaza MoH reports <strong>73,928 killed</strong> — including 1,400+ since the October 2025 ceasefire — and Wikipedia's conflict tracker cites <strong>75,131+ Palestinians killed</strong> across Gaza and the West Bank; excess non-violent deaths likely push the true toll substantially higher.</li>
-      <li><strong>Some category counts are no longer updated.</strong> MoH's children (20,179) and women (12,500) breakdowns, medical personnel (1,701), and journalists (262) have not changed in months; starvation deaths (463) and aid-seekers killed (2,615) were last reported in mid-2026. The Committee to Protect Journalists, after a September 2026 review, counts 191 journalists killed, using a narrower definition.</li>
-    <li><strong>OCHA relies on MoH for Gaza</strong> but independently verifies West Bank incidents. Its counts include fatalities from both Israeli military and settler attacks.</li>
-      <li><strong>B'Tselem publishes a conservative, named-only database</strong> of verified individuals. Its totals trail MoH but document each death in detail.</li>
-      <li><strong>Israeli soldier deaths</strong> are taken from IDF press releases and reporting by The Times of Israel. The count shown is soldiers killed in Gaza ground operations since October 27, 2023.</li>
-      <li><strong>The governorate breakdown shown is a model</strong>, not a reported statistic. It distributes the overall Gaza total by pre-war population weighted for reported damage — directional only.</li>
-      <li><strong>The dashboard is rebuilt from the Tech for Palestine API</strong> (which ingests OCHA flash updates and MoH briefings). Re-running the build pulls the latest daily data.</li>
     </ul>
-    <p style="margin-top:var(--space-5); font-size:0.85rem; color:var(--ink-4); font-family:var(--font-display);">
+    <details class="more">
+      <summary>All notes and sources</summary>
+      <ul>
+        <li><strong>Some category counts are no longer updated.</strong> MoH's children (20,179) and women (12,500) breakdowns, medical personnel (1,701), and journalists (262) have not changed in months; starvation deaths (463) and aid-seekers killed (2,615) were last reported in mid-2026. The Committee to Protect Journalists, after a September 2026 review, counts 191 journalists killed, using a narrower definition.</li>
+        <li><strong>The age and sex breakdown</strong> comes from the Ministry of Health's list of dead identified by name, which trails the overall total.</li>
+        <li><strong>OCHA relies on MoH for Gaza</strong> but independently verifies West Bank incidents. Its counts include fatalities from both Israeli military and settler attacks.</li>
+        <li><strong>B'Tselem publishes a conservative, named-only database</strong> of verified individuals. Its totals trail MoH but document each death in detail.</li>
+        <li><strong>Israeli soldier deaths</strong> are taken from IDF press releases and reporting by The Times of Israel. The count shown is soldiers killed in Gaza ground operations since October 27, 2023.</li>
+        <li><strong>The governorate breakdown shown is a model</strong>, not a reported statistic. It distributes the overall Gaza total by pre-war population weighted for reported damage — directional only.</li>
+        <li><strong>The dashboard is rebuilt from the Tech for Palestine API</strong> (which ingests OCHA flash updates and MoH briefings). Re-running the build pulls the latest daily data.</li>
+      </ul>
+      <p class="foot-sources">
+        <strong>Sources:</strong>
+        <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine (Gaza MoH / OCHA)</a> ·
+        <a href="https://www.ochaopt.org/" target="_blank" rel="noopener">UN OCHA oPt</a> ·
+        <a href="https://statistics.btselem.org/" target="_blank" rel="noopener">B'Tselem</a> ·
+        <a href="https://en.wikipedia.org/wiki/Casualties_of_the_Gaza_war" target="_blank" rel="noopener">Wikipedia</a> ·
+        <a href="https://costsofwar.watson.brown.edu/paper/HumanTollGaza" target="_blank" rel="noopener">Costs of War (Brown)</a> ·
+        <a href="https://www.aljazeera.com/features/2026/2/18/gaza-death-toll-exceeds-75000-as-independent-data-verify-loss" target="_blank" rel="noopener">The Lancet via Al Jazeera</a>
+      </p>
+    </details>
+    <p class="foot-closing">
       Built to honor the dead with accurate counts. Data is reported as published — every source has limitations. Numbers differ, but the scale is not in doubt.
     </p>
-    <div style="margin-top:var(--space-5); padding-top:var(--space-5); border-top:1px solid var(--rule); font-size:0.82rem; line-height:1.7;">
-      <strong style="color:var(--ink-2);">Sources:</strong>
-      <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine (Gaza MoH / OCHA)</a> ·
-      <a href="https://www.ochaopt.org/" target="_blank" rel="noopener">UN OCHA oPt</a> ·
-      <a href="https://statistics.btselem.org/" target="_blank" rel="noopener">B'Tselem</a> ·
-      <a href="https://en.wikipedia.org/wiki/Casualties_of_the_Gaza_war" target="_blank" rel="noopener">Wikipedia</a> ·
-      <a href="https://costsofwar.watson.brown.edu/paper/HumanTollGaza" target="_blank" rel="noopener">Costs of War (Brown)</a> ·
-      <a href="https://www.aljazeera.com/features/2026/2/18/gaza-death-toll-exceeds-75000-as-independent-data-verify-loss" target="_blank" rel="noopener">The Lancet via Al Jazeera</a>
-    </div>
   </div>
 </section>
 
@@ -366,6 +457,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=202609252301"></script><script src="motion.js?v=202609252301" defer></script>
+<script src="app.js?v=202609261200"></script><script src="motion.js?v=202609261200" defer></script>
 </body>
 </html>

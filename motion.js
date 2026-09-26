@@ -42,6 +42,7 @@
     '.tracker .card', '.context-card .card', '.data-stamp .card', '.foot-meta .card',
     '.pullquote', '.gallery-head', '.photo', '.note-panel',
     '.section-head', '.book', '.donate-card', '.jump-nav',
+    '.story', '.part-head', '.century', '.era-fig', '.era-body',
   ].join(','))).filter(el => el.getBoundingClientRect().top > fold * 0.9);
 
   // Stagger siblings that share a row (KPI cards, book grid, photo pairs)

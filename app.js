@@ -100,12 +100,31 @@ function init() {
   buildWBChart();
   buildPaceChart();
   buildPyramid();
+  bindStoryNumbers();
   buildLegendChips();
   bindControls();
 
   document.getElementById('meta-date').textContent = fmtDate(DATA.meta.data_as_of);
   document.getElementById('meta-days').textContent = fmt(DATA.meta.days_of_data);
   updateAnnotations();
+}
+
+// --- Article prose: any element with data-bind="path.in.data" shows that
+// number, so the story text updates whenever data.json is rebuilt.
+// "calc.*" keys are derived values that don't live in data.json directly.
+function bindStoryNumbers() {
+  const named = DATA.summary.known_killed_in_gaza;
+  const namedTotal = ['male', 'female'].reduce((s, k) => s + named[k].adult + named[k].senior + named[k].child, 0);
+  const calc = {
+    namedChildShare: pct(named.male.child + named.female.child, namedTotal),
+    idfGaza: fmt(DATA.israeli_daily[DATA.israeli_daily.length - 1].idf_gaza_cum),
+  };
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    const path = el.dataset.bind.split('.');
+    if (path[0] === 'calc') { if (calc[path[1]] != null) el.textContent = calc[path[1]]; return; }
+    const v = path.reduce((o, k) => (o == null ? o : o[k]), DATA);
+    if (typeof v === 'number') el.textContent = fmt(v);
+  });
 }
 
 // --- KPIs ---

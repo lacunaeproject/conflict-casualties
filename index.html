@@ -20,8 +20,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=202609261400" />
-<link rel="stylesheet" href="resources.css?v=202609261400" />
+<link rel="stylesheet" href="styles.css?v=202609261700" />
+<link rel="stylesheet" href="resources.css?v=202609261700" />
 </head>
 <body>
 
@@ -89,6 +89,20 @@
     <div class="kpi-foot">since ground invasion, Oct 27, 2023</div>
   </div>
 </section>
+
+<!-- IN BRIEF: the story so far, numbers bound to data.json -->
+<section class="story story--lede" aria-labelledby="in-brief">
+  <div class="eyebrow" id="in-brief">In brief</div>
+  <p>On October 7, 2023, Hamas-led fighters broke through the fence around Gaza and attacked towns, kibbutzim, army posts and a music festival in southern Israel. They killed <strong data-bind="oct7.total">1,195</strong> people, most of them civilians, and took <strong data-bind="oct7.hostages_taken">251</strong> hostages.</p>
+  <p>Israel's war on Gaza began the same day. In the <span data-bind="meta.days_of_data">1,084</span> days since, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed and <span data-bind="summary.gaza.injured.total">175,030</span> injured. Of the dead identified by name, <strong data-bind="calc.namedChildShare">30%</strong> were children. In the occupied West Bank, Israeli forces and settlers have killed <strong data-bind="summary.west_bank.killed.total">1,123</strong> more Palestinians. <strong data-bind="calc.idfGaza">477</strong> Israeli soldiers have been killed in the Gaza ground operation.</p>
+  <p>A ceasefire took hold on October 10, 2025. The killing slowed. It has not stopped.</p>
+  <p class="story-map">This page tracks those numbers as sources publish them. <a href="#part-one">Part one</a> charts the toll: when, where, and who. <a href="#part-two">Part two</a> steps back a century, following the historian Rashid Khalidi's account of how Palestine came to this.</p>
+</section>
+
+<header class="part-head" id="part-one">
+  <div class="part-num">Part one</div>
+  <h2>The toll</h2>
+</header>
 
 <!-- MAIN TIME-SERIES CHART CARD (controls live inside, above the chart) -->
 <section class="panel">
@@ -346,6 +360,196 @@
   </div>
 </section>
 
+<!-- PART TWO: THE HUNDRED YEARS' WAR (after Rashid Khalidi) -->
+<header class="part-head" id="part-two">
+  <div class="part-num">Part two</div>
+  <h2>The hundred years' war</h2>
+</header>
+
+<section class="history-intro">
+  <div class="story">
+    <p class="story-dek">The numbers above begin in 2023. The Palestinian American historian Rashid Khalidi argues that the story begins in 1917, and that it is best understood not as an ancient feud between two peoples but as a colonial war waged against the Palestinians, backed at every stage by the great power of the day.</p>
+    <p>In <em>The Hundred Years' War on Palestine</em> (2020), Khalidi divides that century into six "declarations of war." What follows summarizes his account in our own words, with the numbers from each period. For the full argument, <a href="resources.html">read the book</a>.</p>
+  </div>
+
+  <nav class="century" aria-label="Timeline of the hundred years' war">
+    <div class="century-line" aria-hidden="true"></div>
+    <a class="century-mark" href="#era-1899" style="--x:0%"><span>1899</span></a>
+    <a class="century-mark" href="#era-1917" style="--x:14.2%"><span>1917</span></a>
+    <a class="century-mark" href="#era-1947" style="--x:37.8%"><span>1947</span></a>
+    <a class="century-mark" href="#era-1967" style="--x:53.5%"><span>1967</span></a>
+    <a class="century-mark is-low" href="#era-1982" style="--x:65.4%"><span>1982</span></a>
+    <a class="century-mark" href="#era-1987" style="--x:69.3%"><span>1987</span></a>
+    <a class="century-mark is-low" href="#era-2000" style="--x:79.5%"><span>2000</span></a>
+    <a class="century-mark is-now" href="#era-2023" style="--x:97.6%"><span>2023</span></a>
+  </nav>
+</section>
+
+<!-- Prologue -->
+<article class="era era--text" id="era-1899">
+  <div class="era-body">
+    <div class="era-years">Prologue · 1899</div>
+    <h3>A letter to Herzl</h3>
+    <p>Khalidi opens with his own family. In 1899 his great-great-great-uncle, Yusuf Diya al-Din al-Khalidi, a former mayor of Jerusalem, wrote to Theodor Herzl, the founder of political Zionism. He wrote that he sympathized with the plight of the Jews of Europe, but that Palestine was already inhabited, and he urged Herzl, in the name of God, to leave it alone.</p>
+    <p>Herzl replied that Jewish immigration would bring prosperity to the country's non-Jewish inhabitants. He did not address the people living there as a nation with rights of its own. For Khalidi, that exchange holds the century to come in miniature.</p>
+  </div>
+</article>
+
+<!-- I -->
+<article class="era" id="era-1917">
+  <figure class="era-fig era-fig--doc">
+    <img src="img/balfour-declaration-1917.jpg" alt="The typed Balfour Declaration letter, signed by Arthur Balfour" width="1215" height="1600" loading="lazy" />
+    <figcaption>The Balfour Declaration, November 2, 1917: a letter from Foreign Secretary Arthur Balfour to Lord Rothschild. <span class="credit">UK Government · via <a href="https://commons.wikimedia.org/wiki/File:Balfour_declaration_unmarked.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</span></figcaption>
+  </figure>
+  <div class="era-body">
+    <div class="era-years">1917 – 1939 · The first declaration</div>
+    <h3>A national home, promised by a great power</h3>
+    <p>In November 1917, Britain promised the Zionist movement "a national home for the Jewish people" in Palestine, a country its armies had not yet finished conquering, where Arabs were roughly nine in ten of the population. The letter called that majority "the existing non-Jewish communities," with civil and religious rights but no national ones.</p>
+    <div class="era-stats">
+      <div><strong>~90%</strong><span>of Palestine's population was Arab in 1917</span></div>
+      <div><strong>~5,000</strong><span>Palestinians killed as Britain crushed the 1936–39 revolt</span></div>
+    </div>
+    <details class="more">
+      <summary>Read more</summary>
+      <p>Britain wrote the promise into its League of Nations Mandate for Palestine in 1922 and opened the country to Jewish immigration. The Jewish share of the population rose from about a tenth to nearly a third by 1939.</p>
+      <p>In 1936 Palestinians launched a six-month general strike and then an armed revolt. Britain put it down over three years with mass arrests, collective punishment, house demolitions and executions. Khalidi estimates that about one in ten adult Palestinian men were killed, wounded, imprisoned or exiled. The Palestinians entered the 1940s with their leadership broken and their fighters disarmed.</p>
+      <figure class="era-fig era-fig--inline">
+        <img src="img/british-troops-jerusalem-1936.jpg" alt="Columns of British soldiers marching through a Jerusalem street beside the Old City wall" width="1600" height="1184" loading="lazy" />
+        <figcaption>British troops march through Jerusalem inside the Jaffa Gate, 1936. <span class="credit">Matson Collection, Library of Congress · via <a href="https://commons.wikimedia.org/wiki/File:Palestine_disturbances_1936._British_troops_parading_Jerusalem_street,_taken_inside_Jaffa_Gate_LOC_matpc.18167.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</span></figcaption>
+      </figure>
+      <p class="more-links">Further reading: <a href="https://en.wikipedia.org/wiki/Balfour_Declaration" target="_blank" rel="noopener">Balfour Declaration</a> · <a href="https://en.wikipedia.org/wiki/1936%E2%80%931939_Arab_revolt_in_Palestine" target="_blank" rel="noopener">1936–39 Arab revolt</a></p>
+    </details>
+  </div>
+</article>
+
+<!-- II: full-bleed feature -->
+<article class="era era--feature" id="era-1947">
+  <div class="era-feature-inner">
+    <div class="era-body">
+      <div class="era-years">1947 – 1948 · The second declaration</div>
+      <h3>Partition, and al-Nakba</h3>
+      <p>In November 1947 the United Nations voted to partition Palestine, allotting more than half the land to a Jewish state when Jews were about a third of the population. Khalidi counts the vote, driven by the United States and the Soviet Union, as the second declaration of war. What followed Palestinians call <em>al-Nakba</em>, "the catastrophe."</p>
+      <div class="era-stats era-stats--four">
+        <div><strong>750,000+</strong><span>Palestinians expelled or fled</span></div>
+        <div><strong>530+</strong><span>villages depopulated or destroyed</span></div>
+        <div><strong>15,000</strong><span>Palestinians killed in 1947–49</span></div>
+        <div><strong>6M+</strong><span>registered refugees today</span></div>
+      </div>
+      <details class="more more--night">
+        <summary>Read more</summary>
+        <p>Between the partition vote and the armistice of 1949, Zionist militias and then the new Israeli army carried out a campaign, documented as <a href="https://en.wikipedia.org/wiki/Plan_Dalet" target="_blank" rel="noopener">Plan Dalet</a>, that emptied more than half of Mandatory Palestine's Arab population from their homes. At Deir Yassin, in April 1948, more than a hundred villagers were killed. Villages were razed. Survivors were barred from returning, and their land, homes and bank accounts were absorbed by the new state.</p>
+        <p>Palestinian scholars and UN experts increasingly describe the events since October 2023 as a second Nakba.</p>
+        <p class="more-links">Further reading: <a href="https://www.palestineremembered.com/" target="_blank" rel="noopener">Palestine Remembered</a> · <a href="https://www.decolonizepalestine.com/the-nakba/" target="_blank" rel="noopener">Decolonize Palestine</a> · <a href="https://www.unrwa.org/palestine-refugees" target="_blank" rel="noopener">UNRWA · Palestine refugees</a></p>
+      </details>
+      <p class="feature-credit">Photo: Palestinian refugees leaving Galilee for Lebanon, October–November 1948. Fred Csasznik · via <a href="https://commons.wikimedia.org/wiki/File:Refugees_in_Galilee.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</p>
+    </div>
+  </div>
+</article>
+
+<!-- III -->
+<article class="era era--flip" id="era-1967">
+  <figure class="era-fig">
+    <img src="img/allenby-bridge-refugees-1967.jpg" alt="Palestinian refugees carrying bundles climb across the twisted wreckage of the Allenby Bridge" width="1523" height="1600" loading="lazy" />
+    <figcaption>Palestinian refugees cross the wrecked Allenby Bridge into Jordan, 1967. <span class="credit">UNRWA Archive · via <a href="https://commons.wikimedia.org/wiki/File:Palestinian_refugees_crossing_the_destroyed_Allenby_Bridge_in_1967.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</span></figcaption>
+  </figure>
+  <div class="era-body">
+    <div class="era-years">1967 · The third declaration</div>
+    <h3>Occupation</h3>
+    <p>In six days in June 1967, Israel took the West Bank, East Jerusalem and Gaza, along with Egypt's Sinai and Syria's Golan Heights. Hundreds of thousands of Palestinians were displaced, many of them refugees for the second time. The occupation that began that week has never ended.</p>
+    <p>For Khalidi, the third declaration was UN Security Council Resolution 242. It became the basis of every later peace plan, yet it never named the Palestinians, referring only to "a just settlement of the refugee problem."</p>
+    <div class="era-stats">
+      <div><strong>300,000+</strong><span>Palestinians displaced in 1967</span></div>
+      <div><strong>700,000+</strong><span>Israeli settlers in the occupied West Bank and East Jerusalem today</span></div>
+    </div>
+    <details class="more">
+      <summary>Read more</summary>
+      <p>Israeli settlement of the occupied territories began within months of the war. Under the Fourth Geneva Convention an occupying power may not transfer its own population into occupied territory, and the International Court of Justice has found the settlements unlawful. They have grown under every Israeli government since.</p>
+      <p class="more-links">Further reading: <a href="https://en.wikipedia.org/wiki/United_Nations_Security_Council_Resolution_242" target="_blank" rel="noopener">Resolution 242</a> · <a href="https://en.wikipedia.org/wiki/Israeli_occupation_of_the_West_Bank" target="_blank" rel="noopener">Occupation of the West Bank</a></p>
+    </details>
+  </div>
+</article>
+
+<!-- IV -->
+<article class="era" id="era-1982">
+  <figure class="era-fig">
+    <img src="img/beirut-outskirts-1982.jpg" alt="A column of Israeli tanks loaded with gear parked along a dusty road" width="1600" height="1067" loading="lazy" />
+    <figcaption>Israeli tanks on the outskirts of Beirut, June 21, 1982. <span class="credit">Israel Press and Photo Agency (I.P.P.A.) · via <a href="https://commons.wikimedia.org/wiki/File:Israeli_Magach_Tanks_On_the_Outskirts_of_Beirut,_1982.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 4.0</span></figcaption>
+  </figure>
+  <div class="era-body">
+    <div class="era-years">1982 · The fourth declaration</div>
+    <h3>The siege of Beirut</h3>
+    <p>In June 1982 Israel invaded Lebanon to destroy the Palestine Liberation Organization, and laid siege to West Beirut for ten weeks with American support. Khalidi, then teaching in Beirut, lived through it. After the PLO's fighters were evacuated under a US-brokered deal, a Lebanese militia allied with Israel entered the Sabra and Shatila refugee camps, which Israeli forces had surrounded, and killed hundreds of civilians over three days.</p>
+    <div class="era-stats">
+      <div><strong>~18,000</strong><span>killed in Lebanon by September 1982, most of them civilians (Lebanese estimates)</span></div>
+      <div><strong>460 – 3,500</strong><span>killed at Sabra and Shatila; estimates vary widely</span></div>
+    </div>
+    <details class="more">
+      <summary>Read more</summary>
+      <p>An Israeli commission of inquiry, the Kahan Commission, found that defense minister Ariel Sharon bore personal responsibility for failing to prevent the massacre. He resigned as defense minister and became prime minister in 2001.</p>
+      <p class="more-links">Further reading: <a href="https://en.wikipedia.org/wiki/1982_Lebanon_War" target="_blank" rel="noopener">1982 Lebanon War</a> · <a href="https://en.wikipedia.org/wiki/Sabra_and_Shatila_massacre" target="_blank" rel="noopener">Sabra and Shatila massacre</a></p>
+    </details>
+  </div>
+</article>
+
+<!-- V -->
+<article class="era era--flip" id="era-1987">
+  <figure class="era-fig">
+    <img src="img/intifada-gaza-1987.jpg" alt="Israeli soldiers in helmets face a crowd of Palestinians raising a Palestinian flag on a Gaza street" width="1600" height="1043" loading="lazy" />
+    <figcaption>Israeli soldiers face Palestinian protesters in the Gaza Strip, December 21, 1987, two weeks into the first intifada. <span class="credit">Efi Sharir · via <a href="https://commons.wikimedia.org/wiki/File:Intifada_in_Gaza_Strip_(FL45956268).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 4.0</span></figcaption>
+  </figure>
+  <div class="era-body">
+    <div class="era-years">1987 – 1995 · The fifth declaration</div>
+    <h3>Uprising, then Oslo</h3>
+    <p>In December 1987 a mass uprising, the first intifada, spread from Gaza's refugee camps across the occupied territories: strikes, boycotts, stone-throwing, and committees that ran daily life. It put the Palestinians back on the world's agenda. Khalidi advised the Palestinian delegation at the peace talks that followed in Madrid and Washington.</p>
+    <p>He argues the 1993 Oslo Accords were the fifth declaration: a Palestinian Authority with limited self-rule, while Israel kept control of land, borders, water and Jerusalem, and settlement kept growing.</p>
+    <div class="era-stats">
+      <div><strong>1,100+</strong><span>Palestinians killed in the first intifada, 1987–93 (B'Tselem)</span></div>
+      <div><strong>~160</strong><span>Israelis killed in the same period (B'Tselem)</span></div>
+    </div>
+    <details class="more">
+      <summary>Read more</summary>
+      <figure class="era-fig era-fig--inline">
+        <img src="img/oslo-white-house-1993.jpg" alt="Yitzhak Rabin and Yasser Arafat shake hands as Bill Clinton stands between them on the White House lawn" width="1600" height="1066" loading="lazy" />
+        <figcaption>Yitzhak Rabin, Bill Clinton and Yasser Arafat at the signing of the Oslo Accords, September 13, 1993. <span class="credit">Vince Musi / The White House · via <a href="https://commons.wikimedia.org/wiki/File:Bill_Clinton,_Yitzhak_Rabin,_Yasser_Arafat_at_the_White_House_1993-09-13.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</span></figcaption>
+      </figure>
+      <p>The accords deferred every core question (borders, refugees, Jerusalem, settlements) to talks that never concluded. In the seven years after the handshake, the number of Israeli settlers in the West Bank nearly doubled.</p>
+      <p class="more-links">Further reading: <a href="https://en.wikipedia.org/wiki/First_Intifada" target="_blank" rel="noopener">First intifada</a> · <a href="https://en.wikipedia.org/wiki/Oslo_Accords" target="_blank" rel="noopener">Oslo Accords</a></p>
+    </details>
+  </div>
+</article>
+
+<!-- VI -->
+<article class="era" id="era-2000">
+  <figure class="era-fig">
+    <img src="img/west-bank-barrier-2004.jpg" alt="A tall concrete wall of the separation barrier curving across rocky ground under a blue sky" width="1600" height="1064" loading="lazy" />
+    <figcaption>The separation barrier in the occupied West Bank, August 2004. <span class="credit">Justin McIntosh · via <a href="https://commons.wikimedia.org/wiki/File:Israeli_West_Bank_Barrier.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 2.0</span></figcaption>
+  </figure>
+  <div class="era-body">
+    <div class="era-years">2000 – 2014 · The sixth declaration</div>
+    <h3>Walls and a blockade</h3>
+    <p>When talks collapsed in 2000, a second, far deadlier intifada followed. Israel began building a separation barrier, mostly inside the West Bank, which the International Court of Justice found unlawful in 2004. It withdrew its settlers from Gaza in 2005, and after Hamas won Palestinian elections in 2006, imposed a land, sea and air blockade on the Strip that has held since 2007.</p>
+    <p>Khalidi counts the wars on Gaza that followed, in 2008–09, 2012 and 2014, as the sixth declaration.</p>
+    <div class="era-stats">
+      <div><strong>~3,000 / ~1,000</strong><span>Palestinians / Israelis killed in the second intifada, 2000–05</span></div>
+      <div><strong>2,251 / 73</strong><span>Palestinians / Israelis killed in 51 days in 2014 (UN)</span></div>
+    </div>
+    <details class="more">
+      <summary>Read more</summary>
+      <p>Of the Palestinians killed in 2014, the UN counted 551 children. Before October 2023, the 2014 war was the deadliest of the Gaza wars.</p>
+      <p class="more-links">Further reading: <a href="https://en.wikipedia.org/wiki/Second_Intifada" target="_blank" rel="noopener">Second intifada</a> · <a href="https://en.wikipedia.org/wiki/Blockade_of_the_Gaza_Strip" target="_blank" rel="noopener">Blockade of Gaza</a> · <a href="https://en.wikipedia.org/wiki/2014_Gaza_War" target="_blank" rel="noopener">2014 Gaza war</a></p>
+    </details>
+  </div>
+</article>
+
+<!-- Epilogue: back to the numbers -->
+<article class="era era--text era--now" id="era-2023">
+  <div class="era-body">
+    <div class="era-years">2017 – now · After the book</div>
+    <h3>The chapter still being written</h3>
+    <p>Khalidi's book closes in 2017. Since October 7, 2023, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed in Gaza, more than all the death tolls above combined. That count is <a href="#part-one">where this page begins</a>, and it is updated as sources publish.</p>
+  </div>
+</article>
+
 <!-- PULL QUOTE (repeats the closing line of the notes below) -->
 <aside class="pullquote" aria-hidden="true">
   <p>Numbers differ, but the scale is not in doubt.</p>
@@ -355,7 +559,7 @@
 <section class="tracker">
   <div class="card">
     <div class="panel-head">
-      <div class="eyebrow">Chapter 5 · The sources</div>
+      <div class="eyebrow">Method · The sources</div>
       <h2>Source comparison</h2>
       <p class="dek">Different authorities count differently — by scope, verification standard, and methodology. Independent estimates run higher than official tolls.</p>
     </div>
@@ -366,46 +570,6 @@
         </thead>
         <tbody id="tracker-body"></tbody>
       </table>
-    </div>
-  </div>
-</section>
-
-<!-- NAKBA HISTORICAL CONTEXT -->
-<section class="context-card">
-  <div class="card card--pal">
-    <div class="context-inner">
-      <div class="context-lede">
-        <div class="eyebrow">Historical context · Al-Nakba</div>
-        <h2>This war did not begin on October 7, 2023.</h2>
-        <p class="context-dek">It is the most recent chapter of a dispossession that began in 1948 — <em>al-Nakba</em>, “the catastrophe.” To read the figures above without that history is to read them incomplete.</p>
-      </div>
-      <div class="context-stats">
-        <div class="context-stat">
-          <div class="stat-val">750,000+</div>
-          <div class="stat-lbl">Palestinians expelled or fled in 1948</div>
-        </div>
-        <div class="context-stat">
-          <div class="stat-val">530+</div>
-          <div class="stat-lbl">Palestinian villages depopulated or destroyed</div>
-        </div>
-        <div class="context-stat">
-          <div class="stat-val">15,000</div>
-          <div class="stat-lbl">Palestinians killed in 1947–49, incl. the Deir Yassin massacre</div>
-        </div>
-        <div class="context-stat">
-          <div class="stat-val">6M+</div>
-          <div class="stat-lbl">Registered Palestinian refugees today, descendants of 1948</div>
-        </div>
-      </div>
-      <details class="more more--night">
-        <summary>Read the history</summary>
-        <div class="context-body">
-          <p>Between the UN Partition Plan of November 1947 and the armistice of 1949, Zionist militias and the newly-formed Israeli military carried out a coordinated campaign — documented as <a href="https://en.wikipedia.org/wiki/Plan_Dalet" target="_blank" rel="noopener">Plan Dalet</a> — that emptied more than half of Mandatory Palestine's Arab population. Villages were razed. Survivors were barred from returning under Israeli law. Their land, homes, and bank accounts were absorbed into the new state.</p>
-          <p>What began in 1948 never ended. The 1967 occupation extended it into the West Bank and Gaza. Decades of settlement expansion, home demolitions, and displacement in East Jerusalem, the Naqab, and the Jordan Valley continued it. Gaza has been under blockade since 2007. Palestinian scholars and UN experts increasingly describe the events since October 2023 as a <em>second Nakba</em> — this time televised, this time with more than 73,000 dead.</p>
-          <p class="context-footnote">Learn more: <a href="https://www.palestineremembered.com/" target="_blank" rel="noopener">Palestine Remembered</a> · <a href="https://www.decolonizepalestine.com/the-nakba/" target="_blank" rel="noopener">Decolonize Palestine · The Nakba</a> · <a href="https://en.wikipedia.org/wiki/Nakba" target="_blank" rel="noopener">Wikipedia · Nakba</a> · <a href="https://www.unrwa.org/palestine-refugees" target="_blank" rel="noopener">UNRWA · Palestine Refugees</a></p>
-        </div>
-      </details>
-      <p class="feature-credit">Background: Palestinian refugees leaving Galilee for Lebanon, October–November 1948. Photo: Fred Csasznik · via <a href="https://commons.wikimedia.org/wiki/File:Refugees_in_Galilee.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</p>
     </div>
   </div>
 </section>
@@ -475,6 +639,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=202609261400"></script><script src="motion.js?v=202609261400" defer></script>
+<script src="app.js?v=202609261700"></script><script src="motion.js?v=202609261700" defer></script>
 </body>
 </html>

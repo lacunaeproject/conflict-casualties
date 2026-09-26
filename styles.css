@@ -1910,3 +1910,258 @@ html.motion .reveal.in { opacity: 1; transform: none; }
   .range-trigger { width: 100%; justify-content: space-between; }
   .range-pop { width: 100%; padding: var(--space-5); }
 }
+
+/* =========================================================
+   Article layer — the page reads as a long-form story:
+   prose column, part dividers, and the hundred-year history.
+   ========================================================= */
+.story {
+  max-width: 680px;
+  margin: 0 auto;
+  font-family: var(--font-display);
+  font-size: clamp(1.12rem, 1.5vw, 1.28rem);
+  line-height: 1.72;
+  color: var(--ink-2);
+}
+.story p { margin: 0 0 1.1em; }
+.story p:last-child { margin-bottom: 0; }
+.story strong { color: var(--ink); font-weight: 600; font-variant-numeric: lining-nums tabular-nums; }
+.story a { color: var(--ink); text-decoration-color: var(--pal); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.story a:hover { color: var(--pal); }
+.story .eyebrow { display: block; margin-bottom: var(--space-6); font-family: var(--font-body); }
+.story--lede { margin: 0 auto var(--section-gap); }
+.story--lede > p:first-of-type::first-letter {
+  float: left;
+  font-size: 4.1em;
+  line-height: 0.82;
+  font-weight: 600;
+  margin: 0.08em 0.1em 0 0;
+  color: var(--ink);
+}
+.story-map {
+  margin-top: var(--space-8) !important;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--ink-3);
+}
+.story-dek { font-size: 1.18em; color: var(--ink); line-height: 1.6; }
+
+/* Part dividers */
+.part-head {
+  text-align: center;
+  margin: 0 auto var(--section-gap);
+  max-width: 760px;
+  scroll-margin-top: var(--space-8);
+}
+.part-head::before {
+  content: "";
+  display: block;
+  width: 1px;
+  height: var(--space-12);
+  margin: 0 auto var(--space-6);
+  background: var(--rule-3);
+}
+.part-num {
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--pal);
+  margin-bottom: var(--space-3);
+}
+.part-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  color: var(--ink);
+}
+.part-head + .panel,
+.part-head + .history-intro { margin-top: 0; }
+
+/* History intro + century ruler */
+.history-intro { margin-bottom: var(--section-gap); }
+.century {
+  position: relative;
+  max-width: 1000px;
+  height: 84px;
+  margin: var(--space-12) auto 0;
+}
+.century-line {
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--rule-2), var(--ink-3) 70%, var(--pal));
+  border-radius: 2px;
+}
+.century-mark {
+  position: absolute;
+  left: var(--x);
+  top: 50%;
+  width: 14px; height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--ink-2);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.century-mark span {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  font: 500 0.78rem/1 var(--font-mono);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.century-mark.is-low span { bottom: auto; top: 20px; }
+.century-mark:hover { transform: scale(1.25); background: var(--ink); }
+.century-mark.is-now { border-color: var(--pal); background: var(--pal); }
+.century-mark.is-now span { color: var(--pal); font-weight: 600; }
+
+/* Eras */
+.era {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: var(--space-12);
+  align-items: center;
+  margin: 0 0 var(--section-gap);
+  scroll-margin-top: var(--space-8);
+}
+.era--flip .era-fig { order: 2; }
+.era--text { grid-template-columns: minmax(0, 680px); justify-content: center; }
+.era-years {
+  font: 500 0.78rem/1.3 var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pal);
+  margin-bottom: var(--space-4);
+}
+.era h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  letter-spacing: -0.022em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0 0 var(--space-6);
+}
+.era-body > p {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.35vw, 1.15rem);
+  line-height: 1.72;
+  color: var(--ink-2);
+  margin: 0 0 1em;
+  max-width: 62ch;
+}
+.era-body strong { color: var(--ink); font-weight: 600; }
+.era-body a { color: var(--ink); text-decoration-color: var(--pal); text-underline-offset: 3px; }
+
+.era-fig { margin: 0; }
+.era-fig img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  background: var(--paper-3);
+  filter: grayscale(1) contrast(1.04);
+}
+.era-fig--doc { justify-self: center; max-width: 440px; }
+.era-fig--doc img { box-shadow: 0 30px 60px -30px rgba(16, 19, 23, 0.4); filter: grayscale(1) brightness(1.04) contrast(1.06); }
+.era-fig figcaption {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.era-fig .credit { display: block; margin-top: var(--space-1); font-size: var(--text-xs); color: var(--ink-4); }
+.era-fig .credit a { color: var(--ink-3); text-underline-offset: 2px; }
+.era-fig--inline { margin: var(--space-6) 0; }
+
+.era-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin: var(--space-7) 0 0;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--rule);
+}
+.era-stats strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--pal);
+  font-variant-numeric: lining-nums tabular-nums;
+  margin-bottom: var(--space-2);
+}
+.era-stats span { font-size: var(--text-sm); color: var(--ink-3); line-height: 1.45; display: block; }
+.era-stats--four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.more-links { font-size: var(--text-sm); color: var(--ink-3); }
+
+.era--now { padding-top: var(--space-8); border-top: 2px solid var(--pal); }
+.era--now .era-years { color: var(--pal); }
+
+/* 1947–48: full-bleed dark feature over the Galilee photograph */
+.era--feature {
+  display: block;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background:
+    linear-gradient(90deg, var(--night-2) 0%, rgba(23, 27, 33, 0.96) 42%, rgba(23, 27, 33, 0.8) 72%, rgba(23, 27, 33, 0.72) 100%),
+    linear-gradient(0deg, var(--night-2) 0%, transparent 45%),
+    url("img/nakba-refugees-galilee-1948.jpg") right center / cover no-repeat,
+    var(--night-2);
+  color: var(--night-ink-2);
+}
+.era-feature-inner {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: var(--space-16) var(--gutter);
+}
+.era--feature .era-body { max-width: 780px; }
+.era--feature .era-years { color: var(--pal-on-night); }
+.era--feature h3 { color: #fff; font-size: clamp(2.2rem, 4.6vw, 3.6rem); }
+.era--feature .era-body > p { color: #e1e5ea; }
+.era--feature .era-body em { color: #fff; }
+.era--feature .era-stats { border-top-color: var(--night-rule); }
+.era--feature .era-stats strong { color: var(--pal-on-night); }
+.era--feature .era-stats span { color: var(--night-ink-2); }
+.era--feature .more { color: var(--night-ink-2); }
+.era--feature .more a,
+.era--feature .feature-credit a { color: #fff; text-decoration-color: var(--pal-on-night); }
+.era--feature .more-links { color: var(--night-ink-2); }
+.era--feature .feature-credit { color: var(--night-ink-2); margin-top: var(--space-8); }
+
+@media (max-width: 900px) {
+  .era { grid-template-columns: 1fr; gap: var(--space-7); }
+  .era--flip .era-fig { order: 0; }
+  .era-stats--four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .era--feature {
+    background:
+      linear-gradient(180deg, rgba(23, 27, 33, 0.5) 0%, var(--night-2) 50%),
+      url("img/nakba-refugees-galilee-1948.jpg") center top / 100% auto no-repeat,
+      var(--night-2);
+  }
+  .era-feature-inner { padding-top: 46vw; padding-bottom: var(--space-12); }
+}
+@media (max-width: 640px) {
+  .century { height: 96px; }
+  .century-mark span { font-size: 0.66rem; }
+  .era-stats { grid-template-columns: 1fr; }
+  .era-stats--four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .part-head::before { height: var(--space-9); }
+}
+.era--feature .era-body > .feature-credit {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}

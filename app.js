@@ -6,7 +6,7 @@
 const C = {
   pal: '#4a5831',
   palSoft: '#9aa67c',
-  palBg: 'rgba(74, 88, 49, 0.07)',
+  palBg: 'rgba(16, 19, 23, 0.035)',
   isr: '#2f5577',
   isrSoft: '#7891a8',
   isrBg: 'rgba(47, 85, 119, 0.07)',
@@ -48,6 +48,11 @@ const TOOLTIP = {
   padding: 12,
   borderColor: 'rgba(255,255,255,0.12)',
   borderWidth: 1,
+  cornerRadius: 4,
+  caretSize: 5,
+  titleMarginBottom: 6,
+  boxPadding: 6,
+  usePointStyle: true,
   titleFont: { family: '"Source Serif 4", serif', weight: '600', size: 13 },
   bodyFont: { family: '"Source Sans 3", sans-serif', size: 12 },
 };
@@ -164,11 +169,11 @@ function populateTrackers() {
   const body = document.getElementById('tracker-body');
   body.innerHTML = DATA.trackers.map(t => `
     <tr>
-      <td class="tracker-name"><a href="${t.url}" target="_blank" rel="noopener">${t.name}</a></td>
-      <td class="num">${t.palestinian_killed != null ? fmt(t.palestinian_killed) : '—'}</td>
-      <td class="num">${t.palestinian_injured != null ? fmt(t.palestinian_injured) : '—'}</td>
-      <td>${t.scope}</td>
-      <td>${fmtDate(t.as_of)}</td>
+      <td class="tracker-name" data-label="Source"><a href="${t.url}" target="_blank" rel="noopener">${t.name}</a></td>
+      <td class="num" data-label="Killed">${t.palestinian_killed != null ? fmt(t.palestinian_killed) : '—'}</td>
+      <td class="num" data-label="Injured">${t.palestinian_injured != null ? fmt(t.palestinian_injured) : '—'}</td>
+      <td data-label="Scope">${t.scope}</td>
+      <td class="date" data-label="As of">${fmtDate(t.as_of)}</td>
     </tr>
   `).join('');
 }
@@ -294,26 +299,77 @@ function buildTimeSeriesChart() {
           },
         },
       },
-      layout: { padding: { top: 26 } },
+      layout: { padding: { top: 26, right: 8 } },
       scales: {
         x: {
           type: 'time',
           time: { unit: 'month', tooltipFormat: 'PP' },
-          grid: { color: 'rgba(16,19,23,0.045)' },
-          ticks: { color: C.ink3, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 }, maxRotation: 0 },
+          grid: { display: false },
+          border: { color: 'rgba(16,19,23,0.25)' },
+          ticks: { ...MONO_TICKS, maxRotation: 0, autoSkip: true, maxTicksLimit: 7 },
         },
-        y: {
-          type: 'linear',
-          beginAtZero: true,
-          grid: { color: 'rgba(16,19,23,0.07)' },
-          ticks: { color: C.ink3, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 }, callback: v => fmt(v) },
-        },
+        y: yScaleOptions(false),
       },
       animation: { duration: 600, easing: 'easeOutQuart' },
+      // Fewer x labels and no end labels on narrow screens.
+      onResize: (c, size) => {
+        c.options.scales.x.ticks.maxTicksLimit = size.width < 520 ? 4 : 7;
+        c.options.layout.padding.right = size.width < 640 ? 8 : 150;
+      },
     },
-    plugins: [eventMarkers],
+    plugins: [eventMarkers, endLabels],
   });
 }
+
+// y axis for the main chart, shared by first build and the scale toggle so
+// the ticks keep the same type after any control change.
+function yScaleOptions(isLog) {
+  return {
+    type: isLog ? 'logarithmic' : 'linear',
+    beginAtZero: !isLog,
+    min: isLog ? 1 : 0,
+    grid: GRID,
+    border: { display: false },
+    ticks: {
+      ...MONO_TICKS,
+      maxTicksLimit: isLog ? undefined : 5,
+      callback: v => (!isLog || [1, 10, 100, 1e3, 1e4, 1e5].includes(v) ? fmt(v) : ''),
+    },
+  };
+}
+
+// Direct labels at the right end of each visible line, nudged apart so
+// the compressed Israeli and West Bank lines stay identifiable.
+const endLabels = {
+  id: 'endLabels',
+  afterDatasetsDraw(chart) {
+    const { ctx, chartArea: area } = chart;
+    if (chart.width < 640) return;
+    const items = [];
+    chart.data.datasets.forEach((ds, i) => {
+      const meta = chart.getDatasetMeta(i);
+      if (meta.hidden || ds.hidden || !meta.data.length) return;
+      const pt = meta.data[meta.data.length - 1];
+      items.push({ y: pt.y, text: ds.label, color: ds.borderColor });
+    });
+    // Stack upward from the baseline so labels of lines near zero don't collide.
+    items.sort((a, b) => b.y - a.y);
+    items.forEach((it, i) => {
+      it.y = Math.min(it.y, area.bottom - 4);
+      if (i > 0 && items[i - 1].y - it.y < 14) it.y = items[i - 1].y - 14;
+    });
+    ctx.save();
+    ctx.font = '600 11px "Source Sans 3", sans-serif';
+    ctx.textBaseline = 'middle';
+    // Soft series colors are too light for 11px text; darken them for labels.
+    const labelColor = c => (c === C.palSoft ? '#5f6a44' : c === C.isrSoft ? '#4f6a84' : c);
+    items.forEach(it => {
+      ctx.fillStyle = labelColor(it.color);
+      ctx.fillText(it.text, area.right + 8, it.y);
+    });
+    ctx.restore();
+  },
+};
 
 // Numbered hairlines at key dates. Numbers match the list under the chart,
 // so labels never collide on the plot itself.
@@ -330,7 +386,7 @@ const eventMarkers = {
       // Nudge a badge sideways when two events sit close together (Oct 7 / Oct 27).
       const bx = Math.max(px, lastBadge + 21);
       lastBadge = bx;
-      ctx.strokeStyle = 'rgba(22,24,27,0.28)';
+      ctx.strokeStyle = 'rgba(22,24,27,0.2)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(px, area.top);
@@ -358,18 +414,7 @@ const eventMarkers = {
 
 function applyScale() {
   if (!tsChart) return;
-  const isLog = state.scale === 'log';
-  tsChart.options.scales.y = {
-    type: isLog ? 'logarithmic' : 'linear',
-    beginAtZero: !isLog,
-    min: isLog ? 1 : 0,
-    grid: { color: 'rgba(16,19,23,0.07)' },
-    ticks: {
-      color: C.ink3,
-      font: { size: 11 },
-      callback: v => fmt(v),
-    },
-  };
+  tsChart.options.scales.y = yScaleOptions(state.scale === 'log');
 }
 
 function getTimeSeriesDatasets() {
@@ -408,10 +453,11 @@ function getTimeSeriesDatasets() {
 
   const sets = [
     mkPal('Palestinians — Gaza', DATA.gaza_daily, 'killed_cum', C.pal, C.palBg),
-    mkPal('Palestinians — West Bank', DATA.west_bank_daily, 'killed_cum', C.palSoft, 'rgba(201, 130, 118, 0.06)'),
-    mkPal('Israelis — total (Oct 7 + IDF)', DATA.israeli_daily, 'total_cum', C.isr, C.isrBg),
-    mkPal('Israeli soldiers — Gaza', DATA.israeli_daily, 'idf_gaza_cum', C.isrSoft, 'rgba(120, 145, 168, 0.06)'),
+    mkPal('Palestinians — West Bank', DATA.west_bank_daily, 'killed_cum', C.palSoft, 'transparent'),
+    mkPal('Israelis — total (Oct 7 + IDF)', DATA.israeli_daily, 'total_cum', C.isr, 'transparent'),
+    mkPal('Israeli soldiers — Gaza', DATA.israeli_daily, 'idf_gaza_cum', C.isrSoft, 'transparent'),
   ];
+  sets.slice(1).forEach(ds => { ds.fill = false; });
 
   return sets.map(s => {
     if (state.side === 'pal' && s._side !== 'pal') s.hidden = true;
@@ -468,8 +514,8 @@ function buildGovChart() {
       datasets: [{
         data: data.map(d => d.estimated_killed),
         backgroundColor: C.pal,
-        borderRadius: 4,
-        barPercentage: 0.62,
+        borderRadius: 3,
+        barPercentage: 0.72,
         categoryPercentage: 0.85,
       }],
     },
@@ -477,11 +523,12 @@ function buildGovChart() {
       indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
-      layout: { padding: { left: 8, right: 12, top: 4, bottom: 4 } },
+      layout: { padding: { left: 8, right: 64, top: 4, bottom: 4 } },
       plugins: {
         legend: { display: false },
         tooltip: {
           ...TOOLTIP,
+          displayColors: false,
           callbacks: {
             title: (items) => data[items[0].dataIndex].name,
             label: (ctx) => `~${fmt(ctx.parsed.x)} killed · ${data[ctx.dataIndex].share_pct}% of total`,
@@ -489,10 +536,7 @@ function buildGovChart() {
         },
       },
       scales: {
-        x: {
-          grid: { color: 'rgba(16,19,23,0.06)' },
-          ticks: { callback: v => fmt(v), color: C.ink3, font: { family: '\"IBM Plex Mono\", monospace', size: 10.5 } },
-        },
+        x: { display: false, beginAtZero: true },
         y: {
           grid: { display: false },
           ticks: {
@@ -505,6 +549,20 @@ function buildGovChart() {
         },
       },
     },
+    plugins: [{
+      id: 'barValues',
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        ctx.save();
+        ctx.font = '500 11px "IBM Plex Mono", monospace';
+        ctx.fillStyle = C.ink3;
+        ctx.textBaseline = 'middle';
+        chart.getDatasetMeta(0).data.forEach((bar, i) => {
+          ctx.fillText(`~${fmt(data[i].estimated_killed)}`, bar.x + 8, bar.y);
+        });
+        ctx.restore();
+      },
+    }],
   });
 }
 
@@ -515,7 +573,7 @@ function buildWBChart() {
   document.getElementById('wb-killed-total').textContent = fmt(last.killed_cum);
   document.getElementById('wb-attacks-total').textContent = fmt(last.settler_attacks_cum);
   wbChart = smallLine('wb-chart', wb.map(r => ({ x: r.date, y: r.killed_cum })), 'Palestinians killed', C.pal, C.palBg);
-  wbAttacksChart = smallLine('wb-attacks-chart', wb.map(r => ({ x: r.date, y: r.settler_attacks_cum })), 'Settler attacks', C.women, 'rgba(110, 90, 60, 0.07)');
+  wbAttacksChart = smallLine('wb-attacks-chart', wb.map(r => ({ x: r.date, y: r.settler_attacks_cum })), 'Settler attacks', C.ink3, 'rgba(16, 19, 23, 0.035)');
 }
 
 function smallLine(id, points, label, color, bg) {
@@ -538,6 +596,7 @@ function smallLine(id, points, label, color, bg) {
         legend: { display: false },
         tooltip: {
           ...TOOLTIP,
+          displayColors: false,
           callbacks: {
             title: (items) => fmtDate(items[0].parsed.x),
             label: (ctx) => `${label}: ${fmt(ctx.parsed.y)}`,
@@ -637,6 +696,7 @@ function buildPaceChart() {
         legend: { display: false },
         tooltip: {
           ...TOOLTIP,
+          displayColors: false,
           callbacks: {
             title: (items) => monthLabel(months[items[0].dataIndex].key),
             label: (ctx) => {
@@ -653,7 +713,15 @@ function buildPaceChart() {
           time: { unit: 'month' },
           offset: true,
           grid: { display: false },
-          ticks: { ...MONO_TICKS, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 },
+          ticks: {
+            ...MONO_TICKS,
+            maxRotation: 0,
+            autoSkip: false,
+            callback: (v, i, ticks) => {
+              const d = new Date(ticks[i].value);
+              return i === 0 ? 'Oct 2023' : d.getMonth() === 0 ? String(d.getFullYear()) : '';
+            },
+          },
         },
         y: {
           beginAtZero: true,
@@ -825,7 +893,14 @@ function setupToc() {
   const partOf = el => (partTwo && (partTwo.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) && !el.matches('.tracker, .foot-meta') ? 'Part two' : (el.matches('.tracker, .foot-meta') ? 'Method' : 'Part one'));
 
   chapters.forEach((el, i) => { if (!el.id) el.id = `chapter-${i + 1}`; });
-  list.innerHTML = chapters.map(el => `<a href="#${el.id}"><span>${partOf(el)}</span>${el.dataset.chapter}</a>`).join('');
+  // One heading per part, then its chapters.
+  let lastPart = '';
+  list.innerHTML = chapters.map(el => {
+    const part = partOf(el);
+    const head = part !== lastPart ? `<div class="toc-group">${part}</div>` : '';
+    lastPart = part;
+    return `${head}<a href="#${el.id}">${el.dataset.chapter}</a>`;
+  }).join('');
 
   const setOpen = open => {
     list.hidden = !open;
@@ -845,15 +920,24 @@ function setupToc() {
   // The history wrapper contains no other chapters, so a flat list works.
   trackMiddle(chapters, setCurrent);
 
-  // Appear once the reader is past the opener.
+  // Appear once past the opener; tuck away while scrolling down so it
+  // never sits on top of what's being read, and at the footer.
   const hero = document.querySelector('.hero');
-  const showPastHero = () => {
+  const foot = document.querySelector('.site-foot');
+  let lastY = window.scrollY;
+  const onScroll = () => {
     const past = hero.getBoundingClientRect().bottom < 0;
+    const atFoot = foot && foot.getBoundingClientRect().top < window.innerHeight;
     if (toc.hidden === past) toc.hidden = !past;
     if (!past) setOpen(false);
+    const down = window.scrollY > lastY + 4;
+    const up = window.scrollY < lastY - 4;
+    if ((down || atFoot) && list.hidden) toc.classList.add('is-tucked');
+    else if (up && !atFoot) toc.classList.remove('is-tucked');
+    lastY = window.scrollY;
   };
-  window.addEventListener('scroll', showPastHero, { passive: true });
-  showPastHero();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 }
 
 // --- Age & sex of identified dead (butterfly chart, plain HTML) ---

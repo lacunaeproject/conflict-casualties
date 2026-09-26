@@ -20,8 +20,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=202609262000" />
-<link rel="stylesheet" href="resources.css?v=202609262000" />
+<link rel="stylesheet" href="styles.css?v=202609270100" />
+<link rel="stylesheet" href="resources.css?v=202609270100" />
 </head>
 <body>
 
@@ -58,9 +58,9 @@
   <div class="card">
     <div class="eyebrow">The toll · since October 7, 2023</div>
     <h1>Every Life Is a Universe</h1>
-    <p>A continuously updated count of reported fatalities in Gaza, the West Bank, and Israel — drawn from the Gaza Ministry of Health, UN OCHA, B'Tselem, and <em>The Lancet</em>. Totals differ by source; all figures are reported as <em>killed</em>, not injured.</p>
+    <p>A continuously updated count of reported fatalities in Gaza, the West Bank, and Israel — drawn from the Gaza Ministry of Health, UN OCHA, B’Tselem, and <em>The Lancet</em>. Totals differ by source; all figures are reported as <em>killed</em>, not injured.</p>
     <div class="byline">
-      <span>Sources: Gaza MoH · UN OCHA · B'Tselem · The Lancet · IDF press releases</span>
+      <span>Sources: Gaza MoH · UN OCHA · B’Tselem · The Lancet · IDF press releases</span>
     </div>
     <p class="hero-credit">Background: satellite view of the Gaza Strip and southern Israel on October 7, 2023, fires marked in infrared. Contains modified Copernicus Sentinel data (2023), processed by Pierre Markuse · via <a href="https://commons.wikimedia.org/wiki/File:Fires_in_Israel_and_the_Gaza_strip_-_7_October_2023_(53245908850).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 2.0</p>
   </div>
@@ -94,9 +94,9 @@
 <section class="story story--lede" aria-labelledby="in-brief" data-chapter="In brief">
   <div class="eyebrow" id="in-brief">In brief</div>
   <p>On October 7, 2023, Hamas-led fighters broke through the fence around Gaza and attacked towns, kibbutzim, army posts and a music festival in southern Israel. They killed <strong data-bind="oct7.total">1,195</strong> people, most of them civilians, and took <strong data-bind="oct7.hostages_taken">251</strong> hostages.</p>
-  <p>Israel's war on Gaza began the same day. In the <span data-bind="meta.days_of_data">1,084</span> days since, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed and <span data-bind="summary.gaza.injured.total">175,030</span> injured. Of the dead identified by name, <strong data-bind="calc.namedChildShare">30%</strong> were children. In the occupied West Bank, Israeli forces and settlers have killed <strong data-bind="summary.west_bank.killed.total">1,123</strong> more Palestinians. <strong data-bind="calc.idfGaza">477</strong> Israeli soldiers have been killed in the Gaza ground operation.</p>
+  <p>Israel’s war on Gaza began the same day. In the <span data-bind="meta.days_of_data">1,084</span> days since, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed and <span data-bind="summary.gaza.injured.total">175,030</span> injured. Of the dead identified by name, <strong data-bind="calc.namedChildShare">30%</strong> were children. In the occupied West Bank, Israeli forces and settlers have killed <strong data-bind="summary.west_bank.killed.total">1,123</strong> more Palestinians. <strong data-bind="calc.idfGaza">477</strong> Israeli soldiers have been killed in the Gaza ground operation.</p>
   <p>A ceasefire took hold on October 10, 2025. The killing slowed. It has not stopped.</p>
-  <p class="story-map">This page tracks those numbers as sources publish them. <a href="#part-one">Part one</a> charts the toll: when, where, and who. <a href="#part-two">Part two</a> steps back a century, following the historian Rashid Khalidi's account of how Palestine came to this.</p>
+  <p class="story-map">This page tracks those numbers as sources publish them. <a href="#part-one">Part one</a> charts the toll: when, where, and who. <a href="#part-two">Part two</a> steps back a century, following the historian Rashid Khalidi’s account of how Palestine came to this.</p>
 </section>
 
 <header class="part-head" id="part-one">
@@ -124,7 +124,7 @@
     <div class="dots-box">
       <canvas id="dots" role="img" aria-label="A grid of dots, one for every ten Palestinians killed in Gaza"></canvas>
     </div>
-    <p class="chart-foot">Gaza Ministry of Health totals. "Men" is the remainder after children and women; the children and women counts have not been updated in months.</p>
+    <p class="chart-foot">Gaza Ministry of Health totals. “Men” is the remainder after children and women; the children and women counts have not been updated in months.</p>
   </div>
 </section>
 
@@ -240,7 +240,7 @@
           <div class="step-card">
             <div class="step-when">Oct – Dec 2023</div>
             <h3>The first three months</h3>
-            <p>Nearly a third of all the deaths recorded so far came in the war's first three months: <strong data-step="total"></strong> people, about <strong data-step="perday"></strong> a day.</p>
+            <p>Nearly a third of all the deaths recorded so far came in the war’s first three months: <strong data-step="total"></strong> people, about <strong data-step="perday"></strong> a day.</p>
           </div>
         </div>
         <div class="step" data-from="2024-01" data-to="2024-12">
@@ -274,8 +274,8 @@
       </div>
     </div>
     <details class="more">
-      <summary>Why ceasefire months aren't zero</summary>
-      <p>Monthly figures are the change in the Ministry of Health's cumulative total. During truces that change includes new killings, bodies recovered from rubble, and earlier deaths confirmed after review, so the lighter bars overstate new violence. See the breakdown below.</p>
+      <summary>Why ceasefire months aren’t zero</summary>
+      <p>Monthly figures are the change in the Ministry of Health’s cumulative total. During truces that change includes new killings, bodies recovered from rubble, and earlier deaths confirmed after review, so the lighter bars overstate new violence. See the breakdown below.</p>
     </details>
   </div>
 </section>
@@ -324,8 +324,8 @@
       <details class="more">
         <summary>Read more</summary>
         <div class="context-body">
-          <p>The official Gaza toll has risen by roughly 6,700 since the ceasefire. Only about a fifth of that is new killing. The rest are people killed before the ceasefire who are only now being counted: bodies pulled from the rubble, and deaths added to the record after the Ministry of Health's committee verified them. Those additions arrive in weekly batches, so the steps they create in the cumulative chart above are not new surges in violence.</p>
-          <p>Under the ceasefire, Israeli forces were to hold 53% of the Strip behind the so-called "Yellow Line." By March 2026 they held about 64%, and on May 28, 2026, Prime Minister Netanyahu ordered the army to take 70%. The last Israeli hostage held in Gaza, the body of Ran Gvili, was returned on January 26, 2026. None remain in Gaza.</p>
+          <p>The official Gaza toll has risen by roughly 6,700 since the ceasefire. Only about a fifth of that is new killing. The rest are people killed before the ceasefire who are only now being counted: bodies pulled from the rubble, and deaths added to the record after the Ministry of Health’s committee verified them. Those additions arrive in weekly batches, so the steps they create in the cumulative chart above are not new surges in violence.</p>
+          <p>Under the ceasefire, Israeli forces were to hold 53% of the Strip behind the so-called “Yellow Line.” By March 2026 they held about 64%, and on May 28, 2026, Prime Minister Netanyahu ordered the army to take 70%. The last Israeli hostage held in Gaza, the body of Ran Gvili, was returned on January 26, 2026. None remain in Gaza.</p>
           <p class="context-footnote">Sources: <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine daily reports (Gaza MoH)</a> · <a href="https://www.ochaopt.org/content/humanitarian-situation-report-18-september-2026" target="_blank" rel="noopener">OCHA situation report, Sep 18, 2026</a> · <a href="https://www.aljazeera.com/news/2026/5/28/israels-netanyahu-directs-army-to-seize-70-percent-of-gaza-strip" target="_blank" rel="noopener">Al Jazeera</a> · <a href="https://www.timesofisrael.com/all-of-them-home-now-body-of-last-hostage-ran-gvili-found-in-gaza-returned-to-israel/" target="_blank" rel="noopener">Times of Israel</a></p>
         </div>
       </details>
@@ -368,7 +368,7 @@
   <div class="card">
     <div class="eyebrow eyebrow--isr">Israel</div>
     <h2>October 7</h2>
-    <p class="dek">The deadliest day for Israelis since the state's founding.</p>
+    <p class="dek">The deadliest day for Israelis since the state’s founding.</p>
     <div class="viz-block">
       <div class="stackbar stackbar--isr" role="img" aria-label="Of 1,195 killed: 724 Israeli civilians, 373 security forces, 98 foreign nationals and other">
         <div class="seg seg--1" style="--w:60.6%"></div>
@@ -387,7 +387,7 @@
       <div class="cell"><div class="lbl">Children killed</div><div class="val">36</div></div>
       <div class="cell"><div class="lbl">Injured</div><div class="val">8,730</div></div>
     </div>
-    <p class="chart-foot">1,195 killed in total. Figures consolidated from the Israeli MFA, INSS, and B'Tselem.</p>
+    <p class="chart-foot">1,195 killed in total. Figures consolidated from the Israeli MFA, INSS, and B’Tselem.</p>
   </div>
   <div class="card">
     <div class="eyebrow">Gaza</div>
@@ -398,7 +398,7 @@
     </div>
     <details class="more">
       <summary>How this is modeled</summary>
-      <p>The Ministry of Health publishes no official geographic breakdown. These shares weight each governorate's pre-war population by the UNOSAT damage assessment. Hover bars for estimated counts.</p>
+      <p>The Ministry of Health publishes no official geographic breakdown. These shares weight each governorate’s pre-war population by the UNOSAT damage assessment. Hover bars for estimated counts.</p>
     </details>
   </div>
 </section>
@@ -427,21 +427,21 @@
 <!-- PART TWO: THE HUNDRED YEARS' WAR (after Rashid Khalidi) -->
 <header class="part-head" id="part-two">
   <div class="part-num">Part two</div>
-  <h2>The hundred years' war</h2>
+  <h2>The hundred years’ war</h2>
 </header>
 
 <section class="history-intro">
   <div class="story">
     <p class="story-dek">The numbers above begin in 2023. The Palestinian American historian Rashid Khalidi argues that the story begins in 1917, and that it is best understood not as an ancient feud between two peoples but as a colonial war waged against the Palestinians, backed at every stage by the great power of the day.</p>
-    <p>In <em>The Hundred Years' War on Palestine</em> (2020), Khalidi divides that century into six "declarations of war." What follows summarizes his account in our own words, with the numbers from each period. For the full argument, <a href="resources.html">read the book</a>.</p>
+    <p>In <em>The Hundred Years’ War on Palestine</em> (2020), Khalidi divides that century into six “declarations of war.” What follows summarizes his account in our own words, with the numbers from each period. For the full argument, <a href="resources.html">read the book</a>.</p>
   </div>
 
 </section>
 
-<div class="history" data-chapter="The hundred years' war">
+<div class="history" data-chapter="The hundred years’ war">
 <div class="century-wrap">
   <div class="century-now" id="century-now" aria-hidden="true"></div>
-  <nav class="century" id="century" aria-label="Timeline of the hundred years' war">
+  <nav class="century" id="century" aria-label="Timeline of the hundred years’ war">
     <div class="century-line" aria-hidden="true"></div>
     <div class="century-fill" aria-hidden="true"></div>
     <a class="century-mark" href="#era-1899" style="--x:0%"><span>1899</span></a>
@@ -461,7 +461,7 @@
     <div class="era-years">Prologue · 1899</div>
     <h3>A letter to Herzl</h3>
     <p>Khalidi opens with his own family. In 1899 his great-great-great-uncle, Yusuf Diya al-Din al-Khalidi, a former mayor of Jerusalem, wrote to Theodor Herzl, the founder of political Zionism. He wrote that he sympathized with the plight of the Jews of Europe, but that Palestine was already inhabited, and he urged Herzl, in the name of God, to leave it alone.</p>
-    <p>Herzl replied that Jewish immigration would bring prosperity to the country's non-Jewish inhabitants. He did not address the people living there as a nation with rights of its own. For Khalidi, that exchange holds the century to come in miniature.</p>
+    <p>Herzl replied that Jewish immigration would bring prosperity to the country’s non-Jewish inhabitants. He did not address the people living there as a nation with rights of its own. For Khalidi, that exchange holds the century to come in miniature.</p>
   </div>
 </article>
 
@@ -474,9 +474,9 @@
   <div class="era-body">
     <div class="era-years">1917 – 1939 · The first declaration</div>
     <h3>A national home, promised by a great power</h3>
-    <p>In November 1917, Britain promised the Zionist movement "a national home for the Jewish people" in Palestine, a country its armies had not yet finished conquering, where Arabs were roughly nine in ten of the population. The letter called that majority "the existing non-Jewish communities," with civil and religious rights but no national ones.</p>
+    <p>In November 1917, Britain promised the Zionist movement “a national home for the Jewish people” in Palestine, a country its armies had not yet finished conquering, where Arabs were roughly nine in ten of the population. The letter called that majority “the existing non-Jewish communities,” with civil and religious rights but no national ones.</p>
     <div class="era-stats">
-      <div><strong>~90%</strong><span>of Palestine's population was Arab in 1917</span></div>
+      <div><strong>~90%</strong><span>of Palestine’s population was Arab in 1917</span></div>
       <div><strong>~5,000</strong><span>Palestinians killed as Britain crushed the 1936–39 revolt</span></div>
     </div>
     <details class="more">
@@ -498,7 +498,7 @@
     <div class="era-body">
       <div class="era-years">1947 – 1948 · The second declaration</div>
       <h3>Partition, and al-Nakba</h3>
-      <p>In November 1947 the United Nations voted to partition Palestine, allotting more than half the land to a Jewish state when Jews were about a third of the population. Khalidi counts the vote, driven by the United States and the Soviet Union, as the second declaration of war. What followed Palestinians call <em>al-Nakba</em>, "the catastrophe."</p>
+      <p>In November 1947 the United Nations voted to partition Palestine, allotting more than half the land to a Jewish state when Jews were about a third of the population. Khalidi counts the vote, driven by the United States and the Soviet Union, as the second declaration of war. What followed Palestinians call <em>al-Nakba</em>, “the catastrophe.”</p>
       <div class="era-stats era-stats--four">
         <div><strong>750,000+</strong><span>Palestinians expelled or fled</span></div>
         <div><strong>530+</strong><span>villages depopulated or destroyed</span></div>
@@ -507,7 +507,7 @@
       </div>
       <details class="more more--night">
         <summary>Read more</summary>
-        <p>Between the partition vote and the armistice of 1949, Zionist militias and then the new Israeli army carried out a campaign, documented as <a href="https://en.wikipedia.org/wiki/Plan_Dalet" target="_blank" rel="noopener">Plan Dalet</a>, that emptied more than half of Mandatory Palestine's Arab population from their homes. At Deir Yassin, in April 1948, more than a hundred villagers were killed. Villages were razed. Survivors were barred from returning, and their land, homes and bank accounts were absorbed by the new state.</p>
+        <p>Between the partition vote and the armistice of 1949, Zionist militias and then the new Israeli army carried out a campaign, documented as <a href="https://en.wikipedia.org/wiki/Plan_Dalet" target="_blank" rel="noopener">Plan Dalet</a>, that emptied more than half of Mandatory Palestine’s Arab population from their homes. At Deir Yassin, in April 1948, more than a hundred villagers were killed. Villages were razed. Survivors were barred from returning, and their land, homes and bank accounts were absorbed by the new state.</p>
         <p>Palestinian scholars and UN experts increasingly describe the events since October 2023 as a second Nakba.</p>
         <p class="more-links">Further reading: <a href="https://www.palestineremembered.com/" target="_blank" rel="noopener">Palestine Remembered</a> · <a href="https://www.decolonizepalestine.com/the-nakba/" target="_blank" rel="noopener">Decolonize Palestine</a> · <a href="https://www.unrwa.org/palestine-refugees" target="_blank" rel="noopener">UNRWA · Palestine refugees</a></p>
       </details>
@@ -525,8 +525,8 @@
   <div class="era-body">
     <div class="era-years">1967 · The third declaration</div>
     <h3>Occupation</h3>
-    <p>In six days in June 1967, Israel took the West Bank, East Jerusalem and Gaza, along with Egypt's Sinai and Syria's Golan Heights. Hundreds of thousands of Palestinians were displaced, many of them refugees for the second time. The occupation that began that week has never ended.</p>
-    <p>For Khalidi, the third declaration was UN Security Council Resolution 242. It became the basis of every later peace plan, yet it never named the Palestinians, referring only to "a just settlement of the refugee problem."</p>
+    <p>In six days in June 1967, Israel took the West Bank, East Jerusalem and Gaza, along with Egypt’s Sinai and Syria’s Golan Heights. Hundreds of thousands of Palestinians were displaced, many of them refugees for the second time. The occupation that began that week has never ended.</p>
+    <p>For Khalidi, the third declaration was UN Security Council Resolution 242. It became the basis of every later peace plan, yet it never named the Palestinians, referring only to “a just settlement of the refugee problem.”</p>
     <div class="era-stats">
       <div><strong>300,000+</strong><span>Palestinians displaced in 1967</span></div>
       <div><strong>700,000+</strong><span>Israeli settlers in the occupied West Bank and East Jerusalem today</span></div>
@@ -548,7 +548,7 @@
   <div class="era-body">
     <div class="era-years">1982 · The fourth declaration</div>
     <h3>The siege of Beirut</h3>
-    <p>In June 1982 Israel invaded Lebanon to destroy the Palestine Liberation Organization, and laid siege to West Beirut for ten weeks with American support. Khalidi, then teaching in Beirut, lived through it. After the PLO's fighters were evacuated under a US-brokered deal, a Lebanese militia allied with Israel entered the Sabra and Shatila refugee camps, which Israeli forces had surrounded, and killed hundreds of civilians over three days.</p>
+    <p>In June 1982 Israel invaded Lebanon to destroy the Palestine Liberation Organization, and laid siege to West Beirut for ten weeks with American support. Khalidi, then teaching in Beirut, lived through it. After the PLO’s fighters were evacuated under a US-brokered deal, a Lebanese militia allied with Israel entered the Sabra and Shatila refugee camps, which Israeli forces had surrounded, and killed hundreds of civilians over three days.</p>
     <div class="era-stats">
       <div><strong>~18,000</strong><span>killed in Lebanon by September 1982, most of them civilians (Lebanese estimates)</span></div>
       <div><strong>460 – 3,500</strong><span>killed at Sabra and Shatila; estimates vary widely</span></div>
@@ -570,11 +570,11 @@
   <div class="era-body">
     <div class="era-years">1987 – 1995 · The fifth declaration</div>
     <h3>Uprising, then Oslo</h3>
-    <p>In December 1987 a mass uprising, the first intifada, spread from Gaza's refugee camps across the occupied territories: strikes, boycotts, stone-throwing, and committees that ran daily life. It put the Palestinians back on the world's agenda. Khalidi advised the Palestinian delegation at the peace talks that followed in Madrid and Washington.</p>
+    <p>In December 1987 a mass uprising, the first intifada, spread from Gaza’s refugee camps across the occupied territories: strikes, boycotts, stone-throwing, and committees that ran daily life. It put the Palestinians back on the world’s agenda. Khalidi advised the Palestinian delegation at the peace talks that followed in Madrid and Washington.</p>
     <p>He argues the 1993 Oslo Accords were the fifth declaration: a Palestinian Authority with limited self-rule, while Israel kept control of land, borders, water and Jerusalem, and settlement kept growing.</p>
     <div class="era-stats">
-      <div><strong>1,100+</strong><span>Palestinians killed in the first intifada, 1987–93 (B'Tselem)</span></div>
-      <div><strong>~160</strong><span>Israelis killed in the same period (B'Tselem)</span></div>
+      <div><strong>1,100+</strong><span>Palestinians killed in the first intifada, 1987–93 (B’Tselem)</span></div>
+      <div><strong>~160</strong><span>Israelis killed in the same period (B’Tselem)</span></div>
     </div>
     <details class="more">
       <summary>Read more</summary>
@@ -616,7 +616,7 @@
   <div class="era-body">
     <div class="era-years">2017 – now · After the book</div>
     <h3>The chapter still being written</h3>
-    <p>Khalidi's book closes in 2017. Since October 7, 2023, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed in Gaza, more than all the death tolls above combined. That count is <a href="#part-one">where this page begins</a>, and it is updated as sources publish.</p>
+    <p>Khalidi’s book closes in 2017. Since October 7, 2023, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed in Gaza, more than all the death tolls above combined. That count is <a href="#part-one">where this page begins</a>, and it is updated as sources publish.</p>
   </div>
 </article>
 
@@ -660,7 +660,7 @@
       </div>
       <div class="stamp-col">
         <div class="stamp-label">Build source</div>
-        <div class="stamp-value stamp-value--sm">Tech for Palestine API · UN OCHA · B'Tselem</div>
+        <div class="stamp-value stamp-value--sm">Tech for Palestine API · UN OCHA · B’Tselem</div>
       </div>
     </div>
   </div>
@@ -671,15 +671,15 @@
   <div class="card">
     <h3>Notes &amp; caveats</h3>
     <ul>
-      <li><strong>No figure is complete.</strong> Gaza MoH itself states thousands of dead remain under rubble. Peer-reviewed research published in <em>The Lancet Global Health</em> estimated <strong>75,200 violent deaths</strong> through January 2025 — roughly 35% higher than the MoH count for the same period — and did not capture deaths from starvation, disease, or collapsed healthcare. As of September 24, 2026, Gaza MoH reports <strong>73,928 killed</strong> — including 1,400+ since the October 2025 ceasefire — and Wikipedia's conflict tracker cites <strong>75,131+ Palestinians killed</strong> across Gaza and the West Bank; excess non-violent deaths likely push the true toll substantially higher.</li>
+      <li><strong>No figure is complete.</strong> Gaza MoH itself states thousands of dead remain under rubble. Peer-reviewed research published in <em>The Lancet Global Health</em> estimated <strong>75,200 violent deaths</strong> through January 2025 — roughly 35% higher than the MoH count for the same period — and did not capture deaths from starvation, disease, or collapsed healthcare. As of September 24, 2026, Gaza MoH reports <strong>73,928 killed</strong> — including 1,400+ since the October 2025 ceasefire — and Wikipedia’s conflict tracker cites <strong>75,131+ Palestinians killed</strong> across Gaza and the West Bank; excess non-violent deaths likely push the true toll substantially higher.</li>
     </ul>
     <details class="more">
       <summary>All notes and sources</summary>
       <ul>
-        <li><strong>Some category counts are no longer updated.</strong> MoH's children (20,179) and women (12,500) breakdowns, medical personnel (1,701), and journalists (262) have not changed in months; starvation deaths (463) and aid-seekers killed (2,615) were last reported in mid-2026. The Committee to Protect Journalists, after a September 2026 review, counts 191 journalists killed, using a narrower definition.</li>
-        <li><strong>The age and sex breakdown</strong> comes from the Ministry of Health's list of dead identified by name, which trails the overall total.</li>
+        <li><strong>Some category counts are no longer updated.</strong> MoH’s children (20,179) and women (12,500) breakdowns, medical personnel (1,701), and journalists (262) have not changed in months; starvation deaths (463) and aid-seekers killed (2,615) were last reported in mid-2026. The Committee to Protect Journalists, after a September 2026 review, counts 191 journalists killed, using a narrower definition.</li>
+        <li><strong>The age and sex breakdown</strong> comes from the Ministry of Health’s list of dead identified by name, which trails the overall total.</li>
         <li><strong>OCHA relies on MoH for Gaza</strong> but independently verifies West Bank incidents. Its counts include fatalities from both Israeli military and settler attacks.</li>
-        <li><strong>B'Tselem publishes a conservative, named-only database</strong> of verified individuals. Its totals trail MoH but document each death in detail.</li>
+        <li><strong>B’Tselem publishes a conservative, named-only database</strong> of verified individuals. Its totals trail MoH but document each death in detail.</li>
         <li><strong>Israeli soldier deaths</strong> are taken from IDF press releases and reporting by The Times of Israel. The count shown is soldiers killed in Gaza ground operations since October 27, 2023.</li>
         <li><strong>The governorate breakdown shown is a model</strong>, not a reported statistic. It distributes the overall Gaza total by pre-war population weighted for reported damage — directional only.</li>
         <li><strong>The dashboard is rebuilt from the Tech for Palestine API</strong> (which ingests OCHA flash updates and MoH briefings). Re-running the build pulls the latest daily data.</li>
@@ -688,7 +688,7 @@
         <strong>Sources:</strong>
         <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine (Gaza MoH / OCHA)</a> ·
         <a href="https://www.ochaopt.org/" target="_blank" rel="noopener">UN OCHA oPt</a> ·
-        <a href="https://statistics.btselem.org/" target="_blank" rel="noopener">B'Tselem</a> ·
+        <a href="https://statistics.btselem.org/" target="_blank" rel="noopener">B’Tselem</a> ·
         <a href="https://en.wikipedia.org/wiki/Casualties_of_the_Gaza_war" target="_blank" rel="noopener">Wikipedia</a> ·
         <a href="https://costsofwar.watson.brown.edu/paper/HumanTollGaza" target="_blank" rel="noopener">Costs of War (Brown)</a> ·
         <a href="https://www.aljazeera.com/features/2026/2/18/gaza-death-toll-exceeds-75000-as-independent-data-verify-loss" target="_blank" rel="noopener">The Lancet via Al Jazeera</a>
@@ -721,6 +721,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=202609262000"></script><script src="motion.js?v=202609262000" defer></script>
+<script src="app.js?v=202609270100"></script><script src="motion.js?v=202609270100" defer></script>
 </body>
 </html>

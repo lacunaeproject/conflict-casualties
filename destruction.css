@@ -386,3 +386,41 @@ html.motion .photo.wide.reveal img {
 html.motion .photo.wide.reveal.in img { transform: none; }
 .destruction-body .hero h1,
 .destruction-body .hero p { text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55); }
+
+/* Editorial pass */
+/* Opener: each photo in its own half, cross-faded — no stretching, no seam */
+.destruction-body .hero .card::before {
+  inset: 0 50% 0 0;
+  background: url("img/beeri-burned-home.jpg") center / cover no-repeat;
+  -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent);
+  mask-image: linear-gradient(90deg, #000 78%, transparent);
+}
+.destruction-body .hero .card { overflow: hidden; }
+.destruction-body .hero > .card > .hero-right {
+  position: absolute;
+  inset: 0 0 0 50%;
+  z-index: -1;
+  background: url("img/rimal-gaza-city.jpg") center / cover no-repeat;
+  filter: grayscale(1) contrast(1.05) brightness(0.55);
+  -webkit-mask-image: linear-gradient(270deg, #000 78%, transparent);
+  mask-image: linear-gradient(270deg, #000 78%, transparent);
+}
+/* Content warning fits small screens */
+.cw-gate { overflow-y: auto; align-items: flex-start; }
+.cw-card { margin: auto; }
+.cw-mark { background: var(--paper-2); }
+.cw-card .cw-meta { border-left: 0; border-top: 1px solid var(--rule); background: transparent; border-radius: 0; padding: var(--space-4) 0 0; }
+.btn-primary, .btn-ghost { border-radius: var(--radius); }
+.cw-card { border-radius: var(--radius-lg); }
+/* Gallery: photos with captions on the page, not in cards */
+.gallery { margin-bottom: var(--gap-chapter); gap: var(--space-9) var(--space-8); }
+.photo { border: 0; border-radius: 0; background: transparent; }
+.photo:hover { border: 0; box-shadow: none; }
+.photo figcaption { padding: var(--space-4) 0 0; }
+.photo img { border-radius: 0; }
+.cap-credit { border-top: 0; padding-top: 0; margin-top: var(--space-2); }
+.photo.wide figcaption p, .gallery-head p { max-width: 68ch; }
+.gallery-head p { font-family: var(--font-display); font-size: 1.08rem; }
+.note-panel { margin-bottom: var(--gap-chapter); border: 0; border-top: 1px solid var(--ink); border-radius: 0; background: transparent; padding: var(--space-7) 0 0; }
+.hero h1[tabindex="-1"]:focus { outline: none; }
+.note-panel em { font-family: inherit; font-style: italic; }

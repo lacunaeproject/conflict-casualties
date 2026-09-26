@@ -420,3 +420,29 @@
 
 /* Masthead no longer sticky, so the jump nav pins to the very top */
 .jump-nav { top: 0; }
+
+/* Editorial pass — match the dashboard's publication styling */
+.section-head { border-bottom: 0; border-top: 1px solid var(--ink); padding: var(--space-6) 0 0; margin-bottom: var(--space-8); }
+.section-head h2 { font-weight: 500; }
+.section-head h2::before { display: none; }
+.book-section { margin-bottom: var(--gap-chapter); }
+.book-grid { gap: var(--space-8); align-items: start; }
+.book { border-radius: 0; border: 0; border-top: 1px solid var(--rule-2); background: transparent; }
+.book:hover { transform: none; box-shadow: none; border-color: var(--ink); }
+.book-cover { border-radius: 0; }
+.book-body p em { font-style: italic; }
+.book-pill { background: var(--paper-2); color: var(--ink-2); border: 0; border-radius: var(--radius); text-transform: none; letter-spacing: 0; font-size: 0.75rem; }
+.book-pill::before { background: var(--pal); }
+.jump-nav { background-color: rgba(255, 255, 255, 0.97); border-top: 0; padding: var(--space-3) 0; gap: var(--space-2); }
+.jump-nav a { border-radius: var(--radius); font-size: 0.84rem; }
+.jump-nav a:hover { color: var(--ink); background: var(--paper-2); border-color: transparent; }
+@media (max-width: 640px) {
+  .book-cover { min-height: 8px; padding: 0; }
+  .book-cover > * { display: none; }
+}
+.lists-section { border: 0; border-top: 1px solid var(--ink); border-radius: 0; background: transparent; padding: var(--space-6) 0 0; }
+@media (max-width: 1000px) { .jump-nav { flex-wrap: nowrap; overflow-x: auto; } }
+@media (max-width: 640px) {
+  .lists-section { padding: var(--space-6) 0 0; }
+  .book-featured .book-cover { min-height: 8px; }
+}

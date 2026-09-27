@@ -217,6 +217,21 @@ with open('data.json', 'w') as f:
 
 print(f"Wrote data.json — {days} days, Gaza cum: {gaza_series[-1]['killed_cum']:,}, WB cum: {wb_series[-1]['killed_cum']:,}, Israeli cum: {israeli_series[-1]['total_cum']:,}")
 
+# --- Freshness signals for search engines: the dashboard's sitemap <lastmod>
+# and the Dataset JSON-LD dateModified both follow the data date.
+import re
+
+as_of = bundle['meta']['data_as_of']
+for path, pattern, repl in [
+    ('sitemap.xml', r'(<loc>https://conflictcasualties\.org/</loc><lastmod>)[^<]*', rf'\g<1>{as_of}'),
+    ('index.html', r'("dateModified": ")[^"]*', rf'\g<1>{as_of}'),
+]:
+    with open(path, encoding='utf-8') as f:
+        text = f.read()
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(re.sub(pattern, repl, text, count=1))
+print(f"Stamped sitemap.xml and index.html with {as_of}")
+
 # --- Names for the closing memorial: identified dead under one year old ---
 # Pulls the Ministry of Health list of identified dead from Tech for Palestine
 # and keeps only infants (age 0), English and Arabic names. Skipped quietly if

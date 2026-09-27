@@ -362,8 +362,8 @@ body.locked {
   inset: 0;
   z-index: -1;
   background:
-    url("img/beeri-burned-home.jpg") left center / 50% auto no-repeat,
-    url("img/rimal-gaza-city.jpg") right center / 50% auto no-repeat;
+    url("img/beeri-burned-home.webp") left center / 50% auto no-repeat,
+    url("img/rimal-gaza-city.webp") right center / 50% auto no-repeat;
   background-size: 50% 100%, 50% 100%;
   filter: grayscale(1) contrast(1.05) brightness(0.55);
 }
@@ -391,7 +391,7 @@ html.motion .photo.wide.reveal.in img { transform: none; }
 /* Opener: each photo in its own half, cross-faded — no stretching, no seam */
 .destruction-body .hero .card::before {
   inset: 0 50% 0 0;
-  background: url("img/beeri-burned-home.jpg") center / cover no-repeat;
+  background: url("img/beeri-burned-home.webp") center / cover no-repeat;
   -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent);
   mask-image: linear-gradient(90deg, #000 78%, transparent);
 }
@@ -400,7 +400,7 @@ html.motion .photo.wide.reveal.in img { transform: none; }
   position: absolute;
   inset: 0 0 0 50%;
   z-index: -1;
-  background: url("img/rimal-gaza-city.jpg") center / cover no-repeat;
+  background: url("img/rimal-gaza-city.webp") center / cover no-repeat;
   filter: grayscale(1) contrast(1.05) brightness(0.55);
   -webkit-mask-image: linear-gradient(270deg, #000 78%, transparent);
   mask-image: linear-gradient(270deg, #000 78%, transparent);

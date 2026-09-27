@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>g{color:#16181c}@media (prefers-color-scheme:dark){g{color:#f2f3f5}}</style>
+  <g>
+    <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2" />
+    <circle cx="16" cy="16" r="4" fill="currentColor" />
+  </g>
+</svg>

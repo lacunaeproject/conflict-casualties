@@ -85,7 +85,7 @@ body.locked {
   margin-bottom: var(--space-3);
 }
 
-.cw-card h1 {
+.cw-card h2 {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(1.625rem, 3vw, 2rem);

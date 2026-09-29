@@ -3,22 +3,28 @@
    ========================================================= */
 
 // --- Color tokens (mirror CSS) ---
+// Dark palette follows the system setting on pages that use the product theme
+// (html.rd). Charts read it once at load.
+const DARK = typeof document !== 'undefined' && document.documentElement.classList.contains('rd') &&
+  window.matchMedia('(prefers-color-scheme: dark)').matches;
+const T = (light, dark) => (DARK ? dark : light);
+
 const C = {
-  pal: '#4a5831',
-  palSoft: '#9aa67c',
-  palBg: 'rgba(16, 19, 23, 0.035)',
-  isr: '#2f5577',
-  isrSoft: '#7891a8',
+  pal: T('#4a5831', '#aebd86'),
+  palSoft: T('#9aa67c', '#6b7650'),
+  palBg: T('rgba(16, 19, 23, 0.035)', 'rgba(174, 189, 134, 0.08)'),
+  isr: T('#2f5577', '#93b3d3'),
+  isrSoft: T('#7891a8', '#5a7690'),
   isrBg: 'rgba(47, 85, 119, 0.07)',
   children: '#9a6420',
   women: '#6e5a3c',
   press: '#3f6446',
   medical: '#5e4a70',
-  ink: '#16181b',
-  ink3: '#5c6168',
-  ink4: '#767b82',
-  rule: '#e2e5e9',
-  paper: '#f3f4f6',
+  ink: T('#16181b', '#eef0f3'),
+  ink3: T('#5c6168', '#a3a9b2'),
+  ink4: T('#767b82', '#8a9099'),
+  rule: T('#e2e5e9', 'rgba(255,255,255,0.08)'),
+  paper: T('#f3f4f6', '#16181c'),
 };
 
 Chart.defaults.font.family = '"Source Sans 3", sans-serif';
@@ -42,13 +48,13 @@ const pct = (n, total) => `${Math.round((n / total) * 100)}%`;
 
 // Shared chart chrome: dark tooltip, mono ticks, hairline grid.
 const TOOLTIP = {
-  backgroundColor: '#101317',
+  backgroundColor: T('#16181b', '#2a2d33'),
   titleColor: '#f3f4f6',
   bodyColor: '#f3f4f6',
   padding: 12,
   borderColor: 'rgba(255,255,255,0.12)',
   borderWidth: 1,
-  cornerRadius: 4,
+  cornerRadius: 12,
   caretSize: 5,
   titleMarginBottom: 6,
   boxPadding: 6,
@@ -56,10 +62,10 @@ const TOOLTIP = {
   titleFont: { family: '"Source Serif 4", serif', weight: '600', size: 13 },
   bodyFont: { family: '"Source Sans 3", sans-serif', size: 12 },
 };
-const MONO_TICKS = { color: '#6b7078', font: { family: '"Source Sans 3", sans-serif', size: 12 } };
+const MONO_TICKS = { color: T('#6b7078', '#8a9099'), font: { family: '"Source Sans 3", sans-serif', size: 12 } };
 const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (REDUCED_MOTION) Chart.defaults.animation = false;
-const GRID = { color: 'rgba(16,19,23,0.06)' };
+const GRID = { color: T('rgba(16,19,23,0.06)', 'rgba(255,255,255,0.07)') };
 
 // --- Key events for annotations ---
 const EVENTS = [
@@ -317,7 +323,7 @@ function buildTimeSeriesChart() {
           type: 'time',
           time: { unit: 'month', tooltipFormat: 'PP' },
           grid: { display: false },
-          border: { color: 'rgba(16,19,23,0.25)' },
+          border: { color: T('rgba(16,19,23,0.25)', 'rgba(255,255,255,0.22)') },
           ticks: { ...MONO_TICKS, maxRotation: 0, autoSkip: true, maxTicksLimit: narrow ? 4 : 7 },
         },
         y: yScaleOptions(false),
@@ -361,10 +367,10 @@ const truceBands = {
       const end = b.startsWith('9999') ? x.max : toLocalDate(b).getTime();
       const x1 = Math.min(area.right, x.getPixelForValue(end));
       if (x1 <= x0) return;
-      ctx.fillStyle = 'rgba(16, 19, 23, 0.045)';
+      ctx.fillStyle = T('rgba(16, 19, 23, 0.045)', 'rgba(255, 255, 255, 0.05)');
       ctx.fillRect(x0, area.top, x1 - x0, area.bottom - area.top);
       if (x1 - x0 > 30) {
-        ctx.fillStyle = '#6b7078';
+        ctx.fillStyle = T('#6b7078', '#8a9099');
         ctx.font = `600 ${x1 - x0 > 44 ? 11 : 10}px "Source Sans 3", sans-serif`;
         ctx.textBaseline = 'top';
         ctx.fillText(b.startsWith('9999') ? 'Ceasefire' : 'Truce', x0 + 6, area.top + 6);
@@ -400,7 +406,7 @@ const endLabels = {
     ctx.font = '600 11px "Source Sans 3", sans-serif';
     ctx.textBaseline = 'middle';
     // Soft series colors are too light for 11px text; darken them for labels.
-    const labelColor = c => (c === C.palSoft ? '#5f6a44' : c === C.isrSoft ? '#4f6a84' : c);
+    const labelColor = c => (c === C.palSoft ? T('#5f6a44', '#8f9c6c') : c === C.isrSoft ? T('#4f6a84', '#7d98b3') : c);
     items.forEach(it => {
       ctx.fillStyle = labelColor(it.color);
       ctx.fillText(it.text, area.right + 8, it.y);
@@ -424,7 +430,7 @@ const eventMarkers = {
       // Nudge a badge sideways when two events sit close together (Oct 7 / Oct 27).
       const bx = Math.max(px, lastBadge + 21);
       lastBadge = bx;
-      ctx.strokeStyle = 'rgba(22,24,27,0.2)';
+      ctx.strokeStyle = T('rgba(22,24,27,0.2)', 'rgba(255,255,255,0.2)');
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(px, area.top);
@@ -436,11 +442,11 @@ const eventMarkers = {
         ctx.lineTo(bx, area.top - 4);
         ctx.stroke();
       }
-      ctx.fillStyle = '#16181b';
+      ctx.fillStyle = C.ink;
       ctx.beginPath();
       ctx.arc(bx, area.top - 12, 9, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = T('#ffffff', '#16181b');
       ctx.font = '600 10px "Source Sans 3", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -611,7 +617,7 @@ function buildWBChart() {
   document.getElementById('wb-killed-total').textContent = fmt(last.killed_cum);
   document.getElementById('wb-attacks-total').textContent = fmt(last.settler_attacks_cum);
   wbChart = smallLine('wb-chart', wb.map(r => ({ x: r.date, y: r.killed_cum })), 'Palestinians killed', C.pal, C.palBg);
-  wbAttacksChart = smallLine('wb-attacks-chart', wb.map(r => ({ x: r.date, y: r.settler_attacks_cum })), 'Settler attacks', C.ink3, 'rgba(16, 19, 23, 0.035)');
+  wbAttacksChart = smallLine('wb-attacks-chart', wb.map(r => ({ x: r.date, y: r.settler_attacks_cum })), 'Settler attacks', C.ink3, T('rgba(16, 19, 23, 0.035)', 'rgba(255, 255, 255, 0.04)'));
 }
 
 function smallLine(id, points, label, color, bg) {
@@ -682,7 +688,7 @@ const monthLabel = key => toLocalDate(`${key}-01`).toLocaleDateString('en-US', {
 
 function paceColors(months) {
   return months.map(m => {
-    if (!inPaceRange(m.key)) return '#dde1e5';
+    if (!inPaceRange(m.key)) return T('#dde1e5', '#2c3036');
     return isTruceMonth(m.key) ? C.palSoft : C.pal;
   });
 }
@@ -778,9 +784,13 @@ function buildPaceChart() {
             maxRotation: 0,
             autoSkip: false,
             source: 'labels',
-            callback: (v, i, ticks) => {
+            callback(v, i, ticks) {
               const d = new Date(ticks[i].value);
-              return i === 0 ? 'Oct 2023' : d.getMonth() === 0 ? String(d.getFullYear()) : '';
+              // "Oct 2023" sits three months before "2024"; drop it when those
+              // months are too narrow to hold both labels (phones, tablets).
+              const roomForStart = (this.width / ticks.length) * 3 >= 64;
+              if (i === 0) return roomForStart ? 'Oct 2023' : '';
+              return d.getMonth() === 0 ? String(d.getFullYear()) : '';
             },
           },
         },
@@ -841,11 +851,11 @@ async function buildNames() {
 
 // Calls onChange(el) whenever the element crossing the middle of the
 // viewport changes (null when none does). One rAF-throttled scroll listener.
-function trackMiddle(elements, onChange) {
+function trackMiddle(elements, onChange, line = () => 0.5) {
   let current, queued = false;
   const check = () => {
     queued = false;
-    const mid = window.innerHeight / 2;
+    const mid = window.innerHeight * line();
     const hit = elements.find(el => {
       const r = el.getBoundingClientRect();
       return r.top <= mid && r.bottom >= mid;
@@ -881,7 +891,7 @@ function setupScrolly() {
     paceChart.update('none');
   };
   // Outside the story (above or below) every month shows again.
-  trackMiddle(steps, activate);
+  trackMiddle(steps, activate, () => (window.innerWidth <= 900 ? 0.74 : 0.5));
 }
 
 // --- Scale: one dot per ten people, highlight a group ---
@@ -902,7 +912,11 @@ function buildDots() {
 
   const draw = () => {
     const w = canvas.parentElement.clientWidth;
-    const size = w < 520 ? 5 : 6, gap = w < 520 ? 2 : 3, step = size + gap;
+    // Size dots to a target height rather than a fixed 6px, so phones and
+    // tablets get a compact block instead of a very tall column.
+    const targetH = Math.min(560, Math.max(320, w * 0.5));
+    const step = Math.max(4, Math.sqrt((w * targetH) / dots.length));
+    const size = step * 0.7, gap = step - size;
     const cols = Math.floor((w + gap) / step);
     const rows = Math.ceil(dots.length / cols);
     const h = rows * step;
@@ -925,7 +939,7 @@ function buildDots() {
     }
     for (let i = 0; i < drawn; i++) {
       const on = active === 'all' || dots[i] === active;
-      ctx.fillStyle = on ? C.pal : '#e3e6e9';
+      ctx.fillStyle = on ? T(C.pal, '#8e9b68') : T('#e3e6e9', '#2a2e34');
       ctx.beginPath();
       ctx.arc((i % cols) * step + r, Math.floor(i / cols) * step + r, r, 0, Math.PI * 2);
       ctx.fill();

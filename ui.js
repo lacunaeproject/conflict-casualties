@@ -180,13 +180,17 @@ const CONFLICTS = [
   }
 
   if (!rail) return;
-  rail.innerHTML = '<div class="cr-track">' + groups.map(g =>
-    `<span class="cr-part" aria-hidden="true">${g.part}</span>` +
-    g.items.map(({ el, n }) => `<a href="#${el.id}"><b>${n}</b>${el.dataset.chapter}</a>`).join('')
-  ).join('') + '</div>';
+  // The rail is a short index: brief labels (data-short), no numbers, and
+  // only the main stops (data-rail="off" leaves a chapter out). Parts are
+  // separated by a quiet gap rather than a label.
+  const stops = groups.map(g => g.items.map(x => x.el).filter(el => el.dataset.rail !== 'off')).filter(g => g.length);
+  rail.innerHTML = '<div class="cr-track">' + stops.map(g =>
+    g.map(el => `<a href="#${el.id}">${el.dataset.short || el.dataset.chapter}</a>`).join('')
+  ).join('<span class="cr-gap" aria-hidden="true"></span>') + '</div>';
   rail.hidden = false;
   const track = rail.querySelector('.cr-track');
   const links = Array.from(rail.querySelectorAll('a'));
+  const railChapters = stops.flat();
 
   const setCurrent = el => {
     links.forEach(a => {
@@ -209,7 +213,7 @@ const CONFLICTS = [
     const line = (head ? head.offsetHeight : 0) + (window.innerHeight - (head ? head.offsetHeight : 0)) * 0.35;
     // The last chapter whose top has crossed the reading line.
     let hit = null;
-    for (const el of chapters) { if (el.getBoundingClientRect().top <= line) hit = el; }
+    for (const el of railChapters) { if (el.getBoundingClientRect().top <= line) hit = el; }
     if (hit !== current) { current = hit; setCurrent(hit); }
     if (head && hero) head.classList.toggle('is-reading', hero.getBoundingClientRect().bottom < (head.offsetHeight || 0));
   };

@@ -619,29 +619,6 @@
 .rd .coda-links a:hover { background: rgba(255, 255, 255, 0.16); transform: translateY(-1px); }
 .rd .coda-links a:active { transform: scale(0.97); }
 
-/* ---------- Floating chapter menu: glass pill ---------- */
-.rd .toc-btn {
-  border: 0;
-  border-radius: var(--pill);
-  background: var(--glass);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  color: var(--text);
-  box-shadow: var(--e3);
-  padding: 10px 18px;
-}
-.rd .toc-part { color: var(--text-3); }
-.rd .toc-list {
-  border: 0;
-  border-radius: var(--r-lg);
-  background: var(--surface);
-  box-shadow: var(--e3);
-  padding: 8px;
-}
-.rd .toc-list a { border-radius: var(--r-xs); }
-.rd .toc-list a.is-current { background: var(--fill); box-shadow: none; }
-.rd .toc-group { text-transform: none; letter-spacing: 0.01em; }
-
 /* ---------- Footer: quiet ---------- */
 .rd .site-foot {
   background: transparent;
@@ -799,7 +776,7 @@
   .rd .site-nav a:active { transform: none; }
 }
 @media (prefers-reduced-transparency: reduce) {
-  .rd .site-head, .rd .toc-btn, .rd .century-wrap { background: var(--surface) !important; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .rd .site-head, .rd .century-wrap { background: var(--surface) !important; backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
 
 
@@ -1378,3 +1355,180 @@
   .rd .book-body { padding: 2px 0 0 14px; }
 }
 .rd .btn-primary, .rd .btn-ghost { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+
+/* =========================================================
+   Many conflicts: switcher in the header, chapter rail below it
+   Graphite only, like the rest of the chrome; colour stays with
+   the data.
+   ========================================================= */
+.rd .head-id { display: flex; align-items: center; gap: 14px; min-width: 0; }
+
+/* Switcher button: a pill naming the conflict on screen */
+.rd .conflict-switch { position: relative; }
+.rd .cs-btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 11px 0 14px;
+  border-radius: var(--pill);
+  background: var(--fill);
+  color: var(--text);
+  font: 600 0.88rem/1 var(--font-body);
+  white-space: nowrap;
+  transition: background-color 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.rd .cs-btn:hover { background: var(--fill-2); }
+.rd .cs-btn:active { transform: scale(0.97); }
+.rd .cs-label { font-weight: 500; color: var(--text-3); }
+.rd .cs-chev { width: 14px; height: 14px; color: var(--text-3); transition: transform 0.2s var(--ease); }
+.rd .cs-btn[aria-expanded="true"] { background: var(--fill-2); }
+.rd .cs-btn[aria-expanded="true"] .cs-chev { transform: rotate(180deg); }
+
+/* Menu: one card per conflict */
+.rd .cs-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 60;
+  width: min(380px, calc(100vw - 2 * var(--gutter)));
+  padding: 8px;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--e3);
+}
+.rd .cs-menu[hidden] { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .rd .cs-menu:not([hidden]) { animation: cs-in 0.18s var(--ease); }
+}
+@keyframes cs-in { from { opacity: 0; transform: translateY(-4px); } }
+.rd .cs-head { padding: 8px 12px 6px; font-size: 0.78rem; font-weight: 600; color: var(--text-3); }
+.rd .cs-item {
+  position: relative;
+  display: grid;
+  gap: 3px;
+  padding: 12px;
+  border-radius: var(--r-sm);
+  color: var(--text);
+  text-decoration: none;
+  transition: background-color 0.15s var(--ease);
+}
+.rd .cs-item + .cs-item { margin-top: 2px; }
+.rd .cs-item:hover, .rd .cs-item:focus-visible { background: var(--fill); }
+.rd .cs-item.is-current { background: var(--surface-2); }
+.rd .cs-row { display: flex; align-items: center; gap: 8px; padding-right: 64px; }
+.rd .cs-item-name { font: 600 1.06rem/1.25 var(--font-display); letter-spacing: -0.01em; }
+.rd .cs-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 0 8px;
+  border-radius: var(--pill);
+  font: 600 0.68rem/1 var(--font-body);
+  letter-spacing: 0.02em;
+  background: var(--fill);
+  color: var(--text-2);
+}
+.rd .cs-badge--featured { background: var(--brand); color: var(--on-brand); }
+.rd .cs-period { font-size: 0.82rem; color: var(--text-3); }
+.rd .cs-toll { font-size: 0.86rem; color: var(--text-2); }
+.rd .cs-toll strong { font-variant-numeric: tabular-nums; color: var(--text); }
+.rd .cs-here { position: absolute; top: 14px; right: 12px; font-size: 0.72rem; font-weight: 600; color: var(--text-3); }
+.rd .cs-foot { margin: 6px 12px 6px; font-size: 0.78rem; color: var(--text-4); }
+
+/* Chapter rail: the page's chapters, current one filled */
+.rd .chapter-rail { border-top: 1px solid var(--glass-edge); }
+.rd .chapter-rail[hidden] { display: none; }
+.rd .cr-track {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 6px var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - 48px), transparent);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - 48px), transparent);
+}
+.rd .cr-track::-webkit-scrollbar { display: none; }
+.rd .cr-track a {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: var(--pill);
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text-3);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+.rd .cr-track a b { font: 500 0.66rem/1 var(--font-mono); color: var(--text-4); }
+.rd .cr-track a:hover { background: var(--fill); color: var(--text); }
+.rd .cr-track a.is-current { background: var(--brand); color: var(--on-brand); font-weight: 600; }
+.rd .cr-track a.is-current b { color: inherit; opacity: 0.6; }
+.rd .cr-part {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 6px 0 10px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-4);
+}
+.rd .cr-part::before { content: ""; width: 1px; height: 16px; background: var(--rule-2); }
+.rd .cr-part:first-child { padding-left: 0; }
+.rd .cr-part:first-child::before { display: none; }
+
+/* Jumps land below the header and rail */
+.rd [data-chapter], .rd .part-head { scroll-margin-top: calc(var(--rd-head) + 16px); }
+
+/* Footer: a second heading inside a column */
+.rd .foot-h--sub { margin-top: 18px; }
+
+/* Tablet: the switcher drops its label; the wordmark goes before the nav wraps */
+@media (max-width: 1023px) {
+  .rd .cs-label { display: none; }
+}
+@media (max-width: 900px) and (min-width: 641px) {
+  .rd .site-head .brand-text { display: none; }
+}
+
+/* Phone: brand and switcher share the top row. Past the opener the rail
+   takes the site nav's row, so the header never changes height. */
+@media (max-width: 640px) {
+  .rd .head-id { justify-content: space-between; gap: 8px; }
+  .rd .site-head .brand-title { font-size: 0.98rem; }
+  .rd .site-head .brand-mark { width: 26px; height: 26px; }
+  .rd .cs-btn { min-height: 32px; padding: 0 9px 0 12px; font-size: 0.82rem; }
+  .rd .cs-menu { left: auto; right: 0; width: calc(100vw - 2 * var(--gutter)); }
+  .rd .site-nav { transition: opacity 0.2s var(--ease), visibility 0.2s; }
+  .rd .chapter-rail {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s var(--ease), visibility 0.2s;
+  }
+  .rd .site-head.is-reading .chapter-rail { opacity: 1; visibility: visible; }
+  .rd .site-head.is-reading .site-nav { opacity: 0; visibility: hidden; }
+  .rd .cr-track { padding: 0 var(--gutter) 8px; }
+  .rd .cr-track a { min-height: 34px; font-size: 0.86rem; }
+  .rd .cr-part { display: none; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .rd .cs-menu { background: var(--surface); }
+}

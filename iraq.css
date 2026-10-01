@@ -1,0 +1,211 @@
+/* =========================================================
+   Iraq page: components layered over styles.css + ui.css.
+   Same graphite system; no sides here, so the data marks use
+   one neutral ink instead of the olive/navy pair.
+   ========================================================= */
+.rd { --iq: #2b2f36; --iq-soft: rgba(43, 47, 54, 0.22); --iq-band: rgba(118, 122, 132, 0.07); }
+@media (prefers-color-scheme: dark) {
+  .rd:not([data-theme="light"]) { --iq: #d9dde3; --iq-soft: rgba(217, 221, 227, 0.26); --iq-band: rgba(160, 166, 178, 0.07); }
+}
+
+/* ---------- Hero: Baghdad from orbit ---------- */
+.hero--iraq.hero--opener .card::before {
+  background: url("img/baghdad-smoke-aster-2003.webp") 50% 38% / cover no-repeat;
+  filter: saturate(0.55) contrast(1.05) brightness(0.8);
+  transform: none;
+}
+.rd .hero.hero--opener.hero--iraq .kpi-label::before { background: #c9ced6; }
+.rd .hero--iraq .kpi { border-top-color: rgba(255, 255, 255, 0.4) !important; }
+
+/* ---------- Chapter 1: documented deaths by year ---------- */
+.yr { margin: 8px 0 0; }
+.yr-readout { margin: 0 0 14px; min-height: 1.6em; font-size: 0.95rem; color: var(--text-3); }
+.yr-readout strong { font: 600 1.35rem/1 var(--font-display); color: var(--text); font-variant-numeric: tabular-nums; margin-right: 4px; }
+.yr-readout b { color: var(--text); font-weight: 600; }
+.yr-plot { --cols: 24; position: relative; }
+.yr-bands, .yr-bars, .yr-us { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: 3px; }
+.yr-bands span {
+  grid-column: var(--from) / var(--to);
+  grid-row: 1;
+  padding: 8px 8px 0;
+  border-left: 1px solid var(--rule-2);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-3);
+}
+.yr-bands span:nth-child(odd) { background: linear-gradient(var(--iq-band), var(--iq-band)); }
+.yr-bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: clamp(220px, 32vw, 340px);
+  align-items: end;
+  border-bottom: 1px solid var(--rule-3);
+  position: relative;
+}
+.yr-bars li { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; cursor: default; }
+.yr-bar { display: block; height: calc(var(--v) * 100%); min-height: 2px; }
+.yr-bar i { display: block; height: 100%; background: var(--iq); border-radius: 4px 4px 0 0; transition: opacity 0.15s var(--ease); }
+.yr-bars li.is-partial .yr-bar i { background: repeating-linear-gradient(135deg, var(--iq) 0 2px, transparent 2px 5px); box-shadow: inset 0 0 0 1px var(--iq); }
+.yr-x { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); font: 500 0.68rem/1 var(--font-mono); color: var(--text-4); white-space: nowrap; }
+.yr-bars { margin-bottom: 26px; }
+/* Hover/focus: the pointed year stays solid, the rest recede */
+.yr-bars:hover li:not(.is-on) .yr-bar i,
+.yr-bars.has-on li:not(.is-on) .yr-bar i { opacity: 0.35; }
+.yr-bars li.is-on .yr-x { color: var(--text); font-weight: 600; }
+/* US presence strip under the axis */
+.yr-us { align-items: center; margin-top: 2px; row-gap: 6px; }
+.yr-us-label { grid-column: 1 / -1; grid-row: 1; font-size: 0.74rem; font-weight: 600; color: var(--text-3); }
+.yr-us i { grid-row: 2; grid-column: var(--from) / var(--to); height: 6px; border-radius: var(--pill); background: var(--iq-soft); }
+
+.yr-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 28px 0 0;
+}
+.yr-facts > div { padding: 16px 18px; border-radius: var(--r-sm); background: var(--surface-2); display: grid; gap: 6px; align-content: start; }
+.yr-facts strong { font: 500 1.7rem/1 var(--font-display); letter-spacing: -0.02em; color: var(--text); font-variant-numeric: lining-nums tabular-nums; }
+.yr-facts span { font-size: 0.88rem; line-height: 1.45; color: var(--text-3); }
+.yr-facts--band > div { background: var(--fill); }
+.yr-table td:first-child { font-variant-numeric: tabular-nums; }
+
+@media (max-width: 640px) {
+  .yr-bands, .yr-bars, .yr-us { column-gap: 2px; }
+  .yr-bands span { font-size: 0.64rem; padding: 6px 4px 0; }
+  .yr-bands span:nth-child(2) { font-size: 0; }   /* "US drawdown" has no room; the strip below says it */
+  .yr-x--minor { display: none; }
+  .yr-bar i { border-radius: 2px 2px 0 0; }
+}
+
+/* ---------- Chapter 2: estimates on one scale ---------- */
+.est { margin: 8px 0 0; --label: minmax(0, 17rem); --val: 8.5rem; }
+.est-rows { list-style: none; margin: 0; padding: 0; }
+.est-rows li:not(.est-group) {
+  display: grid;
+  grid-template-columns: var(--label) minmax(0, 1fr) var(--val);
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--hair);
+}
+.est-group { padding: 18px 0 6px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-4); }
+.est-src { display: grid; gap: 2px; }
+.est-src strong { font-weight: 600; color: var(--text); font-size: 0.95rem; }
+.est-src span { font-size: 0.8rem; line-height: 1.35; color: var(--text-3); }
+.est-plot { position: relative; height: 18px; background: linear-gradient(90deg, var(--hair) 1px, transparent 1px) 0 0 / 20.8333% 100%; }
+.est-plot i { position: absolute; top: 50%; }
+.est-span { left: var(--a); width: calc(var(--b) - var(--a)); height: 12px; transform: translateY(-50%); min-width: 6px; border-radius: 4px; background: var(--iq); }
+.est-ci { left: var(--a); width: calc(var(--b) - var(--a)); height: 2px; transform: translateY(-50%); background: var(--iq-soft); border-radius: 2px; }
+.est-dot { left: var(--a); width: 12px; height: 12px; transform: translate(-50%, -50%); border-radius: 50%; background: var(--iq); box-shadow: 0 0 0 2px var(--surface); }
+.est-val { text-align: right; font-weight: 600; font-size: 0.92rem; color: var(--text); font-variant-numeric: tabular-nums; }
+.est-axis {
+  position: relative;
+  height: 18px;
+  margin-left: calc(17rem + 16px);
+  margin-right: calc(8.5rem + 16px);
+  font: 500 0.68rem/1 var(--font-mono);
+  color: var(--text-4);
+}
+.est-axis span { position: absolute; left: var(--a); transform: translateX(-50%); }
+.est-axis span:first-child { transform: none; }
+.est-key { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.8rem; color: var(--text-3); }
+.est-key span { display: inline-flex; align-items: center; gap: 8px; }
+.est-key i { position: static; display: inline-block; transform: none; }
+.est-key .est-span { width: 18px; height: 10px; }
+.est-key .est-dot { width: 10px; height: 10px; box-shadow: none; }
+.est-key .est-ci { width: 18px; height: 2px; }
+.est-notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 32px; margin-top: 28px; }
+.est-notes p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-2); }
+.est-notes strong { color: var(--text); }
+
+@media (max-width: 900px) {
+  .est-rows li:not(.est-group) { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "src val" "plot plot"; row-gap: 10px; }
+  .est-src { grid-area: src; }
+  .est-val { grid-area: val; align-self: start; }
+  .est-plot { grid-area: plot; }
+  .est-axis { margin-left: 0; margin-right: 0; order: 2; }
+  .est { display: flex; flex-direction: column; }
+  .est-rows { order: 1; }
+  .est-axis { order: 2; margin-top: 8px; }
+  .est-key { order: 3; }
+}
+
+/* ---------- Chapter 3: who was killed (century-chart rows, with ranges) ---------- */
+.rd .who-chart { margin-top: 8px; }
+.who-chart .cc-rows li { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 9.5rem; }
+.who-chart .cc-bar { position: relative; }
+.who-chart .cc-bar i, .who-chart .cc-bar u { position: absolute; left: 0; top: 0; height: 100%; width: var(--w); min-width: 2px; border-radius: 0 4px 4px 0; }
+.who-chart .cc-bar i { background: var(--iq); z-index: 1; }
+.who-chart .cc-bar u { background: var(--iq-soft); text-decoration: none; }
+.who-chart .cc-rows li.is-lead .cc-what, .who-chart .cc-rows li.is-lead .cc-val { color: var(--text); font-weight: 600; }
+@media (max-width: 640px) {
+  .who-chart .cc-rows li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 6px; }
+  .who-chart .cc-what { grid-column: 1; grid-row: 1; }
+  .who-chart .cc-val { grid-column: 2; grid-row: 1; }
+  .who-chart .cc-bar { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* ---------- Chapter 4: US toll ---------- */
+.us-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.us-grid .cell { padding: 18px; border-radius: var(--r-sm); background: var(--surface-2); }
+.us-grid .lbl { font-size: 0.82rem; color: var(--text-3); }
+.us-grid .val { margin-top: 10px; font: 500 1.9rem/1 var(--font-display); letter-spacing: -0.02em; color: var(--text); font-variant-numeric: lining-nums tabular-nums; }
+@media (max-width: 1023px) { .us-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .us-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- Part two: timeline ---------- */
+.tl-wrap { margin-top: 0; }
+.tl {
+  list-style: none;
+  margin: 0;
+  padding: var(--rd-pad);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--e1);
+  position: relative;
+}
+.tl > li { position: relative; display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 24px; padding: 0 0 32px; }
+.tl > li:last-child { padding-bottom: 0; }
+/* the spine */
+.tl > li::before { content: ""; position: absolute; left: calc(11rem + 12px); top: 10px; bottom: -10px; width: 1px; background: var(--rule-2); transform: translateX(-0.5px); }
+.tl > li:last-child::before { display: none; }
+.tl > li::after { content: ""; position: absolute; left: calc(11rem + 12px); top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--surface); box-shadow: inset 0 0 0 2px var(--text-3); transform: translateX(-50%); }
+.tl > li.is-now::after { background: var(--brand); box-shadow: 0 0 0 4px var(--fill); }
+.tl > li.tl-fig::after { display: none; }
+.tl-when { text-align: right; padding-right: 16px; font: 500 0.78rem/1.5 var(--font-mono); color: var(--text-3); }
+.tl-body { padding-left: 16px; max-width: var(--measure); }
+.tl-body h3 { margin: 0 0 6px; font: 600 1.2rem/1.3 var(--font-display); color: var(--text); }
+.tl-body p { margin: 0; color: var(--text-2); line-height: 1.6; }
+.tl-stat { margin-top: 12px; display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 14px; border-radius: var(--pill); background: var(--fill); font-size: 0.86rem; color: var(--text-2); }
+.tl-stat strong { font-variant-numeric: tabular-nums; color: var(--text); }
+.tl-fig { grid-template-columns: 11rem minmax(0, 1fr); }
+.tl-fig figure { grid-column: 2; margin: 0 0 0 16px; }
+.tl-fig img { display: block; width: 100%; height: auto; border-radius: var(--r-md); }
+.tl-fig figcaption { margin-top: 10px; font-size: 0.82rem; line-height: 1.5; color: var(--text-3); max-width: 72ch; }
+.tl-fig .credit { color: var(--text-4); }
+.tl > li.is-now .tl-when { color: var(--text); font-weight: 600; }
+@media (max-width: 640px) {
+  .tl > li, .tl-fig { grid-template-columns: minmax(0, 1fr); gap: 4px; padding-left: 22px; }
+  .tl > li::before, .tl > li::after { left: 4px; }
+  .tl-when { text-align: left; padding-right: 0; }
+  .tl-body { padding-left: 0; }
+  .tl-fig figure { grid-column: 1; margin: 0; }
+}
+
+/* Coda without a names wall needs less room */
+.rd .hero--iraq ~ .coda .coda-line { max-width: 36ch; }
+
+/* ---------- Fixes after first render ---------- */
+.rd .hero.hero--opener.hero--iraq .kpi--lead .kpi-value { font-size: clamp(2.2rem, 3.5vw, 3.4rem); white-space: nowrap; }
+.rd .hero.hero--opener.hero--iraq .kpi-value--range { font-size: clamp(1.3rem, 1.75vw, 1.8rem); white-space: nowrap; }
+@media (max-width: 640px) {
+  .rd .hero.hero--opener.hero--iraq .kpi--lead .kpi-value { font-size: clamp(1.9rem, 9vw, 2.4rem); white-space: normal; }
+  .rd .hero.hero--opener.hero--iraq .kpi-value--range { font-size: 1.3rem; }
+}
+.rd .who-chart { background: none; box-shadow: none; padding: 0; border-radius: 0; }
+/* Indirect-deaths band: neutral numbers, facts span the card */
+.rd .context-inner > .yr-facts { grid-column: 1 / -1; margin-top: 0; }
+.rd .context-card .rm-num { color: var(--text); font-size: clamp(2.2rem, 3.6vw, 3.2rem); white-space: nowrap; }
+.rd .context-card .rm-col--now .rm-num { color: var(--text-2); }

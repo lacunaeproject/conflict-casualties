@@ -119,7 +119,6 @@ function init() {
   buildNames();
   setupScrolly();
   setupCentury();
-  setupToc();
   buildLegendChips();
   bindControls();
 
@@ -1045,81 +1044,6 @@ function setupCentury() {
   };
   document.getElementById('century-prev').addEventListener('click', () => go(active - 1));
   document.getElementById('century-next').addEventListener('click', () => go(active + 1));
-}
-
-// --- Floating chapter menu: shows where you are, jumps anywhere ---
-function setupToc() {
-  const toc = document.getElementById('toc');
-  const btn = document.getElementById('toc-btn');
-  const list = document.getElementById('toc-list');
-  const chapters = Array.from(document.querySelectorAll('[data-chapter]'));
-  if (!toc || !chapters.length) return;
-  const partTwo = document.getElementById('part-two');
-  const partOf = el => {
-    if (el.matches('.coda')) return 'Closing';
-    if (el.matches('.tracker, .foot-meta')) return 'Method';
-    return partTwo && (partTwo.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) ? 'Part two' : 'Part one';
-  };
-
-  chapters.forEach((el, i) => { if (!el.id) el.id = `chapter-${i + 1}`; });
-  // One heading per part, then its chapters.
-  let lastPart = '';
-  list.innerHTML = chapters.map(el => {
-    const part = partOf(el);
-    const head = part !== lastPart ? `<div class="toc-group">${part}</div>` : '';
-    lastPart = part;
-    return `${head}<a href="#${el.id}"><b>${String(chapters.indexOf(el) + 1).padStart(2, '0')}</b>${el.dataset.chapter}</a>`;
-  }).join('');
-
-  // The same chapters, as an "In this article" list under the lede.
-  const groupsEl = document.getElementById('contents-groups');
-  if (groupsEl) {
-    const groups = [];
-    chapters.forEach((el, i) => {
-      const part = partOf(el);
-      let g = groups.find(x => x.part === part);
-      if (!g) { g = { part, items: [] }; groups.push(g); }
-      g.items.push(`<li><a href="#${el.id}"><b>${String(i + 1).padStart(2, '0')}</b><span>${el.dataset.chapter}</span></a></li>`);
-    });
-    groupsEl.innerHTML = groups.map(g => `<div class="contents-group"><div class="contents-part">${g.part}</div><ol>${g.items.join('')}</ol></div>`).join('');
-  }
-
-  const setOpen = open => {
-    list.hidden = !open;
-    btn.setAttribute('aria-expanded', String(open));
-  };
-  btn.addEventListener('click', () => setOpen(list.hidden));
-  list.addEventListener('click', e => { if (e.target.closest('a')) setOpen(false); });
-  document.addEventListener('pointerdown', e => { if (!toc.contains(e.target)) setOpen(false); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !list.hidden) { setOpen(false); btn.focus(); } });
-
-  const setCurrent = el => {
-    if (!el) return;
-    document.getElementById('toc-part').textContent = partOf(el);
-    document.getElementById('toc-title').textContent = el.dataset.chapter;
-    list.querySelectorAll('a').forEach(a => a.classList.toggle('is-current', a.getAttribute('href') === '#' + el.id));
-  };
-  // The history wrapper contains no other chapters, so a flat list works.
-  trackMiddle(chapters, setCurrent);
-
-  // Appear once past the opener; tuck away while scrolling down so it
-  // never sits on top of what's being read, and at the footer.
-  const hero = document.querySelector('.hero');
-  const foot = document.querySelector('.site-foot');
-  let lastY = window.scrollY;
-  const onScroll = () => {
-    const past = hero.getBoundingClientRect().bottom < 0;
-    const atFoot = foot && foot.getBoundingClientRect().top < window.innerHeight;
-    if (toc.hidden === past) toc.hidden = !past;
-    if (!past) setOpen(false);
-    const down = window.scrollY > lastY + 4;
-    const up = window.scrollY < lastY - 4;
-    if ((down || atFoot) && list.hidden) toc.classList.add('is-tucked');
-    else if (up && !atFoot) toc.classList.remove('is-tucked');
-    lastY = window.scrollY;
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
 }
 
 // --- Age & sex of identified dead (butterfly chart, plain HTML) ---

@@ -225,12 +225,14 @@ as_of = bundle['meta']['data_as_of']
 for path, pattern, repl in [
     ('sitemap.xml', r'(<loc>https://conflictcasualties\.org/</loc><lastmod>)[^<]*', rf'\g<1>{as_of}'),
     ('index.html', r'("dateModified": ")[^"]*', rf'\g<1>{as_of}'),
+    # The conflict switcher's Gaza toll, shown on every page.
+    ('ui.js', r"(id: 'israel-palestine',[\s\S]*?toll: ')[^']*", rf"\g<1>{summary['gaza']['killed']['total']:,}"),
 ]:
     with open(path, encoding='utf-8') as f:
         text = f.read()
     with open(path, 'w', encoding='utf-8') as f:
         f.write(re.sub(pattern, repl, text, count=1))
-print(f"Stamped sitemap.xml and index.html with {as_of}")
+print(f"Stamped sitemap.xml, index.html and ui.js with {as_of}")
 
 # --- Names for the closing memorial: identified dead under one year old ---
 # Pulls the Ministry of Health list of identified dead from Tech for Palestine

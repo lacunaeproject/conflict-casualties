@@ -1514,3 +1514,19 @@
 @media (prefers-reduced-transparency: reduce) {
   .rd .cs-menu { background: var(--surface); }
 }
+
+/* =========================================================
+   Display numerals: every big data number reads one token, so
+   the face can change in one place. The closing memorial
+   number stays in the serif on purpose: it is a tribute, not
+   a statistic.
+   ========================================================= */
+.rd { --font-num: var(--font-body); }
+/* Big numbers stay regular; small stat tiles go semibold so they hold up. */
+.rd .kpi-value,
+.rd .rm-num { font-family: var(--font-num); font-weight: 400; letter-spacing: -0.03em; }
+.rd .era-stats strong,
+.rd .cell .val,
+.rd .yr-facts strong,
+.rd .us-grid .val,
+.rd .yr-readout strong { font-family: var(--font-num); font-weight: 600; letter-spacing: -0.035em; }

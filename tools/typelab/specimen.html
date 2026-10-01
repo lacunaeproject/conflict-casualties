@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Number Type Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300..700&family=Source+Sans+3:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="fonts.js"></script>
+<style>
+  :root { --bg: #f4f5f7; --card: #fff; --text: #111317; --text-3: #666b73; --text-4: #8b9098; --hair: rgba(16,19,23,.07); --night: #111317; --night-2: #1b1d21; --fill: rgba(118,122,132,.12); }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0a0b0d; --card: #141619; --text: #f1f3f5; --text-3: #a0a6af; --text-4: #7d838c; --hair: rgba(255,255,255,.07); --fill: rgba(160,166,178,.14); }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 "Source Sans 3", system-ui, sans-serif; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 40px 24px 80px; }
+  h1 { font: 500 clamp(2rem, 4vw, 3rem)/1.05 "Source Serif 4", Georgia, serif; letter-spacing: -0.03em; margin: 0 0 10px; }
+  .lede { max-width: 62ch; color: var(--text-3); margin: 0 0 24px; }
+  .bar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 12px 0; background: var(--bg); }
+  .bar button { font: inherit; border: 0; border-radius: 999px; padding: 7px 14px; background: var(--fill); color: var(--text); cursor: pointer; }
+  .bar button.on { background: var(--text); color: var(--bg); }
+  .bar .sp { flex: 1; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border-radius: 24px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,19,23,.04), 0 4px 14px -6px rgba(16,19,23,.06); display: flex; flex-direction: column; }
+  .card.is-pick { box-shadow: 0 0 0 2px var(--text); }
+  .hero { background: var(--night); color: #fff; padding: 22px 22px 18px; }
+  .lbl { display: flex; gap: 8px; align-items: center; font-size: 12px; font-weight: 600; color: #e1e5ea; }
+  .lbl::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #c9ced6; }
+  .lead { font-size: 76px; line-height: .95; margin: 10px 0 14px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tile { background: rgba(255,255,255,.06); border-radius: 14px; padding: 12px; }
+  .tile .n { font-size: 32px; line-height: 1; margin-top: 8px; }
+  .tile.wide { grid-column: 1 / -1; }
+  .light { padding: 18px 22px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; border-bottom: 1px solid var(--hair); }
+  .light div { display: grid; gap: 4px; }
+  .light .n { font-size: 30px; line-height: 1; }
+  .light span { font-size: 11px; color: var(--text-3); }
+  .n, .lead { font-variant-numeric: lining-nums tabular-nums; }
+  .foot { display: flex; align-items: center; gap: 10px; padding: 14px 22px; }
+  .foot b { font-weight: 700; }
+  .foot .kd { color: var(--text-4); font-size: 13px; }
+  .foot .sp { flex: 1; }
+  .foot button { font: inherit; font-weight: 600; border: 0; border-radius: 999px; padding: 8px 14px; background: var(--text); color: var(--bg); cursor: pointer; }
+  .tbl { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: #a0a6af; }
+  .tbl .n { font-size: 15px; color: #fff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Number type lab</h1>
+  <p class="lede">The big numbers on Conflict Casualties, set in each candidate face at a weight suited to it. Pick one to see it on the real pages, where the panel in the corner lets you tune weight and tracking and copy the CSS.</p>
+  <div class="bar" id="bar"></div>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+  const FONTS = window.TYPELAB_FONTS;
+  const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = window.TYPELAB_FONT_URL; document.head.append(l);
+  let cur = 0;
+  try { const sv = JSON.parse(localStorage.getItem('typelab')) || {}; cur = sv.name ? Math.max(0, FONTS.findIndex(f => f.name === sv.name)) : (sv.i || 0); } catch (e) {}
+  const kinds = ['All', ...new Set(FONTS.map(f => f.kind))];
+  let filter = 'All';
+  const bar = document.getElementById('bar');
+  const grid = document.getElementById('grid');
+  const draw = () => {
+    bar.innerHTML = kinds.map(k => `<button class="${k === filter ? 'on' : ''}" data-k="${k}">${k}</button>`).join('') +
+      '<span class="sp"></span><a href="/index.html"><button>Open site</button></a>';
+    grid.innerHTML = FONTS.map((f, i) => {
+      if (filter !== 'All' && f.kind !== filter) return '';
+      const s = `font-family:${f.stack.replace(/"/g, '&quot;')};font-weight:${f.wght};letter-spacing:${f.track}em`;
+      return `<article class="card${i === cur ? ' is-pick' : ''}">
+        <div class="hero">
+          <div class="lbl">Palestinians killed · Gaza</div>
+          <div class="lead" style="${s}">73,928</div>
+          <div class="row">
+            <div class="tile"><div class="lbl">Israelis killed · Oct 7</div><div class="n" style="${s}">1,195</div></div>
+            <div class="tile"><div class="lbl">Iraqis displaced</div><div class="n" style="${s}">9.2 million</div></div>
+            <div class="tile wide"><div class="lbl">Killed by direct violence, Iraq</div><div class="n" style="${s}">280,771 – 315,190</div></div>
+          </div>
+          <div class="tbl"><span>0123456789</span><span class="n" style="${s}">0123456789</span><span class="n" style="${s}">$2.89T · 42% · ~88</span></div>
+        </div>
+        <div class="light">
+          <div><div class="n" style="${s}">~88</div><span>a day, resumed war</span></div>
+          <div><div class="n" style="${s}">4,599</div><span>US troops killed</span></div>
+          <div><div class="n" style="${s}">29,526</div><span>deadliest year</span></div>
+        </div>
+        <div class="foot"><b>${f.name}</b><span class="kd">${f.kind}${f.note ? ' · ' + f.note : ''} · ${f.wght}</span><span class="sp"></span><button data-i="${i}">Try on site</button></div>
+      </article>`;
+    }).join('');
+  };
+  bar.addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b) { filter = b.dataset.k; draw(); } });
+  grid.addEventListener('click', e => {
+    const b = e.target.closest('[data-i]'); if (!b) return;
+    const f = FONTS[+b.dataset.i];
+    try { localStorage.setItem('typelab', JSON.stringify({ i: +b.dataset.i, name: f.name, wght: f.wght, track: f.track, uniform: true, open: true })); } catch (e) {}
+    location.href = '/index.html';
+  });
+  draw();
+</script>
+</body>
+</html>

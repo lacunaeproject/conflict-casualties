@@ -93,6 +93,11 @@ function populateKPIs() {
   setFigure('kpi-gaza', g.killed.total);
   document.getElementById('kpi-gaza-children').textContent = fmt(g.killed.children);
   document.getElementById('kpi-gaza-women').textContent = fmt(g.killed.women);
+  // The age-and-sex breakdown has its own date: the last day its counts changed
+  const daily = DATA.gaza_daily;
+  let last = daily[0];
+  daily.forEach(r => { if (r.children_cum !== last.children_cum || r.women_cum !== last.women_cum) last = r; });
+  document.querySelectorAll('.breakdown-date').forEach(el => { el.textContent = fmtDate(last.date); el.setAttribute('datetime', last.date); });
   setFigure('kpi-wb', w.killed.total);
   document.getElementById('kpi-wb-children').textContent = fmt(w.killed.children);
   document.getElementById('kpi-wb-settler').textContent = fmt(w.settler_attacks);

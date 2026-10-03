@@ -18,8 +18,8 @@ TZ=Asia/Tokyo       node --test tests/app.test.js
 
 ## What's covered
 
-The suite exists specifically to guard against regressions in the three
-functional bugs that were fixed during the code review:
+The suite guards against regressions in two functional bugs fixed during
+the code review, and checks the data the charts read:
 
 1. **`toLocalDate`** parses `YYYY-MM-DD` strings as local dates, not UTC.
    Prevents US-timezone users from seeing every date rendered as the day
@@ -29,11 +29,7 @@ functional bugs that were fixed during the code review:
    filtered range. Prevents the chart from reporting 0 on the start day just
    because the slice has no predecessor.
 
-3. **Slider clamp** keeps the two handles correctly ordered regardless of
-   which one the user is dragging. Prevents the chart from going blank when
-   the user drags the end handle past the start handle.
-
-A fourth block sanity-checks `data.json` itself — series lengths align,
+A third block sanity-checks `data.json` itself — series lengths align,
 cumulative values are non-decreasing, Oct 7 sub-categories sum to the
-headline, governorate shares sum to ~100%, and every field the renderer
-reads is present.
+headline, the Ministry's daily breakdown never exceeds that day's reported
+rise, and every field the renderer reads is present.

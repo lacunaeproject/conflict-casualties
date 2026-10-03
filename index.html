@@ -75,13 +75,12 @@
 </script>
 <link rel="preload" href="fonts/alegreya-roman.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/alegreya-sans-lf-regular.woff2" as="font" type="font/woff2" crossorigin>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=202610031900" />
-<link rel="stylesheet" href="resources.css?v=202610031900" />
-<link rel="stylesheet" href="ui.css?v=202610031900" />
-<link rel="stylesheet" href="opening.css?v=202610031900" />
-<link rel="stylesheet" href="stats.css?v=202610031900" />
+<link rel="stylesheet" href="styles.css?v=202610041500" />
+<link rel="stylesheet" href="resources.css?v=202610041500" />
+<link rel="stylesheet" href="ui.css?v=202610041500" />
+<link rel="stylesheet" href="opening.css?v=202610041500" />
+<link rel="stylesheet" href="viz.css?v=202610041800" />
+<link rel="stylesheet" href="stats.css?v=202610041500" />
 </head>
 <body>
 
@@ -256,142 +255,51 @@
 </section>
 
 <!-- MAIN TIME-SERIES CHART CARD (controls live inside, above the chart) -->
-<section class="panel" data-chapter="The count">
-  <div class="card">
-    <div class="panel-head">
-      <div class="eyebrow">Chapter 2 · The count</div>
-      <h2>Fatalities over time</h2>
-      <p class="dek">How the reported toll has grown since October 7, 2023. Numbered markers show the turning points.</p>
-    </div>
-
-    <div class="controls" aria-label="Filters">
-      <div class="control-group control-group--range">
-        <span class="control-label" id="label-date-range">Date range</span>
-        <div class="range-dd">
-          <button type="button" class="range-trigger" id="range-trigger" aria-haspopup="dialog" aria-expanded="false" aria-controls="range-pop" aria-describedby="label-date-range">
-            <span class="rt-dates"><span id="readout-start">—</span><span class="rt-arrow" aria-hidden="true">→</span><span id="readout-end">—</span></span>
-            <svg class="rt-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="range-pop" id="range-pop" role="dialog" aria-label="Choose a date range" hidden>
-            <div class="rp-section">
-              <div class="rp-label" id="label-presets">Quick ranges</div>
-              <div class="range-presets" role="radiogroup" aria-labelledby="label-presets">
-                <button class="preset active" role="radio" aria-checked="true"  data-preset="all">All</button>
-                <button class="preset"        role="radio" aria-checked="false" data-preset="6m">Last 6 mo</button>
-                <button class="preset"        role="radio" aria-checked="false" data-preset="12m">Last 12 mo</button>
-                <button class="preset"        role="radio" aria-checked="false" data-preset="phase1">Phase 1 · Oct 23 → Jan 25</button>
-                <button class="preset"        role="radio" aria-checked="false" data-preset="phase2">Resumed war · Mar → Oct 25</button>
-                <button class="preset"        role="radio" aria-checked="false" data-preset="ceasefire">Since Oct 2025 ceasefire</button>
-              </div>
-            </div>
-            <div class="rp-section">
-              <div class="rp-label">Custom range</div>
-              <div class="rp-readout">
-                <div><span>From</span><strong id="pop-start">—</strong></div>
-                <div><span>To</span><strong id="pop-end">—</strong></div>
-              </div>
-              <div class="range-track">
-                <div class="range-rail"></div>
-                <div class="range-fill"></div>
-                <label for="range-start" class="visually-hidden">Range start date</label>
-                <input type="range" id="range-start" min="0" max="0" value="0" aria-label="Range start date" />
-                <label for="range-end" class="visually-hidden">Range end date</label>
-                <input type="range" id="range-end" min="0" max="0" value="0" aria-label="Range end date" />
-              </div>
-              <div class="range-ticks" id="range-ticks" aria-hidden="true"></div>
-            </div>
-            <div class="rp-foot">
-              <button type="button" class="rp-done" id="range-done">Done</button>
-            </div>
-          </div>
-        </div>
-        <div id="range-announce" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" id="label-side">Side</label>
-        <div class="segmented toggle-group" id="side-toggle" role="radiogroup" aria-labelledby="label-side">
-          <button class="toggle active" role="radio" aria-checked="true"  data-side="both">Both</button>
-          <button class="toggle"        role="radio" aria-checked="false" data-side="pal">Palestinian</button>
-          <button class="toggle"        role="radio" aria-checked="false" data-side="isr">Israeli</button>
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" id="label-view">View</label>
-        <div class="segmented toggle-group" id="view-toggle" role="radiogroup" aria-labelledby="label-view">
-          <button class="toggle active" role="radio" aria-checked="true"  data-view="cum">Cumulative</button>
-          <button class="toggle"        role="radio" aria-checked="false" data-view="daily">Daily</button>
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" id="label-scale">Scale</label>
-        <div class="segmented toggle-group" id="scale-toggle" role="radiogroup" aria-labelledby="label-scale" title="Log scale helps compare sides with very different magnitudes.">
-          <button class="toggle active" role="radio" aria-checked="true"  data-scale="linear">Linear</button>
-          <button class="toggle"        role="radio" aria-checked="false" data-scale="log">Log</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="legend-chips" id="legend-chips"></div>
-    <div class="chart-box chart-box--hero">
-      <canvas id="ts-chart" role="img" aria-label="Line chart of cumulative fatalities over time, by side"></canvas>
-    </div>
-    <ol class="annotations" id="annotations"></ol>
-
-    <details class="more">
-      <summary>About this data</summary>
-      <p>Palestinian figures are Gaza Ministry of Health cumulative totals via Tech for Palestine. Israeli figures include the October 7 attacks baseline plus IDF soldier deaths in Gaza operations. Log scale helps compare sides with very different magnitudes.</p>
-    </details>
-  </div>
-</section>
-
-<!-- PACE: scrollytelling over the monthly chart -->
 <section class="panel panel--scrolly" data-chapter="The pace">
   <div class="card">
     <div class="panel-head">
-      <div class="eyebrow">Chapter 3 · The pace</div>
-      <h2>The war, month by month</h2>
-      <p class="dek">The running total hides the rhythm of the war. Scroll to walk through it.</p>
+      <div class="eyebrow">Chapter 2 · The pace</div>
+      <h2>Nearly a third of the dead were reported in the first three months</h2>
+      <p class="dek">Deaths reported in Gaza each week since October 7, 2023. Scroll to walk through the war.</p>
     </div>
     <div class="scrolly">
       <div class="scrolly-graphic">
-        <div class="phase-legend" aria-hidden="true">
-          <span><i class="sw sw--war"></i>Active war</span>
-          <span><i class="sw sw--truce"></i>Truce or ceasefire</span>
-        </div>
-        <div class="chart-box chart-box--pace">
-          <canvas id="pace-chart" role="img" aria-label="Bar chart of Gaza deaths reported per month"></canvas>
-        </div>
+        <figure class="viz viz--weekly" id="weekly-chart" aria-labelledby="weekly-title">
+          <figcaption class="visually-hidden" id="weekly-title">Bar chart of deaths reported in Gaza each week since October 7, 2023</figcaption>
+          <p class="viz-readout" aria-live="polite"></p>
+          <div class="viz-plot"></div>
+        </figure>
       </div>
       <div class="scrolly-steps">
-        <div class="step" data-from="2023-10" data-to="2023-12">
+        <div class="step" data-from="2023-10-07" data-to="2023-12-31">
           <div class="step-card">
             <div class="step-when">Oct – Dec 2023</div>
             <h3>The first three months</h3>
-            <p>Nearly a third of all the deaths recorded so far came in the war’s first three months: <strong data-step="total"></strong> people, about <strong data-step="perday"></strong> a day.</p>
+            <p><strong data-step="total"></strong> people were reported killed in the war’s first three months, about <strong data-step="perday"></strong> a day.</p>
           </div>
         </div>
-        <div class="step" data-from="2024-01" data-to="2024-12">
+        <div class="step" data-from="2024-01-01" data-to="2024-12-31">
           <div class="step-card">
             <div class="step-when">2024</div>
             <h3>A long, grinding year</h3>
-            <p>Through 2024 the monthly toll fell but never stopped: <strong data-step="total"></strong> deaths, about <strong data-step="perday"></strong> a day. In May, Israel launched its offensive on Rafah, where more than a million displaced people had sheltered.</p>
+            <p>Through 2024 the weekly toll fell but never stopped: <strong data-step="total"></strong> deaths, about <strong data-step="perday"></strong> a day. In May, Israel launched its offensive on Rafah, where more than a million displaced people had sheltered.</p>
           </div>
         </div>
-        <div class="step" data-from="2025-01" data-to="2025-02">
+        <div class="step" data-from="2025-01-19" data-to="2025-03-17">
           <div class="step-card">
             <div class="step-when">Jan – Mar 2025</div>
             <h3>Eight weeks of truce</h3>
-            <p>A truce took hold on January 19, 2025, with an exchange of hostages and prisoners. In February the monthly count fell to its lowest point of the war to that date.</p>
+            <p>A truce took hold on January 19, 2025, with an exchange of hostages and prisoners. Weekly deaths fell to their lowest point of the war to that date.</p>
           </div>
         </div>
-        <div class="step" data-from="2025-03" data-to="2025-09">
+        <div class="step" data-from="2025-03-18" data-to="2025-10-09">
           <div class="step-card">
-            <div class="step-when">Mar – Sep 2025</div>
+            <div class="step-when">Mar – Oct 2025</div>
             <h3>The war resumes</h3>
             <p>Israel resumed its offensive on March 18. Over the next seven months <strong data-step="total"></strong> more deaths were reported. In August, UN-backed experts confirmed famine in Gaza City; by mid-2026, <strong data-bind="summary.gaza.aid_seeker.killed">2,615</strong> people had been killed seeking food aid.</p>
           </div>
         </div>
-        <div class="step" data-from="2025-10" data-to="9999-12">
+        <div class="step" data-from="2025-10-10" data-to="9999-12-31">
           <div class="step-card">
             <div class="step-when">Oct 2025 – now</div>
             <h3>Ceasefire</h3>
@@ -400,9 +308,10 @@
         </div>
       </div>
     </div>
+    <p class="chart-foot">Deaths <em>reported</em> each week, which is not always the week they happened. Weeks start on Monday; the current week appears once it ends. From January 2025 the Ministry separates <span class="k k--new">new killings</span> from <span class="k k--recovered">bodies recovered</span> and <span class="k k--review">earlier deaths added after review</span>; before that, all three are inside the totals. Source: Gaza Ministry of Health, via <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine</a>, to <time datetime="2026-09-24" data-bind="meta.data_as_of">Sep 24, 2026</time>. <a href="#notes">How these figures are sourced</a></p>
     <details class="more">
-      <summary>Why ceasefire months aren’t zero</summary>
-      <p>Monthly figures are the change in the Ministry of Health’s cumulative total. During truces that change includes new killings, bodies recovered from rubble, and earlier deaths confirmed after review, so the lighter bars overstate new violence. See the breakdown below.</p>
+      <summary>The data as a table</summary>
+      <div class="table-scroll"><table class="viz-table" id="weekly-table"><caption class="visually-hidden">Deaths reported in Gaza each month</caption><thead><tr><th scope="col">Month</th><th scope="col" class="num">Deaths reported</th></tr></thead><tbody></tbody></table></div>
     </details>
   </div>
 </section>
@@ -417,37 +326,33 @@
         <p class="context-dek">The ceasefire is still nominally in force, but Israeli strikes continue. Far fewer people are killed each day than during the war.</p>
       </div>
 
-      <div class="rate-moment" role="img" aria-label="About 88 people killed a day in Gaza during the resumed war, March to October 2025; about 4 a day since the ceasefire">
+      <div class="rate-moment" role="img" id="rate-moment">
         <div class="rm-col">
-          <div class="rm-num">~88</div>
-          <div class="rm-lbl">killed a day in Gaza during the resumed war<span>Mar – Oct 2025</span></div>
+          <div class="rm-num" id="rate-war">—</div>
+          <div class="rm-lbl">killed a day in new attacks during the resumed war<span>Mar 18 – Oct 9, 2025</span></div>
         </div>
         <div class="rm-rule" aria-hidden="true"></div>
         <div class="rm-col rm-col--now">
-          <div class="rm-num">~4</div>
-          <div class="rm-lbl">killed a day since the ceasefire<span>Oct 2025 – now</span></div>
+          <div class="rm-num" id="rate-now">—</div>
+          <div class="rm-lbl">killed a day in new attacks since the ceasefire<span>Oct 10, 2025 – <time datetime="2026-09-24" data-bind="meta.data_as_of">Sep 24, 2026</time></span></div>
         </div>
       </div>
 
       <div class="viz-block">
-        <h3 class="viz-title">Where the ~6,760 added to the toll since the ceasefire come from</h3>
-        <p class="viz-sub">Only about a fifth is new killing. The rest are earlier deaths now being counted.</p>
-        <div class="stackbar" role="img" aria-label="1,408 killed in new attacks, about 890 bodies recovered from rubble, about 4,460 earlier deaths added after review">
-          <div class="seg seg--1" style="--w:20.8%"></div>
-          <div class="seg seg--2" style="--w:13.2%"></div>
-          <div class="seg seg--3" style="--w:66%"></div>
-        </div>
-        <ul class="stack-key">
-          <li><i class="sw seg--1"></i><strong>1,408</strong> killed in new attacks</li>
-          <li><i class="sw seg--2"></i><strong>~890</strong> bodies recovered from rubble</li>
-          <li><i class="sw seg--3"></i><strong>~4,460</strong> earlier deaths added after review</li>
-        </ul>
+        <h3 class="viz-title">Where the <span id="cf-total">—</span> added to the toll since the ceasefire come from</h3>
+        <p class="viz-sub">About <span id="cf-new-share">—</span> in <span id="cf-new-share-of">—</span> is a <span class="k k--new">new killing</span>. The rest are people killed earlier, now being counted: <span class="k k--recovered">bodies recovered from rubble</span> and <span class="k k--review">deaths added after review</span>.</p>
+        <figure class="viz viz--ceasefire" id="ceasefire-chart" aria-labelledby="ceasefire-title">
+          <figcaption class="visually-hidden" id="ceasefire-title">Stacked bar chart of deaths added to the Gaza toll each month since the October 10, 2025 ceasefire, by type</figcaption>
+          <p class="viz-readout" aria-live="polite"></p>
+          <div class="viz-plot"></div>
+        </figure>
+        <p class="chart-foot">October counts reports from the 11th, the first after the ceasefire; September runs to the 24th. “New killings” include <span id="cf-succumbed">—</span> people who died later of their wounds. Source: Gaza Ministry of Health daily breakdowns, via Tech for Palestine. <a href="#notes">How these figures are sourced</a></p>
       </div>
 
       <details class="more">
         <summary>Read more</summary>
         <div class="context-body">
-          <p>The official Gaza toll has risen by roughly 6,700 since the ceasefire. Only about a fifth of that is new killing. The rest are people killed before the ceasefire who are only now being counted: bodies pulled from the rubble, and deaths added to the record after the Ministry of Health’s committee verified them. Those additions arrive in weekly batches, so the steps they create in the cumulative chart above are not new surges in violence.</p>
+          <p>The official Gaza toll has risen by <span id="cf-total-2">—</span> since the ceasefire. Only about a fifth of that is new killing. The rest are people killed before the ceasefire who are only now being counted: bodies pulled from the rubble, and deaths added to the record after the Ministry of Health’s committee verified them. Those additions arrive in weekly batches, so the steps they create in the cumulative chart above are not new surges in violence.</p>
           <p>Under the ceasefire, Israeli forces were to hold 53% of the Strip behind the so-called “Yellow Line.” By March 2026 they held about 64%, and on May 28, 2026, Prime Minister Netanyahu ordered the army to take 70%. The last Israeli hostage held in Gaza, the body of Ran Gvili, was returned on January 26, 2026. None remain in Gaza.</p>
           <p class="context-footnote">Sources: <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine daily reports (Gaza MoH)</a> · <a href="https://www.ochaopt.org/content/humanitarian-situation-report-18-september-2026" target="_blank" rel="noopener">OCHA situation report, Sep 18, 2026</a> · <a href="https://www.aljazeera.com/news/2026/5/28/israels-netanyahu-directs-army-to-seize-70-percent-of-gaza-strip" target="_blank" rel="noopener">Al Jazeera</a> · <a href="https://www.timesofisrael.com/all-of-them-home-now-body-of-last-hostage-ran-gvili-found-in-gaza-returned-to-israel/" target="_blank" rel="noopener">Times of Israel</a></p>
         </div>
@@ -460,15 +365,18 @@
 <section class="panel" data-chapter="The people">
   <div class="card">
     <div class="panel-head">
-      <div class="eyebrow">Chapter 4 · The people</div>
+      <div class="eyebrow">Chapter 3 · The people</div>
       <h2>Who was killed in Gaza</h2>
       <p class="dek">Of the <span id="named-total">—</span> dead identified by name, <strong id="named-child-share">—</strong> were children.</p>
     </div>
     <div class="people">
       <div class="people-viz">
         <h3 class="viz-title">Identified dead, by age and sex</h3>
-        <div class="pyramid" id="pyramid" role="img"></div>
-        <p class="chart-foot" id="pyramid-foot"></p>
+        <figure class="viz viz--waffle" id="who-waffle" aria-labelledby="who-title">
+          <figcaption class="visually-hidden" id="who-title">Waffle chart: one square for every 100 people identified by name, grouped by age and sex</figcaption>
+          <div class="viz-plot"></div>
+        </figure>
+        <p class="chart-foot" id="who-foot"></p>
       </div>
       <div class="people-facts">
         <h3 class="viz-title">Also among the dead</h3>
@@ -485,8 +393,8 @@
   </div>
 </section>
 
-<!-- SPLIT: OCT 7 + GAZA GOVERNORATE -->
-<section class="split" data-chapter="October 7 · Governorates">
+<!-- OCTOBER 7 -->
+<section class="panel" data-chapter="October 7">
   <div class="card">
     <div class="eyebrow eyebrow--isr">Israel</div>
     <h2>October 7</h2>
@@ -511,38 +419,22 @@
     </div>
     <p class="chart-foot">1,195 killed in total. Figures consolidated from the Israeli MFA, INSS, and B’Tselem.</p>
   </div>
-  <div class="card">
-    <div class="eyebrow">Gaza</div>
-    <h2>By governorate</h2>
-    <p class="dek">A modeled estimate of where people were killed. Directional only.</p>
-    <div class="chart-box chart-box--gov">
-      <canvas id="gov-chart" role="img" aria-label="Bar chart of modeled Gaza fatalities by governorate"></canvas>
-    </div>
-    <details class="more">
-      <summary>How this is modeled</summary>
-      <p>The Ministry of Health publishes no official geographic breakdown. These shares weight each governorate’s pre-war population by the UNOSAT damage assessment. Hover bars for estimated counts.</p>
-    </details>
-  </div>
 </section>
 
 <!-- WEST BANK -->
 <section class="panel" data-chapter="The West Bank">
   <div class="card">
     <div class="panel-head">
-      <div class="eyebrow">Chapter 5 · The West Bank</div>
-      <h2>Violence beyond Gaza</h2>
-      <p class="dek">Palestinians killed and settler attacks in the West Bank and East Jerusalem, as reported by OCHA. Two charts, two scales.</p>
+      <div class="eyebrow">Chapter 4 · The West Bank</div>
+      <h2>Killings have fallen. Settler attacks have not.</h2>
+      <p class="dek">Palestinians killed and settler attacks in the West Bank and East Jerusalem each month, as reported by UN OCHA. They are different units, so they get separate charts on their own scales.</p>
     </div>
-    <div class="multiples">
-      <div>
-        <h3 class="viz-title">Palestinians killed <span class="viz-total" id="wb-killed-total"></span></h3>
-        <div class="chart-box chart-box--small"><canvas id="wb-chart" role="img" aria-label="Cumulative Palestinians killed in the West Bank"></canvas></div>
-      </div>
-      <div>
-        <h3 class="viz-title">Settler attacks <span class="viz-total" id="wb-attacks-total"></span></h3>
-        <div class="chart-box chart-box--small"><canvas id="wb-attacks-chart" role="img" aria-label="Cumulative settler attacks in the West Bank"></canvas></div>
-      </div>
-    </div>
+    <figure class="viz viz--wb" id="wb-chart" aria-labelledby="wb-title">
+      <figcaption class="visually-hidden" id="wb-title">Two bar charts sharing a time axis: Palestinians killed per month, and settler attacks per month, in the West Bank since October 2023</figcaption>
+      <p class="viz-readout" aria-live="polite"></p>
+      <div class="viz-plot"></div>
+    </figure>
+    <p class="chart-foot">October 2023 counts from the 7th. OCHA’s latest report in this data is from <time datetime="2026-09-14">September 14, 2026</time>, so September is partial. Source: <a href="https://www.ochaopt.org/" target="_blank" rel="noopener">UN OCHA</a>. <a href="#notes">How these figures are sourced</a></p>
   </div>
 </section>
 
@@ -786,6 +678,15 @@
       <h2>Source comparison</h2>
       <p class="dek">Different authorities count differently — by scope, verification standard, and methodology. Independent estimates run higher than official tolls.</p>
     </div>
+    <div class="viz-block">
+      <h3 class="viz-title">Matched to the same date, the estimate is far above the Ministry’s count</h3>
+      <p class="viz-sub">Palestinians killed in Gaza. Filled dots are counts; the hollow dot is an estimate.</p>
+      <figure class="viz viz--sources" id="sources-chart" aria-labelledby="sources-title">
+        <figcaption class="visually-hidden" id="sources-title">Dot plot comparing the Gaza Ministry of Health count with the Lancet estimate for the same period, and the Ministry’s latest count</figcaption>
+        <div class="viz-plot"></div>
+      </figure>
+      <p class="chart-foot">The Lancet figure is as recorded in this site’s data: violent deaths to January 2025. Its exact window, its uncertainty interval and a link to the study are still to be confirmed, so no interval is drawn.</p>
+    </div>
     <div class="table-scroll">
       <table class="tracker-table">
         <thead>
@@ -896,6 +797,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=202610031800"></script><script src="ui.js?v=202610031900" defer></script><script src="motion.js?v=202609271530" defer></script>
+<script src="viz.js?v=202610041800"></script><script src="app.js?v=202610041500"></script><script src="ui.js?v=202610041500" defer></script><script src="motion.js?v=202609271530" defer></script>
 </body>
 </html>

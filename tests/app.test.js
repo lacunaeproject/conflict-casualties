@@ -24,14 +24,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-// --- Stub the globals that app.js reaches for at load-time ---------
-// Chart.js is loaded via <script> in the browser. Here we just give app.js
-// enough shape that its top-level `Chart.defaults.*` assignments don't throw.
-global.Chart = { defaults: { font: {} } };
-
 // Load app.js by executing it in this process. The file guards loadData() with
-// a typeof-window check, so requiring it under Node is side-effect-free
-// apart from the Chart.defaults writes we've already stubbed.
+// a typeof-window check, so requiring it under Node is side-effect-free.
 const appPath = path.resolve(__dirname, '..', 'app.js');
 const { toLocalDate, fmtDate } = require(appPath);
 
@@ -140,68 +134,6 @@ test('Fix 2 — deltas never go negative, even when the source is non-monotonic'
 });
 
 
-test('Fix 3 — slider clamps the end handle when the user drags it past start', () => {
-  // Reproduce the slider-clamp helper inline. The key property: whichever
-  // handle the user is moving, the OTHER handle stays put — the moving
-  // handle is the one that gets clamped to preserve the minimum gap.
-  const MIN_GAP = 7;
-  const MAX = 922;
-
-  const clamp = (movingEnd, s, e) => {
-    if (e - s < MIN_GAP) {
-      if (movingEnd)  e = Math.min(MAX, s + MIN_GAP);
-      else            s = Math.max(0,   e - MIN_GAP);
-    }
-    return [s, e];
-  };
-
-  // User drags END leftward past start. Before the fix, the end value
-  // would silently go below start and the chart slice would come back
-  // empty. After the fix: the end handle is clamped to start + MIN_GAP,
-  // and start stays exactly where the user left it.
-  const [s1, e1] = clamp(true, 300, 100);
-  assert.equal(s1, 300, 'start should not move when the user is moving the end handle');
-  assert.equal(e1, 307, 'end should be clamped to start + MIN_GAP');
-  assert.ok(e1 > s1, 'end must remain strictly greater than start');
-
-  // Mirror case: dragging START past end.
-  const [s2, e2] = clamp(false, 520, 500);
-  assert.equal(e2, 500, 'end should not move when the user is moving the start handle');
-  assert.equal(s2, 493);
-  assert.ok(s2 < e2);
-
-  // Normal case — no clamping needed, handles unchanged.
-  const [s3, e3] = clamp(false, 0, 100);
-  assert.deepEqual([s3, e3], [0, 100]);
-});
-
-
-test('Fix 3 — slider never produces an inverted or empty range', () => {
-  // Property test: for any pair of positions in [0, max], the clamped
-  // result must satisfy start < end and end - start >= MIN_GAP (or the
-  // extremes where the clamp saturates at 0 or max).
-  const MIN_GAP = 7;
-  const MAX = 100;
-  const clamp = (movingEnd, s, e) => {
-    if (e - s < MIN_GAP) {
-      if (movingEnd)  e = Math.min(MAX, s + MIN_GAP);
-      else            s = Math.max(0,   e - MIN_GAP);
-    }
-    return [s, e];
-  };
-
-  for (let s = 0; s <= MAX; s += 5) {
-    for (let e = 0; e <= MAX; e += 5) {
-      for (const movingEnd of [true, false]) {
-        const [cs, ce] = clamp(movingEnd, s, e);
-        assert.ok(cs <= ce, `inverted range after clamp: s=${s}, e=${e}, movingEnd=${movingEnd} -> [${cs}, ${ce}]`);
-        assert.ok(cs >= 0 && ce <= MAX, `out of bounds: [${cs}, ${ce}]`);
-      }
-    }
-  }
-});
-
-
 test('data.json is valid and its shape matches what app.js expects', () => {
   // A small sanity suite. Any schema drift that would break the dashboard
   // — wrong field names, inconsistent lengths, backwards dates — should
@@ -210,7 +142,7 @@ test('data.json is valid and its shape matches what app.js expects', () => {
   const data = JSON.parse(raw);
 
   // Top-level keys the app reads.
-  for (const k of ['meta', 'gaza_daily', 'west_bank_daily', 'israeli_daily', 'summary', 'oct7', 'governorate_estimates', 'trackers']) {
+  for (const k of ['meta', 'gaza_daily', 'west_bank_daily', 'israeli_daily', 'summary', 'oct7', 'gaza_components', 'trackers']) {
     assert.ok(k in data, `data.json is missing top-level key "${k}"`);
   }
 
@@ -244,9 +176,14 @@ test('data.json is valid and its shape matches what app.js expects', () => {
     'Oct 7 components do not sum to total — the grid and footer will disagree',
   );
 
-  // Governorate shares must sum to 100%.
-  const shareSum = data.governorate_estimates.reduce((a, b) => a + b.share_pct, 0);
-  assert.ok(Math.abs(shareSum - 100) < 0.5, `governorate shares sum to ${shareSum}, expected ~100`);
+  // The Ministry's daily breakdown (viz.js stacks it inside each bar): every part
+  // non-negative, dates inside the series, and never more than that day's reported rise.
+  const rise = new Map(g.map((r, k) => [r.date, k ? r.killed_cum - g[k - 1].killed_cum : r.killed_cum]));
+  for (const c of data.gaza_components) {
+    assert.ok(rise.has(c.date), `breakdown for ${c.date} falls outside the Gaza series`);
+    for (const key of ['new', 'succumbed', 'recovered', 'committee']) assert.ok(c[key] >= 0, `${key} is negative on ${c.date}`);
+    assert.ok(c.new + c.succumbed + c.recovered + c.committee <= rise.get(c.date), `breakdown exceeds the reported rise on ${c.date}`);
+  }
 
   // Tracker entries must each carry the fields the tracker-table renderer reads.
   for (const t of data.trackers) {

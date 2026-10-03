@@ -1,0 +1,129 @@
+/* =========================================================
+   Charts (viz.js) — hand-built SVG.
+   Colour carries one meaning on every chart:
+     olive        Palestinians killed (new killings)
+     mid grey     bodies recovered from rubble; settler attacks (incidents, not deaths)
+     light grey   earlier deaths added after review
+     hatched      added to the total but not broken down by the Ministry
+   Every mark holds at least 3:1 against its card (WCAG 1.4.11), and every pair of
+   categories stays at least 13 ΔE apart under protanopia, deuteranopia and tritanopia
+   (Machado 2009 simulation). New killings are always the strongest mark; review
+   additions the quietest.
+   ========================================================= */
+.rd {
+  --viz-new:      var(--pal);
+  --viz-new-2:    #8f977f;   /* second shade within a group (women and girls): 3.0:1 */
+  --viz-recovered: #6d7279;  /* 4.9:1 */
+  --viz-review:   #90959c;   /* 3.0:1 */
+  --viz-incident: #6d7279;
+  --viz-band:     rgba(16, 19, 23, 0.045);
+  --viz-grid:     rgba(16, 19, 23, 0.08);
+  --viz-axis:     rgba(16, 19, 23, 0.32);
+  --viz-dim:      0.22;
+}
+@media (prefers-color-scheme: dark) {
+  .rd:not([data-theme="light"]) {
+    --viz-new:      #a6b384;
+    --viz-new-2:    #5e6650;   /* 3.0:1 */
+    --viz-recovered: #848990;  /* 5.2:1 */
+    --viz-review:   #5f646b;   /* 3.0:1 */
+    --viz-incident: #848990;
+    --viz-band:     rgba(255, 255, 255, 0.05);
+    --viz-grid:     rgba(255, 255, 255, 0.09);
+    --viz-axis:     rgba(255, 255, 255, 0.32);
+  }
+}
+
+.viz { margin: 0; position: relative; }
+.viz-plot { position: relative; }
+.viz-plot svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz:focus-visible { outline: 2px solid var(--focus); outline-offset: var(--s-8); border-radius: var(--r-xs); }
+
+/* Text inside charts: the interface face, tabular lining figures */
+.viz text {
+  font-family: var(--font-ui);
+  font-variant-numeric: tabular-nums lining-nums;
+  fill: var(--text-3);
+  font-size: 0.75rem;
+}
+.viz .t-label { fill: var(--text-2); font-weight: 600; }
+.viz .t-value { fill: var(--text); font-weight: 600; }
+.viz .t-unit { fill: var(--text-3); }
+.viz .t-halo { stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; paint-order: stroke; }
+
+/* Marks */
+.viz .m-new { fill: var(--viz-new); }
+.viz .m-recovered { fill: var(--viz-recovered); }
+.viz .m-review { fill: var(--viz-review); }
+.viz .m-unsplit { fill: url(#viz-hatch); }
+.viz .m-incident { fill: var(--viz-incident); }
+.viz .hatch-line { stroke: var(--viz-recovered); stroke-width: 1.25px; }
+.viz .grid { stroke: var(--viz-grid); stroke-width: 1px; shape-rendering: crispEdges; }
+.viz .baseline { stroke: var(--viz-axis); stroke-width: 1px; shape-rendering: crispEdges; }
+.viz .band { fill: var(--viz-band); }
+.viz .leader { stroke: var(--text-3); stroke-width: 1px; fill: none; shape-rendering: crispEdges; }
+.viz .bracket { stroke: var(--text); stroke-width: 1px; fill: none; }
+.viz .focus-bar { fill: none; stroke: var(--text); stroke-width: 1.5px; }
+.viz .dot-count { fill: var(--viz-new); }
+.viz .dot-estimate { fill: var(--surface); stroke: var(--viz-new); stroke-width: 2px; }
+.viz .stem { stroke: var(--viz-grid); stroke-width: 2px; }
+
+/* Bars dim outside the step in view; annotations step aside for the step's bracket */
+.viz .bars rect, .viz .notes { transition: opacity 0.3s var(--ease); }
+.viz .bars rect.is-dim { opacity: var(--viz-dim); }
+.viz.is-stepping .notes { opacity: 0; }
+
+/* Entrance: bars grow from the baseline once, the first time the chart is seen */
+@media (prefers-reduced-motion: no-preference) {
+  .viz .bars rect { transform-box: fill-box; transform-origin: 50% 100%; }
+  .viz:not(.is-in) .bars rect { transform: scaleY(0); }
+  .viz.is-in .bars rect { transition: transform 0.7s cubic-bezier(0.28, 0.11, 0.32, 1), opacity 0.3s var(--ease); transition-delay: calc(var(--i, 0) * 4ms), 0s; }
+}
+
+/* Readout: one line above the plot, so values never cover marks */
+.viz-readout {
+  min-height: calc(var(--lh-ui) * 1em);
+  margin: 0 0 var(--stack-tight);
+  font: 400 0.875rem/var(--lh-ui) var(--font-ui);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.viz-readout b { color: var(--text); font-weight: 600; }
+
+/* Colour keys written into sentences */
+.k { white-space: nowrap; }
+.k::before {
+  content: "";
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-right: 0.3em;
+  border-radius: 2px;
+  vertical-align: -0.05em;
+  background: var(--k);
+}
+.k--new { --k: var(--viz-new); }
+.k--recovered { --k: var(--viz-recovered); }
+.k--review { --k: var(--viz-review); }
+.k--incident { --k: var(--viz-incident); }
+
+/* Waffle groups */
+.waffle { display: grid; gap: var(--stack-block); }
+.waffle-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 var(--s-16); margin-bottom: var(--stack-tight); }
+.waffle-name { font: 600 0.9375rem/var(--lh-label) var(--font-ui); color: var(--text); }
+.waffle-name b { font-weight: 600; }
+.waffle-share { font: 400 0.875rem/var(--lh-label) var(--font-ui); color: var(--text-3); font-variant-numeric: tabular-nums; }
+.waffle-split { margin-top: var(--stack-tight); font: 400 0.8125rem/var(--lh-caption) var(--font-ui); color: var(--text-3); font-variant-numeric: tabular-nums; }
+.waffle-split b { color: var(--text-2); font-weight: 600; }
+.waffle .m-a { fill: var(--viz-new); }
+.waffle .m-b { fill: var(--viz-new-2); }
+.k--a { --k: var(--viz-new); }
+.k--b { --k: var(--viz-new-2); }
+
+/* Data table under a chart */
+.viz-table { width: 100%; border-collapse: collapse; font: 400 0.875rem/var(--lh-ui) var(--font-ui); font-variant-numeric: tabular-nums lining-nums; }
+.viz-table th, .viz-table td { padding: var(--s-4) var(--s-12) var(--s-4) 0; border-bottom: 1px solid var(--hair); text-align: left; }
+.viz-table .num { text-align: right; }
+
+/* The scrolly graphic holds the weekly chart; on phones it sits above its steps */
+.rd .panel--scrolly .viz--weekly { width: 100%; }

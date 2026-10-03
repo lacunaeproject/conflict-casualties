@@ -192,7 +192,6 @@
 
 /* ---------- Surfaces: every chapter is a soft card ---------- */
 .rd .panel .card,
-.rd .split .card,
 .rd .tracker .card,
 .rd .foot-meta .card,
 .rd .context-card .card,
@@ -205,12 +204,10 @@
   overflow: visible;
 }
 .rd .panel--scrolly .card { overflow: visible; }
-.rd .split { gap: var(--gap-card); }
 .rd .context-card--band { width: auto; margin-left: 0; margin-right: 0; background: none; padding: 0; }
 .rd .context-card--band .card { background: var(--surface) !important; }
 
 .rd .panel-head h2,
-.rd .split h2,
 .rd .context-lede h2 { letter-spacing: -0.025em; font-weight: 500; }
 .rd .dek, .rd .context-dek { color: var(--text-3); }
 
@@ -277,92 +274,10 @@
 .rd .segmented--night button.active { background: rgba(255, 255, 255, 0.95); color: #111317; }
 
 /* ---------- Chart controls ---------- */
-.rd .controls {
-  border: 0;
-  padding: 0;
-  margin: var(--s-32) 0 var(--s-8);
-  gap: var(--s-16) var(--s-24);
-  background: none;
-}
-.rd .control-label {
-  color: var(--text-3);
-  font: 600 0.78rem/var(--lh-title) var(--font-body);
-  letter-spacing: 0.01em;
-  text-transform: none;
-}
-.rd .range-trigger {
-  border: 0;
-  border-radius: var(--pill);
-  background: var(--fill);
-  min-height: 40px;
-  padding: 0 var(--s-16) 0 var(--s-16);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-weight: 600;
-  box-shadow: none;
-  transition: background-color 0.15s var(--ease), transform 0.12s var(--ease);
-}
-.rd .range-trigger:hover { background: var(--fill-2); }
-.rd .range-trigger:active { transform: scale(0.97); }
-.rd .range-pop {
-  border: 0;
-  border-radius: var(--r-lg);
-  background: var(--surface);
-  box-shadow: var(--e3);
-  padding: var(--s-24);
-}
-.rd .rp-label { text-transform: none; letter-spacing: 0.01em; color: var(--text-3); font-weight: 600; }
-.rd .range-presets { gap: var(--s-8); }
-.rd .range-presets button,
-.rd .preset {
-  border: 0;
-  border-radius: var(--pill);
-  background: var(--fill);
-  color: var(--text-2);
-  padding: var(--s-8) var(--s-16);
-  font-weight: 600;
-  transition: background-color 0.15s var(--ease), transform 0.12s var(--ease);
-}
-.rd .range-presets button:hover { background: var(--fill-2); color: var(--text); }
-.rd .range-presets button:active { transform: scale(0.96); }
-.rd .range-presets button.active { background: var(--brand); color: var(--on-brand); }
-.rd .rp-readout > div { background: none; border: 0; padding: 0; }
-.rd .rp-done {
-  border: 0;
-  border-radius: var(--pill);
-  background: var(--brand);
-  color: var(--on-brand);
-  padding: var(--s-12) var(--s-24);
-  font-weight: 600;
-  transition: transform 0.12s var(--ease), box-shadow 0.15s var(--ease);
-}
-.rd .rp-done:hover { box-shadow: var(--e2); transform: translateY(-1px); }
-.rd .rp-done:active { transform: scale(0.97); }
-.rd .range-track input[type="range"]::-webkit-slider-thumb { background: var(--thumb); border: 0; box-shadow: var(--e-thumb), 0 0 0 1px var(--hair); width: 24px; height: 24px; }
-.rd .range-track input[type="range"]::-moz-range-thumb { background: var(--thumb); border: 0; box-shadow: var(--e-thumb); width: 24px; height: 24px; }
-.rd .range-track .range-fill { background: var(--brand); }
 
 /* Legend chips */
-.rd .legend-chips { gap: var(--s-8); border: 0; padding: 0; margin: var(--s-24) 0 var(--s-8); }
-.rd .legend-chip {
-  border: 0;
-  border-radius: var(--pill);
-  background: var(--surface-2);
-  padding: var(--s-8) var(--s-12);
-  font-weight: 600;
-  color: var(--text-2);
-  transition: opacity 0.15s var(--ease), background-color 0.15s var(--ease), transform 0.12s var(--ease);
-}
-.rd .legend-chip:hover { background: var(--fill); }
-.rd .legend-chip:active { transform: scale(0.96); }
-.rd .legend-chip .swatch { width: 10px; height: 10px; border-radius: 50%; }
-.rd .legend-chip.muted { opacity: 0.45; }
 
 /* Chart surfaces */
-.rd .chart-box { border: 0; }
-.rd .annotations { border: 0; gap: var(--s-12) var(--s-16); }
-.rd .annotations li { background: var(--surface-2); border-radius: var(--r-sm); padding: var(--s-12) var(--s-16); border: 0; }
-.rd .ann-num { background: var(--text); color: var(--bg); }
 .rd .chart-foot { color: var(--text-4); }
 
 /* ---------- "More" disclosures: text and a chevron, like the key figures' control ---------- */
@@ -557,21 +472,6 @@
   .rd .dots-controls .segmented { display: flex; width: 100%; }
   .rd .dots-controls .segmented button { flex: 1; padding: var(--s-8) var(--s-8); }
   /* Horizontal, swipeable rows instead of tall stacks */
-  .rd .legend-chips,
-  .rd .annotations {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    margin-left: calc(-1 * var(--pad-card));
-    margin-right: calc(-1 * var(--pad-card));
-    padding: var(--s-4) var(--pad-card);
-    scroll-padding: 0 var(--pad-card);
-  }
-  .rd .legend-chips::-webkit-scrollbar, .rd .annotations::-webkit-scrollbar { display: none; }
-  .rd .legend-chip { flex: 0 0 auto; width: auto; white-space: nowrap; scroll-snap-align: start; }
-  .rd .annotations li { flex: 0 0 72%; scroll-snap-align: start; }
 }
 
 /* ---------- Links ---------- */
@@ -581,102 +481,12 @@
 /* =========================================================
    Mobile: filters live in a bottom sheet (redesign.js)
    ========================================================= */
-.rd .rd-filter-btn { display: none; }
-.rd .rd-sheet-head, .rd .rd-sheet-foot, .rd .rd-scrim { display: none; }
-@media (max-width: 640px) {
-  .rd .rd-filter-btn {
-    display: flex;
-    align-items: center;
-    gap: var(--s-12);
-    width: 100%;
-    margin: var(--s-24) 0 var(--s-4);
-    min-height: 48px;
-    padding: 0 var(--s-8) 0 var(--s-16);
-    border: 0;
-    border-radius: var(--pill);
-    background: var(--fill);
-    color: var(--text);
-    font: 600 0.92rem/var(--lh-title) var(--font-body);
-    text-align: left;
-    cursor: pointer;
-    transition: transform 0.12s var(--ease), background-color 0.15s var(--ease);
-  }
-  .rd .rd-filter-btn:active { transform: scale(0.98); }
-  .rd .rd-filter-btn svg { flex: none; width: 18px; height: 18px; }
-  .rd .rd-filter-sum { flex: 1; min-width: 0; color: var(--text-3); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .rd .rd-filter-btn .rd-edit { flex: none; padding: var(--s-8) var(--s-16); border-radius: var(--pill); background: var(--surface); box-shadow: var(--e-thumb); font-size: 0.84rem; }
-
-  .rd .controls { display: none; }
-  .rd .controls.is-sheet-open {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--s-24);
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
-    z-index: 90;
-    margin: 0;
-    max-height: 88svh;
-    overflow-y: auto;
-    padding: var(--s-8) var(--s-24) calc(var(--s-24) + env(safe-area-inset-bottom));
-    background: var(--surface);
-    border-radius: 28px 28px 0 0;
-    box-shadow: var(--e3);
-    overscroll-behavior: contain;
-  }
-  .rd .controls.is-sheet-open .rd-sheet-head { display: block; position: sticky; top: calc(-1 * var(--s-8)); background: var(--surface); padding: var(--s-12) 0 var(--s-4); z-index: 1; }
-  .rd .rd-sheet-grip { width: 40px; height: 5px; border-radius: 3px; background: var(--fill-2); margin: 0 auto var(--s-16); }
-  .rd .rd-sheet-title { font: 600 1.15rem/var(--lh-title) var(--font-body); margin: 0; }
-  .rd .controls.is-sheet-open .control-group { display: grid; gap: var(--s-12); }
-  .rd .controls.is-sheet-open .segmented { display: flex; width: 100%; }
-  .rd .controls.is-sheet-open .segmented button { flex: 1; min-height: 40px; }
-  .rd .controls.is-sheet-open .range-trigger { width: 100%; justify-content: space-between; min-height: 46px; }
-  .rd .controls.is-sheet-open .range-pop {
-    position: static;
-    width: auto;
-    box-shadow: none;
-    background: var(--surface-2);
-    margin-top: var(--s-8);
-    transform: none;
-  }
-  .rd .controls.is-sheet-open .rd-sheet-foot { display: block; position: sticky; bottom: calc(calc(-1 * var(--s-24)) - env(safe-area-inset-bottom)); background: var(--surface); padding: var(--s-8) 0 var(--s-4); }
-  .rd .rd-sheet-done {
-    width: 100%;
-    min-height: 50px;
-    border: 0;
-    border-radius: var(--pill);
-    background: var(--brand);
-    color: var(--on-brand);
-    font: 600 1rem/var(--lh-figure) var(--font-body);
-    cursor: pointer;
-  }
-  .rd .rd-sheet-done:active { transform: scale(0.98); }
-  .rd .rd-scrim.is-on {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 89;
-    background: var(--sheet-scrim);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-  }
-
-  /* The date popover elsewhere becomes a sheet too */
-  .rd .range-pop:not([hidden]) { border-radius: var(--r-lg); }
-}
 @media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
   @keyframes rd-sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
   @keyframes rd-fade { from { opacity: 0; } to { opacity: 1; } }
-  .rd .controls.is-sheet-open { animation: rd-sheet-up 0.34s var(--ease); }
-  .rd .rd-scrim.is-on { animation: rd-fade 0.25s ease; }
 }
 
 /* ---------- Hover lift for interactive surfaces (pointer devices) ---------- */
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .rd .legend-chip:hover,
-  .rd .range-trigger:hover,
-  .rd .range-trigger:active { transform: scale(0.97); }
-}
 
 /* ---------- Reduced motion: no transforms, no transitions ---------- */
 @media (prefers-reduced-motion: reduce) {
@@ -717,8 +527,6 @@
 }
 
 /* Sections: identical spacing between every card */
-.rd .split { gap: var(--gap-card); }
-@media (max-width: 1023px) { .rd .split { grid-template-columns: 1fr; } }
 .rd .story--lede { padding: var(--pad-card); }
 
 /* Inside a card: one left edge */
@@ -728,18 +536,16 @@
 .rd .context-inner > .more,
 .rd .rate-moment { max-width: none; margin-left: 0; margin-right: 0; width: auto; }
 .rd .panel-head { margin-bottom: var(--s-32); }
-.rd .panel-head .dek, .rd .split .dek, .rd .context-dek, .rd .viz-sub { max-width: var(--measure); }
-.rd .panel-head .eyebrow, .rd .split .card > .eyebrow, .rd .context-lede .eyebrow { margin-bottom: var(--stack-related); }
-.rd .panel-head h2, .rd .split h2, .rd .context-lede h2 {
+.rd .panel-head .dek, .rd .context-dek, .rd .viz-sub { max-width: var(--measure); }
+.rd .panel-head .eyebrow, .rd .context-lede .eyebrow { margin-bottom: var(--stack-related); }
+.rd .panel-head h2, .rd .context-lede h2 {
   font-size: clamp(1.875rem, 1.3rem + 1.8vw, 3rem);
   line-height: var(--lh-display);
   letter-spacing: -0.028em;
   margin: 0 0 var(--stack-block);
 }
-.rd .split h2 { font-size: clamp(1.75rem, 1.2rem + 1.2vw, 2.5rem); }
-.rd .panel-head .dek, .rd .split .dek, .rd .context-dek { font-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem); line-height: var(--lh-caption); margin: 0; }
+.rd .panel-head .dek, .rd .context-dek { font-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem); line-height: var(--lh-caption); margin: 0; }
 .rd .context-inner { gap: var(--s-32); }
-.rd .controls { margin-top: 0; }
 .rd .viz-title { font-size: 0.92rem; font-weight: 600; color: var(--text); }
 .rd .chart-foot { font-size: 0.8rem; line-height: var(--lh-caption); margin-top: var(--s-16); max-width: var(--measure); }
 .rd .card > .more:last-child, .rd .more { margin-top: var(--s-24); padding-top: 0; }
@@ -753,19 +559,10 @@
 .rd .story-map { margin-top: var(--s-32); padding: var(--s-16) var(--s-24); font-size: 0.95rem; }
 
 /* Controls row: labels and pills on a shared baseline */
-.rd .controls { gap: var(--s-24) var(--s-32); align-items: end; margin-bottom: 0; }
-.rd .control-group { gap: var(--s-8); }
-.rd .range-trigger { min-height: 40px; }
 .rd .segmented { min-height: 40px; align-items: center; }
 .rd .segmented button { min-height: 34px; }
-.rd .legend-chips { margin: var(--s-16) 0 var(--s-4); }
-.rd .legend-chip { min-height: 32px; display: inline-flex; align-items: center; gap: var(--s-8); padding: 0 var(--s-12); font-size: 0.84rem; }
 
 /* Turning points: an even grid, never a ragged 4 + 2 */
-.rd .annotations { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-8); margin-top: var(--s-24); padding-top: 0; }
-.rd .annotations li { padding: var(--s-12) var(--s-16); font-size: 0.88rem; }
-@media (max-width: 1023px) { .rd .annotations { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 640px) { .rd .annotations { display: flex; } }
 
 /* Dots */
 .rd .dots-controls { margin-bottom: var(--s-24); gap: var(--s-12) var(--s-16); align-items: center; }
@@ -785,9 +582,7 @@
 .rd .oct7-grid .cell .val, .rd .who-grid .cell .val { font-size: clamp(1.75rem, 1.3rem + 1vw, 2.25rem); margin-top: var(--s-8); line-height: var(--lh-figure); }
 .rd .oct7-grid .cell .lbl, .rd .who-grid .cell .lbl { font-size: 0.8125rem; line-height: var(--lh-label); }
 .rd .people { gap: clamp(var(--s-32), 4vw, var(--s-64)); }
-.rd .multiples { gap: clamp(var(--s-32), 4vw, var(--s-48)); }
 @media (max-width: 1023px) { .rd .people { grid-template-columns: 1fr; } }
-@media (max-width: 640px) { .rd .multiples { grid-template-columns: 1fr; } }
 
 /* Scrollytelling: cards track the graphic's edge */
 .rd .step-card { max-width: 400px; }
@@ -816,19 +611,12 @@
 .rd .chart-foot { max-width: 72ch; }
 
 /* Phone: swipe rows run edge to edge of the card (re-asserted after the rhythm rules) */
-@media (max-width: 640px) {
-  .rd .legend-chips { margin: var(--s-16) calc(-1 * var(--pad-card)) var(--s-4); }
-  .rd .annotations { margin: var(--s-24) calc(-1 * var(--pad-card)) 0; }
-}
 
 /* ---------- Final spacing fixes ---------- */
-.rd .split .viz-block { margin-top: var(--s-24); }
-.rd .split .oct7-grid { margin-top: var(--s-24); }
 
 @media (max-width: 640px) {
   /* Prose that sits on the page (no card) lines up with text inside cards */
-  .rd .history-intro, .rd .era:not(.era--feature) .era-body, .rd .era-fig figcaption,
-  .rd .pullquote, .rd .site-foot .wrap { padding-left: var(--s-8); padding-right: var(--s-8); }
+  .rd .history-intro, .rd .era:not(.era--feature) .era-body, .rd .era-fig figcaption, .rd .pullquote, .rd .site-foot .wrap { padding-left: var(--s-8); padding-right: var(--s-8); }
   .rd .site-foot .wrap { padding-left: calc(var(--page-margin) + var(--s-8)); padding-right: calc(var(--page-margin) + var(--s-8)); }
   .rd .era-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-8); }
   .rd .era-stats > div { padding: var(--s-16); }
@@ -877,7 +665,6 @@
     border-radius: 0 0 var(--r-md) var(--r-md);
     box-shadow: 0 12px 16px -12px rgba(16, 19, 23, 0.12);
   }
-  .rd .scrolly-graphic .chart-box--pace { height: 30vh; min-height: 200px; }
   .rd .scrolly-steps { padding: 32vh 0 18vh; }
   .rd .step { min-height: 52vh; justify-content: center; }
   .rd .step-card { max-width: none; box-shadow: var(--e2); }
@@ -1263,8 +1050,7 @@
    ========================================================= */
 .rd { --font-num: var(--font-ui); }
 /* Data figures that were set in the mono face keep column alignment with tabular numerals */
-.rd :is(.pyr-num, .pyr-lbl span, .viz-total, .rate-val, .stack-key strong, .dots-readout strong,
-        .rp-readout strong, .tl-when, .yr-x, .contents a b, .toc-list a b) { font-variant-numeric: tabular-nums lining-nums; }
+.rd :is(.rate-val, .stack-key strong, .dots-readout strong, .tl-when, .yr-x, .contents a b, .toc-list a b) { font-variant-numeric: tabular-nums lining-nums; }
 .rd .rm-num { font-family: var(--font-num); font-weight: 600; letter-spacing: -0.03em; }
 .rd .era-stats strong,
 .rd .cell .val,
@@ -1281,9 +1067,7 @@
    Cards sit --gap-card apart; anything that changes the subject gets --gap-section. */
 .rd main.wrap > * { margin-block: 0; }
 .rd main.wrap > * + * { margin-block-start: var(--gap-card); }
-.rd main.wrap > :is(.opening + *, .stats, .story--lede, .part-head, .history, .pullquote, .pullquote + *,
-                    .tracker, .coda, .gallery-head, .note-panel, .donate-grid + .foot-meta,
-                    .book-section, .lists-section) { margin-block-start: var(--gap-section); }
+.rd main.wrap > :is(.opening + *, .stats, .story--lede, .part-head, .history, .pullquote, .pullquote + *, .tracker, .coda, .gallery-head, .note-panel, .donate-grid + .foot-meta, .book-section, .lists-section) { margin-block-start: var(--gap-section); }
 .rd main.wrap > :first-child { margin-block-start: 0; }
 .rd main.wrap { padding-block-end: 0; }
 
@@ -1307,11 +1091,9 @@
 .rd { --touch: 44px; }
 @media (pointer: coarse) {
   .rd :is(.stats-info, .more > summary, .skip-link) { min-height: var(--touch); }
-  .rd :is(.site-nav a, .segmented button, .cs-btn, .legend-chip, .preset, .range-trigger, .century-btn, .coda-links a,
-          .brand, .contents-groups a, .names-more) { position: relative; }
+  .rd :is(.site-nav a, .segmented button, .cs-btn, .century-btn, .coda-links a, .brand, .contents-groups a, .names-more) { position: relative; }
   /* (.century-mark is already absolutely positioned, so its hit area anchors to it as is) */
-  .rd :is(.site-nav a, .segmented button, .cs-btn, .legend-chip, .preset, .range-trigger, .century-btn, .coda-links a,
-          .brand, .contents-groups a, .names-more, .century-mark)::before {
+  .rd :is(.site-nav a, .segmented button, .cs-btn, .century-btn, .coda-links a, .brand, .contents-groups a, .names-more, .century-mark)::before {
     content: "";
     position: absolute;
     inset-block: min(0px, calc((100% - var(--touch)) / 2));

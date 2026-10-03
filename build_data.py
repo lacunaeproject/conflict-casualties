@@ -122,22 +122,20 @@ for i in range(days):
         'total_cum': oct7 + idf + civ,
     })
 
-# Gaza governorate distribution — based on published reporting of population
-# distributions and damage assessments (UNOSAT / OCHA / Airwars reporting patterns).
-# These are proportional estimates applied to the latest total.
-# Sources: UN OCHA pre-war population + UNOSAT damage assessment patterns reported in
-# Al Jazeera and Reuters coverage of 2024-2025.
-gov_distribution = {
-    'Gaza (Gaza City)': 0.33,
-    'North Gaza': 0.18,
-    'Deir al-Balah': 0.11,
-    'Khan Younis': 0.25,
-    'Rafah': 0.13,
-}
-latest_gaza_total = summary['gaza']['killed']['total']
-governorate_estimates = [
-    {'name': name, 'estimated_killed': round(latest_gaza_total * pct), 'share_pct': round(pct * 100, 1)}
-    for name, pct in gov_distribution.items()
+# Since the January 2025 truce the Ministry breaks each day's additions into
+# new killings, deaths from earlier wounds, bodies recovered from rubble and
+# earlier deaths added after committee review. Kept as reported (no filling):
+# a day is included if it reports any part; days with none are simply absent.
+gaza_components = [
+    {
+        'date': r['report_date'],
+        'new': r.get('killed_truce_new') or 0,
+        'succumbed': r.get('killed_succumbed') or 0,
+        'recovered': r.get('killed_recovered') or 0,
+        'committee': r.get('killed_committee') or 0,
+    }
+    for r in gaza_raw
+    if any(r.get(k) is not None for k in ('killed_truce_new', 'killed_succumbed', 'killed_recovered', 'killed_committee'))
 ]
 
 # Oct 7 detailed breakdown (from Wikipedia/Israeli MFA/INSS)
@@ -208,7 +206,7 @@ bundle = {
     'israeli_daily': israeli_series,
     'summary': summary,
     'oct7': oct7,
-    'governorate_estimates': governorate_estimates,
+    'gaza_components': gaza_components,
     'trackers': trackers,
 }
 

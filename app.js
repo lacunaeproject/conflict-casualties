@@ -27,7 +27,9 @@ const C = {
   paper: T('#f3f4f6', '#16181c'),
 };
 
-Chart.defaults.font.family = '"Source Sans 3", sans-serif';
+// Charts use the interface face, like every other label and figure on the page
+const UI_FONT = '"Alegreya Sans LF", "Alegreya Sans Fallback", Arial, sans-serif';   // lining figures by default
+Chart.defaults.font.family = UI_FONT;
 Chart.defaults.font.size = 12;
 Chart.defaults.color = C.ink3;
 Chart.defaults.borderColor = C.rule;
@@ -59,10 +61,10 @@ const TOOLTIP = {
   titleMarginBottom: 6,
   boxPadding: 6,
   usePointStyle: true,
-  titleFont: { family: '"Source Serif 4", serif', weight: '600', size: 13 },
-  bodyFont: { family: '"Source Sans 3", sans-serif', size: 12 },
+  titleFont: { family: '"Alegreya", "Alegreya Fallback", Georgia, serif', weight: '600', size: 14 },
+  bodyFont: { family: UI_FONT, size: 12 },
 };
-const MONO_TICKS = { color: T('#6b7078', '#8a9099'), font: { family: '"Source Sans 3", sans-serif', size: 12 } };
+const MONO_TICKS = { color: T('#6b7078', '#8a9099'), font: { family: UI_FONT, size: 12 } };
 const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (REDUCED_MOTION) Chart.defaults.animation = false;
 const GRID = { color: T('rgba(16,19,23,0.06)', 'rgba(255,255,255,0.07)') };
@@ -153,18 +155,34 @@ function bindStoryNumbers() {
 }
 
 // --- KPIs ---
+// Headline figures: the plain number for screen readers, and a display copy whose
+// commas are optically narrowed (stats.css) so they don't open a gap in the numeral.
+function setFigure(id, n) {
+  const text = fmt(n);
+  const hidden = document.createElement('span');
+  hidden.className = 'visually-hidden';
+  hidden.textContent = text;
+  const display = document.createElement('span');
+  display.setAttribute('aria-hidden', 'true');
+  text.split(',').forEach((part, i) => {
+    if (i) { const c = document.createElement('span'); c.className = 'stats-comma'; c.textContent = ','; display.append(c); }
+    display.append(part);
+  });
+  document.getElementById(id).replaceChildren(hidden, display);
+}
+
 function populateKPIs() {
   const g = DATA.summary.gaza;
   const w = DATA.summary.west_bank;
   const il = DATA.israeli_daily[DATA.israeli_daily.length - 1];
-  document.getElementById('kpi-gaza').textContent = fmt(g.killed.total);
+  setFigure('kpi-gaza', g.killed.total);
   document.getElementById('kpi-gaza-children').textContent = fmt(g.killed.children);
   document.getElementById('kpi-gaza-women').textContent = fmt(g.killed.women);
-  document.getElementById('kpi-wb').textContent = fmt(w.killed.total);
+  setFigure('kpi-wb', w.killed.total);
   document.getElementById('kpi-wb-children').textContent = fmt(w.killed.children);
   document.getElementById('kpi-wb-settler').textContent = fmt(w.settler_attacks);
-  document.getElementById('kpi-oct7').textContent = fmt(DATA.oct7.total);
-  document.getElementById('kpi-idf').textContent = fmt(il.idf_gaza_cum);
+  setFigure('kpi-oct7', DATA.oct7.total);
+  setFigure('kpi-idf', il.idf_gaza_cum);
 }
 
 function populateOct7() { /* static in HTML */ }
@@ -370,7 +388,7 @@ const truceBands = {
       ctx.fillRect(x0, area.top, x1 - x0, area.bottom - area.top);
       if (x1 - x0 > 30) {
         ctx.fillStyle = T('#6b7078', '#8a9099');
-        ctx.font = `600 ${x1 - x0 > 44 ? 11 : 10}px "Source Sans 3", sans-serif`;
+        ctx.font = `600 ${x1 - x0 > 44 ? 11 : 10}px ${UI_FONT}`;
         ctx.textBaseline = 'top';
         ctx.fillText(b.startsWith('9999') ? 'Ceasefire' : 'Truce', x0 + 6, area.top + 6);
       }
@@ -402,7 +420,7 @@ const endLabels = {
       if (i > 0 && items[i - 1].y - it.y < 14) it.y = items[i - 1].y - 14;
     });
     ctx.save();
-    ctx.font = '600 11px "Source Sans 3", sans-serif';
+    ctx.font = `600 11px ${UI_FONT}`;
     ctx.textBaseline = 'middle';
     // Soft series colors are too light for 11px text; darken them for labels.
     const labelColor = c => (c === C.palSoft ? T('#5f6a44', '#8f9c6c') : c === C.isrSoft ? T('#4f6a84', '#7d98b3') : c);
@@ -446,7 +464,7 @@ const eventMarkers = {
       ctx.arc(bx, area.top - 12, 9, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = T('#ffffff', '#16181b');
-      ctx.font = '600 10px "Source Sans 3", sans-serif';
+      ctx.font = `600 10px ${UI_FONT}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(String(i + 1), bx, area.top - 11.5);
@@ -597,7 +615,7 @@ function buildGovChart() {
       afterDatasetsDraw(chart) {
         const { ctx } = chart;
         ctx.save();
-        ctx.font = '500 11px "IBM Plex Mono", monospace';
+        ctx.font = `500 11px ${UI_FONT}`;
         ctx.fillStyle = C.ink3;
         ctx.textBaseline = 'middle';
         chart.getDatasetMeta(0).data.forEach((bar, i) => {
@@ -714,7 +732,7 @@ function buildPaceChart() {
           c.strokeStyle = C.ink; c.lineWidth = 1;
           c.beginPath(); c.moveTo(x0, y + 6); c.lineTo(x0, y); c.lineTo(x1, y); c.lineTo(x1, y + 6); c.stroke();
           c.fillStyle = C.ink;
-          c.font = '600 12px "Source Sans 3", sans-serif';
+          c.font = `600 12px ${UI_FONT}`;
           c.textBaseline = 'bottom';
           const label = `${fmt(total)} deaths reported`;
           const w = c.measureText(label).width;
@@ -730,7 +748,7 @@ function buildPaceChart() {
       const text = `${fmt(peak.total)} in ${monthLabel(peak.key)}`;
       ctx.save();
       ctx.fillStyle = C.ink;
-      ctx.font = '600 12px "Source Sans 3", sans-serif';
+      ctx.font = `600 12px ${UI_FONT}`;
       ctx.textBaseline = 'bottom';
       const w = ctx.measureText(text).width;
       const x = Math.min(bar.x - bar.width / 2, chartArea.right - w);

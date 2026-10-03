@@ -17,6 +17,10 @@
 
 /* ---------- Tokens ---------- */
 .rd {
+  /* The interface and data face (see the Faces block at the top of styles.css). Alegreya and
+     Alegreya Sans are one designed family: x-heights 0.456 and 0.461, cap heights 0.637 and 0.641. */
+  --font-ui: "Alegreya Sans LF", "Alegreya Sans Fallback", Arial, sans-serif;
+
   --bg:        #f4f5f7;
   --surface:   #ffffff;
   --surface-2: #f4f5f7;
@@ -234,26 +238,24 @@
   .rd .hero.hero--opener .hero-credit { position: static; text-align: left; max-width: none; margin-top: 16px; }
 }
 
-/* ---------- Badges (eyebrows, kickers, status) ---------- */
+/* ---------- Kickers: quiet sentence-case text above a heading, never a chip ---------- */
 .rd .eyebrow,
 .rd .era-years,
 .rd .step-when,
 .rd .part-num {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: block;
   width: auto;
-  padding: 5px 12px;
-  border-radius: var(--pill);
-  background: var(--fill);
-  color: var(--text-2);
-  font: 600 0.78rem/1.2 var(--font-body);
-  letter-spacing: 0.01em;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--text-3);
+  font: 500 0.9375rem/1.3 var(--font-ui);
+  letter-spacing: -0.005em;
   text-transform: none;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
-.rd .eyebrow--isr { background: var(--isr-bg); color: var(--isr); }
-.rd .era--now .era-years { background: var(--pal-bg); color: var(--pal); }
+.rd .eyebrow--isr { background: none; color: var(--text-3); }   /* both sides at equal weight */
+.rd .era--now .era-years { background: none; color: var(--pal); }
 
 /* ---------- Surfaces: every chapter is a soft card ---------- */
 .rd .panel,
@@ -269,7 +271,7 @@
 .rd .context-card:not(.tracker + .context-card) .card {
   background: var(--surface);
   border: 0;
-  border-radius: var(--r-lg);
+  border-radius: var(--r-xl);   /* the key figures' tile radius, so every card reads as one family */
   box-shadow: var(--e1);
   padding: var(--rd-pad);
   overflow: visible;
@@ -293,7 +295,7 @@
 .rd .story--lede {
   margin-top: var(--rd-gap) !important;
   background: var(--surface);
-  border-radius: var(--r-lg);
+  border-radius: var(--r-xl);
   box-shadow: var(--e1);
   padding: var(--rd-pad);
   max-width: none;
@@ -437,56 +439,41 @@
 .rd .ann-num { background: var(--text); color: var(--bg); }
 .rd .chart-foot { color: var(--text-4); }
 
-/* ---------- "More" disclosures: pill buttons ---------- */
+/* ---------- "More" disclosures: text and a chevron, like the key figures' control ---------- */
 .rd .more { border: 0; padding: 0; margin-top: 24px; }
 .rd .more > summary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 38px;
-  padding: 0 16px 0 12px;
-  border-radius: var(--pill);
-  background: var(--fill);
-  color: var(--text);
-  font: 600 0.86rem/1 var(--font-body);
+  gap: var(--space-2);
+  min-height: 32px;
+  margin-left: calc(-1 * var(--space-2));
+  padding: 0 var(--space-2);
+  border-radius: var(--r-xs);
+  background: none;
+  color: var(--text-2);
+  font: 500 0.875rem/1 var(--font-ui);
+  list-style: none;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.15s var(--ease), transform 0.12s var(--ease);
+  transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
 }
-.rd .more > summary:hover { background: var(--fill-2); }
-.rd .more > summary:active { transform: scale(0.97); }
-.rd .more > summary::before {
+.rd .more > summary::-webkit-details-marker { display: none; }
+.rd .more > summary::before { content: none; }
+.rd .more > summary::after {
   content: "";
-  width: 18px; height: 18px;
-  border: 0;
-  border-radius: 50%;
-  background: var(--text) no-repeat center / 10px 10px;
-  -webkit-mask: none;
-  mask: none;
-  background-image: none;
-  position: relative;
-  flex: none;
-  /* plus sign drawn with gradients */
-  background:
-    linear-gradient(var(--bg), var(--bg)) center / 8px 1.6px no-repeat,
-    linear-gradient(var(--bg), var(--bg)) center / 1.6px 8px no-repeat,
-    var(--text);
-  transition: transform 0.25s var(--ease);
-  margin: 0;
+  width: 5px;
+  height: 5px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-1px) rotate(45deg);
+  transition: transform 0.3s var(--ease);
 }
-.rd .more[open] > summary::before {
-  content: "";
-  transform: rotate(45deg);
-}
-.rd .more[open] > summary { background: var(--surface-2); }
+.rd .more[open] > summary::after { transform: translateY(1px) rotate(-135deg); }
+.rd .more > summary:hover { background: var(--fill); color: var(--text); }
+.rd .more > summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .rd .more > :not(summary) { margin-top: 16px; }
-.rd .more--night > summary { background: rgba(255, 255, 255, 0.1); color: #f1f3f5; }
-.rd .more--night > summary::before {
-  background:
-    linear-gradient(#111317, #111317) center / 8px 1.6px no-repeat,
-    linear-gradient(#111317, #111317) center / 1.6px 8px no-repeat,
-    #f1f3f5;
-}
+.rd .more--night > summary { color: #d9dce1; }
+.rd .more--night > summary:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
 
 /* ---------- Stat tiles ---------- */
 .rd .oct7-grid, .rd .who-grid { gap: 10px; border: 0; }
@@ -497,9 +484,8 @@
   padding: 16px 18px 18px;
   transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
-.rd .oct7-grid .cell .lbl, .rd .who-grid .cell .lbl { color: var(--text-3); text-transform: none; letter-spacing: 0; font-weight: 600; }
-.rd .who-grid .cell .val { color: var(--pal); }
-.rd .oct7-grid .cell .val { color: var(--isr); }
+.rd .oct7-grid .cell .lbl, .rd .who-grid .cell .lbl { color: var(--text-3); text-transform: none; letter-spacing: 0; font-weight: 500; }
+.rd .who-grid .cell .val, .rd .oct7-grid .cell .val { color: var(--text); }
 
 /* Stacked bars: rounded, gapped segments */
 .rd .stackbar { gap: 3px; height: 14px; border-radius: var(--pill); overflow: hidden; background: transparent; }
@@ -536,6 +522,8 @@
   border: 0;
 }
 .rd .century-wrap.is-dark { background: rgba(20, 22, 26, 0.6) !important; }
+/* The timeline's kicker: sentence case, like every other kicker */
+.rd .century-kicker { font: 500 0.8125rem/1.3 var(--font-ui); letter-spacing: -0.005em; text-transform: none; }
 .rd .century-btn {
   border: 0;
   border-radius: 50%;
@@ -634,7 +622,7 @@
 
 /* ---------- Fixes from the first review pass ---------- */
 .rd .eyebrow { align-self: flex-start; }
-.rd .coda .eyebrow { background: rgba(255, 255, 255, 0.1); color: #d5dcc4; }
+.rd .coda .eyebrow { background: none; color: #c9d0b4; }
 .rd .site-foot, .rd .site-foot span, .rd .site-foot p, .rd .foot-col { color: var(--text-3); }
 .rd .era--now::before, .rd .era--now::after { display: none; }
 .rd .era--now { border-top: 0 !important; }
@@ -761,11 +749,9 @@
 
 /* ---------- Hover lift for interactive surfaces (pointer devices) ---------- */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .rd .who-grid .cell:hover,
-  .rd .oct7-grid .cell:hover { transform: translateY(-2px); box-shadow: var(--e2); background: var(--surface); }
   .rd .legend-chip:hover,
   .rd .range-trigger:hover,
-  .rd .more > summary:hover { transform: translateY(-1px); }
+  .rd .range-trigger:active { transform: scale(0.97); }
 }
 
 /* ---------- Reduced motion: no transforms, no transitions ---------- */
@@ -868,11 +854,13 @@
 .rd .panel-head .dek, .rd .split .dek, .rd .context-dek, .rd .viz-sub { max-width: var(--measure); }
 .rd .panel-head .eyebrow, .rd .split .card > .eyebrow, .rd .context-lede .eyebrow { margin-bottom: 14px; }
 .rd .panel-head h2, .rd .split h2, .rd .context-lede h2 {
-  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
-  line-height: 1.12;
-  margin: 0 0 10px;
+  font-size: clamp(1.875rem, 1.3rem + 1.8vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+  margin: 0 0 var(--space-3);
 }
-.rd .panel-head .dek, .rd .split .dek, .rd .context-dek { font-size: clamp(1rem, 1.2vw, 1.08rem); line-height: 1.55; margin: 0; }
+.rd .split h2 { font-size: clamp(1.75rem, 1.2rem + 1.2vw, 2.5rem); }
+.rd .panel-head .dek, .rd .split .dek, .rd .context-dek { font-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem); line-height: 1.5; margin: 0; }
 .rd .context-inner { gap: 32px; }
 .rd .controls { margin-top: 0; }
 .rd .viz-title { font-size: 0.92rem; font-weight: 600; color: var(--text); }
@@ -907,7 +895,8 @@
 /* Ceasefire rates: two equal tiles */
 .rd .rate-moment { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 640px; }
 .rd .rm-col { padding: 22px 24px; }
-.rd .rm-num { font-size: clamp(3.4rem, 7vw, 5.6rem); line-height: 1; }
+.rd .rm-num { font-size: clamp(3.5rem, 2rem + 4vw, 5.5rem); line-height: 1; color: var(--text); }
+.rd .rm-col--now .rm-num { color: var(--text-3); }
 .rd .rm-lbl { margin-top: 12px; font-size: 0.9rem; }
 .rd .viz-block { max-width: none; }
 .rd .context-inner > .viz-block { max-width: 640px; }
@@ -915,8 +904,8 @@
 /* Stat tiles: fill the row, no orphans */
 .rd .who-grid, .rd .oct7-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .rd .who-grid .cell:last-child:nth-child(odd) { grid-column: 1 / -1; }
-.rd .oct7-grid .cell .val, .rd .who-grid .cell .val { font-size: clamp(1.4rem, 2vw, 1.7rem); margin-top: 6px; line-height: 1.1; }
-.rd .oct7-grid .cell .lbl, .rd .who-grid .cell .lbl { font-size: 0.8rem; }
+.rd .oct7-grid .cell .val, .rd .who-grid .cell .val { font-size: clamp(1.75rem, 1.3rem + 1vw, 2.25rem); margin-top: var(--space-2); line-height: 1; }
+.rd .oct7-grid .cell .lbl, .rd .who-grid .cell .lbl { font-size: 0.8125rem; line-height: 1.3; }
 .rd .people { gap: clamp(28px, 4vw, 56px); }
 .rd .multiples { gap: clamp(28px, 4vw, 48px); }
 @media (max-width: 1023px) { .rd .people { grid-template-columns: 1fr; } }
@@ -1442,6 +1431,11 @@
 /* Chapter rail: the page's chapters, current one filled */
 .rd .chapter-rail { border-top: 1px solid var(--glass-edge); }
 .rd .chapter-rail[hidden] { display: none; }
+/* ui.js always fills and shows the rail; hold its height until then so the page doesn't drop
+   (one 32px row + 6px track padding top and bottom + the 1px rule). Phones overlay it instead. */
+@media (min-width: 641px) {
+  .rd .chapter-rail[hidden] { display: block; visibility: hidden; min-height: calc(32px + 2 * 6px + 1px); }
+}
 .rd .cr-track {
   max-width: 1240px;
   margin: 0 auto;
@@ -1521,10 +1515,12 @@
    number stays in the serif on purpose: it is a tribute, not
    a statistic.
    ========================================================= */
-.rd { --font-num: var(--font-body); }
-/* Big numbers stay regular; small stat tiles go semibold so they hold up. */
-.rd .kpi-value,
-.rd .rm-num { font-family: var(--font-num); font-weight: 400; letter-spacing: -0.03em; }
+.rd { --font-num: var(--font-ui); }
+/* Data figures that were set in the mono face keep column alignment with tabular numerals */
+.rd :is(.pyr-num, .pyr-lbl span, .viz-total, .rate-val, .stack-key strong, .dots-readout strong,
+        .rp-readout strong, .tl-when, .yr-x, .contents a b, .toc-list a b) { font-variant-numeric: tabular-nums lining-nums; }
+.rd .kpi-value { font-family: var(--font-num); font-weight: 400; letter-spacing: -0.03em; }
+.rd .rm-num { font-family: var(--font-num); font-weight: 600; letter-spacing: -0.03em; }
 .rd .era-stats strong,
 .rd .cell .val,
 .rd .yr-facts strong,

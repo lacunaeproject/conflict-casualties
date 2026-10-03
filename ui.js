@@ -206,7 +206,7 @@ const CONFLICTS = [
   };
 
   // Phone: the rail takes the site nav's row once the reader is past the opener.
-  const hero = document.querySelector('.hero');
+  const hero = document.querySelector('.hero, .opening');
   let current, queued = false;
   const check = () => {
     queued = false;
@@ -222,3 +222,12 @@ const CONFLICTS = [
   window.addEventListener('resize', queue);
   check();
 })();
+
+/* Key figures: Escape closes an open detail layer and returns focus to its control */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const open = document.activeElement && document.activeElement.closest('.stats-details[open]');
+  if (!open) return;
+  open.open = false;
+  open.querySelector('summary').focus();
+});

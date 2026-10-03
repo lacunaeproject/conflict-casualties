@@ -73,15 +73,15 @@
  }
 ]
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&amp;family=Source+Sans+3:wght@400..700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/alegreya-roman.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/alegreya-sans-lf-regular.woff2" as="font" type="font/woff2" crossorigin>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<link rel="preload" as="image" href="img/oct7-satellite-fires.webp" fetchpriority="high" />
-<link rel="stylesheet" href="styles.css?v=202609271530" />
-<link rel="stylesheet" href="resources.css?v=202609271530" />
-<link rel="stylesheet" href="ui.css?v=202610012100" />
+<link rel="stylesheet" href="styles.css?v=202610031800" />
+<link rel="stylesheet" href="resources.css?v=202610031800" />
+<link rel="stylesheet" href="ui.css?v=202610031800" />
+<link rel="stylesheet" href="opening.css?v=202610031800" />
+<link rel="stylesheet" href="stats.css?v=202610031800" />
 </head>
 <body>
 
@@ -119,42 +119,97 @@
 
 <main class="wrap" id="main-content">
 
-<!-- HERO: full-screen opener over the October 7 satellite image, with the headline totals -->
-<section class="hero hero--opener">
-  <div class="card">
-    <div class="hero-grain" aria-hidden="true"></div>
-    <div class="hero-inner">
-      <div class="hero-dateline">
-        <span class="byline-live"><i class="live-dot" aria-hidden="true"></i>Updated <time data-bind="meta.data_as_of">Sep 24, 2026</time></span>
-        <span>Day <span data-bind="meta.days_of_data">1,084</span> of the war</span>
-      </div>
-      <h1>Every Life Is a Universe</h1>
-      <p class="hero-dek">A running count of reported fatalities in Gaza, the West Bank, and Israel — drawn from the Gaza Ministry of Health, UN OCHA, B’Tselem, and <em>The Lancet</em>. Totals differ by source; all figures are reported as <em>killed</em>, not injured.</p>
-      <p class="hero-sources">Sources: Gaza MoH · UN OCHA · B’Tselem · The Lancet · IDF press releases</p>
+<!-- OPENING: headline and totals on the page ground, then the October 7 satellite plate,
+     which widens to full bleed as it scrolls in. Styles in opening.css. -->
+<section class="opening" aria-labelledby="opening-title">
+  <p class="opening-dateline"><span class="opening-live" aria-hidden="true"></span>Updated <time data-bind="meta.data_as_of">Sep 24, 2026</time><span class="opening-sep" aria-hidden="true">·</span>Day <span data-bind="meta.days_of_data">1,084</span> of the war</p>
+  <h1 class="opening-title" id="opening-title"><span class="opening-line"><span>Every Life Is</span></span> <span class="opening-line"><span>a Universe</span></span></h1>
+  <p class="opening-dek">A running count of reported fatalities in Gaza, the West Bank, and Israel&nbsp;— drawn from the Gaza Ministry of Health, UN&nbsp;OCHA, B’Tselem, and <em>The&nbsp;Lancet</em>. Totals differ by source; all figures are reported as <em>killed</em>, not injured.</p>
+  <figure class="opening-plate">
+    <div class="opening-frame">
+      <picture>
+        <source media="(max-width: 640px)" type="image/avif" srcset="img/oct7-plate-crop-640.avif 640w, img/oct7-plate-crop-1280.avif 1279w" sizes="100vw" width="1279" height="959">
+        <source media="(max-width: 640px)" type="image/webp" srcset="img/oct7-plate-crop-640.webp 640w, img/oct7-plate-crop-1280.webp 1279w" sizes="100vw" width="1279" height="959">
+        <source type="image/avif" srcset="img/oct7-plate-960.avif 960w, img/oct7-plate-1600.avif 1600w, img/oct7-plate-2400.avif 2400w" sizes="100vw">
+        <img class="opening-img" src="img/oct7-plate-1600.webp" srcset="img/oct7-plate-960.webp 960w, img/oct7-plate-1600.webp 1600w, img/oct7-plate-2400.webp 2400w" sizes="100vw"
+             width="2400" height="959" fetchpriority="high" decoding="async"
+             alt="Satellite view of the Gaza Strip and southern Israel on October 7, 2023. Smoke rises along the border fence, and fires detected in infrared are marked in yellow on both sides of it.">
+      </picture>
     </div>
-    <section class="kpi-row" id="headline-totals" aria-label="Headline totals">
-      <div class="kpi kpi-pal kpi--lead">
-        <div class="kpi-label">Palestinians killed · Gaza</div>
-        <div class="kpi-value" id="kpi-gaza">73,928</div>
-        <div class="kpi-foot">Gaza Ministry of Health · <span id="kpi-gaza-children">20,179</span> children · <span id="kpi-gaza-women">12,500</span> women</div>
-      </div>
-      <div class="kpi kpi-pal">
-        <div class="kpi-label">Palestinians killed · West Bank</div>
-        <div class="kpi-value" id="kpi-wb">1,123</div>
-        <div class="kpi-foot"><span id="kpi-wb-children">240</span> children · <span id="kpi-wb-settler">4,655</span> settler attacks</div>
-      </div>
-      <div class="kpi kpi-isr">
-        <div class="kpi-label">Israelis killed · October 7</div>
-        <div class="kpi-value" id="kpi-oct7">1,195</div>
-        <div class="kpi-foot">724 civilians · 373 security · 98 foreign &amp; other</div>
-      </div>
-      <div class="kpi kpi-isr">
-        <div class="kpi-label">Israeli soldiers · Gaza operations</div>
-        <div class="kpi-value" id="kpi-idf">477</div>
-        <div class="kpi-foot">since ground invasion, Oct 27, 2023</div>
-      </div>
-    </section>
-    <p class="hero-credit">Satellite view of the Gaza Strip and southern Israel, October 7, 2023. <span class="fire-key"><i aria-hidden="true"></i>Fires detected in infrared</span> Contains modified Copernicus Sentinel data (2023), processed by Pierre Markuse · via <a href="https://commons.wikimedia.org/wiki/File:Fires_in_Israel_and_the_Gaza_strip_-_7_October_2023_(53245908850).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 2.0</p>
+    <figcaption class="opening-credit"><span class="opening-firekey"><i aria-hidden="true"></i>Fires detected in infrared</span> Satellite view of the Gaza Strip and southern Israel, October 7, 2023. Contains modified Copernicus Sentinel data (2023), processed by Pierre Markuse · via <a href="https://commons.wikimedia.org/wiki/File:Fires_in_Israel_and_the_Gaza_strip_-_7_October_2023_(53245908850).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 2.0</figcaption>
+  </figure>
+</section>
+
+<!-- KEY FIGURES: four counts as bento tiles. Each tile: label, figure, breakdown, source,
+     and a detail layer (a native disclosure). Styles in stats.css. -->
+<section class="stats" aria-labelledby="stats-title">
+  <h2 class="stats-title" id="stats-title">Killed since October&nbsp;7, 2023</h2>
+  <dl class="stats-grid" id="headline-totals">
+    <div class="stats-tile stats-tile--lead stats-tile--pal">
+      <dt class="stats-label">Palestinians killed in Gaza</dt>
+      <dd class="stats-num" id="kpi-gaza"><span class="visually-hidden">73,928</span><span aria-hidden="true">73<span class="stats-comma">,</span>928</span></dd>
+      <dd class="stats-break"><span><b id="kpi-gaza-children">20,179</b> children</span><span><b id="kpi-gaza-women">12,500</b> women</span></dd>
+      <dd class="stats-src"><span>Gaza Ministry of Health</span><span>Oct 7, 2023 – <time datetime="2026-09-24" data-bind="meta.data_as_of">Sep 24, 2026</time></span></dd>
+      <dd class="stats-more">
+        <details class="stats-details">
+          <summary class="stats-info"><span class="stats-info-open">About this figure</span><span class="stats-info-close">Close</span></summary>
+          <div class="stats-detail" id="stats-detail-gaza">
+            <p>Palestinians killed in the Gaza Strip by direct violence, as recorded by the Gaza Ministry of Health and republished by Tech for Palestine.</p>
+            <p>The children and women counts were last updated in October 2025 and July 2025.</p>
+            <p><a href="https://data.techforpalestine.org/" target="_blank" rel="noopener">Tech for Palestine dataset</a></p>
+          </div>
+        </details>
+      </dd>
+    </div>
+    <div class="stats-tile stats-tile--wide stats-tile--pal">
+      <dt class="stats-label">Palestinians killed in the West&nbsp;Bank</dt>
+      <dd class="stats-num" id="kpi-wb"><span class="visually-hidden">1,123</span><span aria-hidden="true">1<span class="stats-comma">,</span>123</span></dd>
+      <dd class="stats-break"><span><b id="kpi-wb-children">240</b> children</span></dd>
+      <dd class="stats-src"><span>UN OCHA</span><span>Oct 7, 2023 – <time datetime="2026-09-14">Sep 14, 2026</time></span></dd>
+      <dd class="stats-more">
+        <details class="stats-details">
+          <summary class="stats-info"><span class="stats-info-open">About this figure</span><span class="stats-info-close">Close</span></summary>
+          <div class="stats-detail" id="stats-detail-wb">
+            <p>Palestinians killed in the occupied West Bank, including East Jerusalem, by Israeli forces and settlers.</p>
+            <p>OCHA’s most recent report in this data is from September 14, 2026.</p>
+            <p><a href="https://www.ochaopt.org/" target="_blank" rel="noopener">UN OCHA, occupied Palestinian territory</a></p>
+          </div>
+        </details>
+      </dd>
+    </div>
+    <div class="stats-tile stats-tile--isr">
+      <dt class="stats-label">Israelis killed on October&nbsp;7</dt>
+      <dd class="stats-num" id="kpi-oct7"><span class="visually-hidden">1,195</span><span aria-hidden="true">1<span class="stats-comma">,</span>195</span></dd>
+      <dd class="stats-break"><span><b>724</b> civilians</span><span><b>373</b> security forces</span><span><b>98</b> foreign &amp; other</span></dd>
+      <dd class="stats-src"><span>Israeli MFA, INSS, B’Tselem</span><span><time datetime="2023-10-07">Oct 7, 2023</time></span></dd>
+      <dd class="stats-more">
+        <details class="stats-details">
+          <summary class="stats-info"><span class="stats-info-open">About this figure</span><span class="stats-info-close">Close</span></summary>
+          <div class="stats-detail" id="stats-detail-oct7">
+            <p>People killed in the October 7 attack on southern Israel.</p>
+            <p>Of the 98, 71 were foreign nationals; the other 27 are recorded as “other and revised.”</p>
+          </div>
+        </details>
+      </dd>
+    </div>
+    <div class="stats-tile stats-tile--isr">
+      <dt class="stats-label">Israeli soldiers killed in&nbsp;Gaza</dt>
+      <dd class="stats-num" id="kpi-idf"><span class="visually-hidden">477</span><span aria-hidden="true">477</span></dd>
+      <dd class="stats-break"><span>Ground operation, from Oct&nbsp;27,&nbsp;2023</span></dd>
+      <dd class="stats-src"><span>IDF, The Times of Israel</span><span>to <time datetime="2026-09-24" data-bind="meta.data_as_of">Sep 24, 2026</time></span></dd>
+      <dd class="stats-more">
+        <details class="stats-details">
+          <summary class="stats-info"><span class="stats-info-open">About this figure</span><span class="stats-info-close">Close</span></summary>
+          <div class="stats-detail" id="stats-detail-idf">
+            <p>Israeli soldiers killed in the Gaza ground operation, which began on October 27, 2023. Soldiers killed on October 7 are counted in the October 7 figure.</p>
+          </div>
+        </details>
+      </dd>
+    </div>
+  </dl>
+  <div class="stats-foot">
+    <p class="stats-key"><span class="stats-key-item stats-key-item--pal">Palestinian</span><span class="stats-key-item stats-key-item--isr">Israeli</span></p>
+    <p class="stats-asof">Latest figures as of <time datetime="2026-09-24" data-bind="meta.data_as_of">Sep 24, 2026</time>; West Bank as of Sep 14. Also recorded in the West Bank: <b id="kpi-wb-settler">4,655</b> settler attacks (incidents, not deaths). Each figure is its source’s own count over the period shown; they aren’t added together. <a href="#sources">How these figures are sourced</a></p>
   </div>
 </section>
 
@@ -842,6 +897,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=202610011700"></script><script src="ui.js?v=202610011900" defer></script><script src="motion.js?v=202609271530" defer></script>
+<script src="app.js?v=202610031800"></script><script src="ui.js?v=202610031200" defer></script><script src="motion.js?v=202609271530" defer></script>
 </body>
 </html>

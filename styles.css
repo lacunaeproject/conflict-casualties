@@ -1,9 +1,61 @@
 /* =========================================================
    Conflict Casualties — editorial card system
-   Source Serif 4 (display) + Source Sans 3 (body) + IBM Plex Mono (numeric)
+   Alegreya (editorial) + Alegreya Sans LF (interface and data)
    Cool neutral gray-white page, white cards, oxblood and navy series
    of matched lightness so neither side reads visually heavier.
    ========================================================= */
+
+/* ---------- Faces ----------
+   Alegreya (serif) carries the editorial voice: headlines, decks, prose, pull quotes,
+   the memorial number. Its default figures are old-style, which sit well in prose.
+   Alegreya Sans LF carries interface and data: labels, figures, captions, controls,
+   charts. It's Alegreya Sans (OFL 1.1) with lining figures made the default, renamed
+   as the licence asks of modified versions, so every figure in the interface lines up
+   without per-element feature rules, and canvas charts get lining figures too.
+   Both are self-hosted, subset to Latin (Arabic falls back to the system face).
+   Both are set 6% larger than nominal (size-adjust): Alegreya's x-height is small for
+   its point size, and this keeps every existing size step legible without touching them. */
+@font-face {
+  font-family: "Alegreya";
+  src: url("fonts/alegreya-roman.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 106%;
+}
+@font-face {
+  font-family: "Alegreya";
+  src: url("fonts/alegreya-italic.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+  size-adjust: 106%;
+}
+@font-face { font-family: "Alegreya Sans LF"; src: url("fonts/alegreya-sans-lf-regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; size-adjust: 106%; }
+@font-face { font-family: "Alegreya Sans LF"; src: url("fonts/alegreya-sans-lf-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; size-adjust: 106%; }
+@font-face { font-family: "Alegreya Sans LF"; src: url("fonts/alegreya-sans-lf-medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; size-adjust: 106%; }
+@font-face { font-family: "Alegreya Sans LF"; src: url("fonts/alegreya-sans-lf-bold.woff2") format("woff2"); font-weight: 600 700; font-style: normal; font-display: swap; size-adjust: 106%; }
+
+/* Metric-matched fallbacks: while the faces load, local Georgia and Arial are scaled to
+   Alegreya's widths and line metrics, so text doesn't reflow when they swap in. */
+/* Widths measured in the browser against the page's own text (constant across 15–20px), times
+   the faces' 106%; line metrics from each face's tables over the unscaled width ratio. */
+@font-face {
+  font-family: "Alegreya Fallback";
+  src: local("Georgia");
+  size-adjust: 96.45%;   /* 90.99% × 1.06 */
+  ascent-override: 111.66%;
+  descent-override: 37.92%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Alegreya Sans Fallback";
+  src: local("Arial"), local("ArialMT");
+  size-adjust: 90.35%;   /* 85.24% × 1.06 */
+  ascent-override: 93.85%;
+  descent-override: 23.46%;
+  line-gap-override: 23.46%;
+}
 
 :root {
   /* Paper / ink — cool, neutral gray-white */
@@ -53,10 +105,10 @@
   --radius-xl:  28px;
 
   /* Type families */
-  --font-display: "Source Serif 4", "Charter", "Iowan Old Style", Georgia, "Times New Roman", serif;
-  --font-body:    "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Alegreya", "Alegreya Fallback", Georgia, serif;
+  --font-body:    "Alegreya Sans LF", "Alegreya Sans Fallback", Arial, sans-serif;
   --font-sans:    var(--font-body);
-  --font-mono:    "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-mono:    var(--font-body);   /* data figures use the sans: lining, and tabular where they set it */
 
   --text-xs:   0.8rem;
   --text-sm:   0.92rem;
@@ -1366,8 +1418,9 @@ body { overflow-x: clip; }
    ========================================================= */
 html.motion .reveal {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.8s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: translateY(24px);
+  /* the key figures' curve: smooth and decelerating */
+  transition: opacity 0.8s cubic-bezier(0.28, 0.11, 0.32, 1), transform 0.9s cubic-bezier(0.28, 0.11, 0.32, 1);
 }
 html.motion .reveal.in { opacity: 1; transform: none; }
 
@@ -2865,10 +2918,6 @@ html { scrollbar-gutter: stable; }
 p, li, figcaption, .dek { text-wrap: pretty; }
 h1, h2, h3, h4, .story-dek, .coda-line { text-wrap: balance; }
 
-/* Optical sizes: display cuts for big type, caption cuts for small */
-.hero h1, .part-head h2, .coda-num, .rm-num { font-variation-settings: "opsz" 60; }
-.panel-head h2, .era h3, .context-lede h2, .split h2 { font-variation-settings: "opsz" 36; }
-.era-fig figcaption, .chart-foot, .names-source { font-variation-settings: "opsz" 10; }
 .kpi-value, .era-stats strong, .pf-val, .cc-val { font-variant-numeric: lining-nums tabular-nums; }
 
 /* Hero: calmer — static live dot, cue aligned to the text column */
@@ -2885,7 +2934,7 @@ h1, h2, h3, h4, .story-dek, .coda-line { text-wrap: balance; }
 
 /* Headline numbers: Gaza leads */
 .hero + .kpi-row { grid-template-columns: 2fr 1fr 1fr 1fr; align-items: end; }
-.kpi--lead .kpi-value { font-size: clamp(3.2rem, 7vw, 6rem); font-weight: 500; letter-spacing: -0.03em; font-variation-settings: "opsz" 60; }
+.kpi--lead .kpi-value { font-size: clamp(3.2rem, 7vw, 6rem); font-weight: 500; letter-spacing: -0.03em; }
 .kpi-foot { text-wrap: balance; }
 @media (max-width: 1000px) {
   .hero + .kpi-row { grid-template-columns: 1fr 1fr 1fr; }
@@ -2970,7 +3019,6 @@ h1, h2, h3, h4, .story-dek, .coda-line { text-wrap: balance; }
   letter-spacing: -0.015em;
   color: var(--ink);
   text-indent: -0.4em;
-  font-variation-settings: "opsz" 48;
 }
 .era-quote p::before { content: "“"; }
 .era-quote p::after { content: "”"; }
@@ -3057,9 +3105,9 @@ h1, h2, h3, h4, .story-dek, .coda-line { text-wrap: balance; }
   font-weight: 300;
   font-size: clamp(4rem, 13vw, 10rem);
   line-height: 0.9;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.02em;
   color: #fff;
-  font-variant-numeric: lining-nums tabular-nums;
+  font-variant-numeric: lining-nums proportional-nums;   /* one figure, no column to align: no tabular gap at the comma */
 }
 .coda-line {
   max-width: 32ch;
@@ -3215,7 +3263,7 @@ main:has(.coda) + .site-foot { margin-top: 0; }
 .site-head .brand-mark { color: #fff; }
 .site-head .brand-mark circle:last-child { fill: #c6d3a6; }
 .foot-brand .brand-mark circle:last-child { fill: #c6d3a6; }
-.brand-title { font-variation-settings: "opsz" 28; letter-spacing: -0.012em; }
+.brand-title { letter-spacing: -0.012em; }
 .site-nav { gap: var(--space-6); }
 .site-nav a { padding: 8px 0; }
 .site-head .site-nav a.active { color: #fff; border-bottom-color: #fff; }
@@ -3279,7 +3327,6 @@ main:has(.coda) + .site-foot { margin-top: 0; }
   letter-spacing: -0.035em;
   max-width: 13ch;
   margin-bottom: var(--space-6);
-  font-variation-settings: "opsz" 60;
 }
 .hero--page p:not(.hero-credit) { max-width: 38rem; color: #e1e5ea; }
 .hero--page .hero-credit { max-width: 38rem; margin-top: var(--space-6); }
@@ -3424,7 +3471,6 @@ main:has(.coda) + .site-foot { margin-top: 0; }
   font-weight: 400;
   font-size: clamp(2rem, 3.2vw, 2.9rem);
   letter-spacing: -0.03em;
-  font-variation-settings: "opsz" 60;
 }
 .hero.hero--opener .kpi--lead .kpi-value { font-size: clamp(3rem, 6vw, 5.2rem); line-height: 0.95; }
 .hero.hero--opener .kpi-foot { color: var(--night-ink-2); font-size: 0.8rem; }
@@ -3524,7 +3570,6 @@ main:has(.coda) + .site-foot { margin-top: 0; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-variation-settings: "opsz" 24;
 }
 
 /* Track: evenly spaced years, one row */

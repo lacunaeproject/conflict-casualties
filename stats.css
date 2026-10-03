@@ -1,0 +1,242 @@
+/* =========================================================
+   Key figures — four counts as bento tiles, on the page ground
+   directly after the opening plate. Follows the product theme
+   (light and dark) from ui.css.
+
+   Every tile has one structure: label, figure, breakdown,
+   source, and a detail layer behind a native disclosure.
+   Figures are never counted up; tiles reveal quietly as they
+   enter (scroll-driven, transform/opacity/filter/clip-path only).
+   ========================================================= */
+
+/* ---------- Tokens ---------- */
+.stats {
+  --stats-num:  clamp(2.5rem, 1.6rem + 2.2vw, 3.75rem);
+  --stats-lead: clamp(3.75rem, 1.8rem + 5.2vw, 7.5rem);
+  --stats-pad:  var(--space-7);
+  --stats-gap:  var(--space-4);
+  --stats-ease: cubic-bezier(0.28, 0.11, 0.32, 1);
+
+  /* Side colours: light theme's olive and navy are already matched (L 0.087 / 0.084) */
+  --stats-pal: var(--pal);
+  --stats-isr: var(--isr);
+  /* Numeral luminance, cap height to baseline */
+  --stats-grad-a: var(--text);
+  --stats-grad-b: color-mix(in srgb, var(--text) 74%, var(--surface));
+}
+@media (prefers-color-scheme: dark) {
+  /* The dark theme's olive is brighter than its blue; this pair is matched (L 0.42, 8.8:1 each) */
+  .rd:not([data-theme="light"]) .stats { --stats-pal: #a6b384; --stats-isr: #97b1cb; }
+}
+
+/* ---------- Layout ---------- */
+.stats { padding: clamp(var(--space-9), 7vh, var(--space-12)) 0 var(--space-9); }
+.stats-title {
+  max-width: 20ch;
+  margin: 0 0 clamp(var(--space-8), 5vh, var(--space-10));
+  font: 500 clamp(1.875rem, 1.3rem + 1.8vw, 3rem)/1.08 var(--font-display);
+  letter-spacing: -0.028em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(15rem, auto);
+  gap: var(--stats-gap);
+  margin: 0;
+}
+.stats-tile--lead { grid-column: span 2; grid-row: span 2; }
+.stats-tile--wide { grid-column: span 2; }
+
+.stats-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--stats-pad);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  box-shadow: var(--e1);
+  overflow: hidden;
+}
+/* Side mark: a short rule at the top of the tile, in the data colour */
+.stats-tile::before {
+  content: "";
+  width: var(--space-8);
+  height: 2px;
+  margin-bottom: var(--space-4);
+  border-radius: 1px;
+  background: var(--stats-mark);
+}
+.stats-tile--pal { --stats-mark: var(--stats-pal); }
+.stats-tile--isr { --stats-mark: var(--stats-isr); }
+:where(.stats-tile) dd { margin: 0; }   /* zero specificity, so each row sets its own spacing */
+
+/* ---------- Typography ---------- */
+.stats-label {
+  font: 600 0.9375rem/1.3 var(--font-ui);
+  letter-spacing: 0;
+  color: var(--text-2);
+  text-wrap: balance;
+}
+.stats-num {
+  margin-top: auto;   /* the lead figure sits low in its tall tile */
+  padding-top: var(--space-6);
+  font: 600 var(--stats-num)/1 var(--font-ui);
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums lining-nums;
+  background: linear-gradient(180deg, var(--stats-grad-a) 35%, var(--stats-grad-b) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.stats-tile--lead .stats-num { font-size: var(--stats-lead); letter-spacing: -0.035em; }
+/* Smaller tiles hang the figure from the label, so figures in a row share one line
+   whatever the length of their breakdowns; the controls share the bottom edge instead */
+.stats-tile:not(.stats-tile--lead) .stats-num { margin-top: 0; }
+.stats-tile:not(.stats-tile--lead) .stats-more { margin-top: auto; padding-top: var(--space-4); }
+.stats-comma { margin-left: -0.02em; letter-spacing: -0.06em; }
+
+.stats-break {
+  margin-top: var(--space-3);
+  font: 400 0.875rem/1.45 var(--font-ui);
+  color: var(--text-2);
+}
+.stats-break b { font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+.stats-src {
+  margin-top: var(--space-1);
+  font: 400 0.8125rem/1.45 var(--font-ui);
+  color: var(--text-3);
+}
+/* Segments never split; each separator belongs to the segment before it */
+.stats-break > span, .stats-src > span { display: inline-block; }
+.stats-break > span:not(:last-child)::after,
+.stats-src > span:not(:last-child)::after {
+  content: "·";
+  margin: 0 0.45em;
+  color: var(--text-4);
+}
+
+/* ---------- Detail layer ----------
+   Opens only from its own control (click, tap, Enter/Space; Escape closes, in ui.js).
+   It settles over the tile in place; the control stays where it was and reads "Close". */
+.stats-more { margin-top: var(--space-4); }
+.stats-details { position: static; }
+.stats-info {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 32px;
+  margin-left: calc(-1 * var(--space-2));
+  padding: 0 var(--space-2);
+  border-radius: var(--r-xs);
+  font: 500 0.8125rem/1 var(--font-ui);
+  color: var(--text-2);
+  list-style: none;
+  cursor: pointer;
+  transition: background-color 0.2s var(--stats-ease), color 0.2s var(--stats-ease);
+}
+.stats-info::-webkit-details-marker { display: none; }
+.stats-info::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-1px) rotate(45deg);
+  transition: transform 0.3s var(--stats-ease);
+}
+.stats-details[open] .stats-info::after { transform: translateY(1px) rotate(-135deg); }
+.stats-info-close { display: none; }
+.stats-details[open] .stats-info-open { display: none; }
+.stats-details[open] .stats-info-close { display: inline; }
+.stats-info:hover { background: var(--fill); color: var(--text); }
+.stats-info:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.stats-detail {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  overflow: auto;
+  padding: var(--stats-pad);
+  padding-bottom: calc(var(--stats-pad) + 32px + var(--space-4));   /* clear of the control */
+  background: var(--surface);
+  font: 400 0.9375rem/1.55 var(--font-ui);
+  color: var(--text-2);
+}
+.stats-detail p { margin: 0; max-width: 46ch; }
+.stats-detail a { color: var(--text); text-decoration-color: var(--rule-3); text-underline-offset: 0.2em; }
+.stats-detail a:hover { text-decoration-color: currentColor; }
+@media (prefers-reduced-motion: no-preference) {
+  .stats-details[open] .stats-detail { animation: stats-settle 0.32s var(--stats-ease); }
+  .stats-details[open] .stats-detail > * { animation: stats-lift 0.4s var(--stats-ease) both; }
+  .stats-details[open] .stats-detail > :nth-child(2) { animation-delay: 0.04s; }
+  .stats-details[open] .stats-detail > :nth-child(3) { animation-delay: 0.08s; }
+}
+@keyframes stats-settle { from { opacity: 0; } }
+@keyframes stats-lift   { from { opacity: 0; transform: translateY(var(--space-2)); } }
+
+/* ---------- Foot: key, the one as-of date, sources ---------- */
+.stats-foot {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 72ch;
+  margin-top: var(--space-6);
+  font: 400 0.8125rem/1.55 var(--font-ui);
+  color: var(--text-3);
+}
+.stats-foot p { margin: 0; }
+.stats-key { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-5); color: var(--text-2); }
+.stats-key-item { display: inline-flex; align-items: center; gap: var(--space-2); }
+.stats-key-item::before { content: ""; width: var(--space-4); height: 2px; border-radius: 1px; background: var(--stats-k); }
+.stats-key-item--pal { --stats-k: var(--stats-pal); }
+.stats-key-item--isr { --stats-k: var(--stats-isr); }
+.stats-asof b { font-weight: 600; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.stats-asof a { color: var(--text-2); text-decoration-color: var(--rule-3); text-underline-offset: 0.2em; }
+.stats-asof a:hover { color: var(--text); text-decoration-color: currentColor; }
+
+/* ---------- Motion: each tile reveals on its own view timeline ----------
+   Tile rises; then its label; the figure pulls into focus behind a wipe;
+   the breakdown and source follow. Ranges are offsets on the tile's own entry. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .stats-tile { view-timeline: --stats-tile block; }
+    .stats-tile, .stats-tile > * {
+      animation-duration: auto;
+      animation-fill-mode: both;
+      animation-timing-function: var(--stats-ease);
+    }
+    .stats-tile               { animation-name: stats-rise;  animation-timeline: view(); animation-range: entry 5% cover 28%; }
+    .stats-tile > .stats-label { animation-name: stats-in;    animation-timeline: --stats-tile; animation-range: entry 20% cover 32%; }
+    .stats-tile > .stats-num   { animation-name: stats-focus; animation-timeline: --stats-tile; animation-range: entry 30% cover 40%; }
+    .stats-tile > .stats-break { animation-name: stats-in;    animation-timeline: --stats-tile; animation-range: entry 45% cover 44%; }
+    .stats-tile > .stats-src,
+    .stats-tile > .stats-more  { animation-name: stats-in;    animation-timeline: --stats-tile; animation-range: entry 55% cover 47%; }
+  }
+}
+@keyframes stats-rise  { from { opacity: 0; transform: translateY(48px); } }
+@keyframes stats-in    { from { opacity: 0; transform: translateY(24px); } }
+@keyframes stats-focus {
+  from { opacity: 0; transform: translateY(32px); filter: blur(8px); clip-path: inset(0 0 100% 0); }
+  to   { opacity: 1; transform: none; filter: blur(0); clip-path: inset(0 0 -0.2em 0); }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1023px) {
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(13rem, auto); }
+  .stats-tile--lead { grid-row: span 1; }
+}
+@media (max-width: 640px) {
+  .stats { --stats-pad: var(--space-6); --stats-num: 3rem; --stats-lead: 3.75rem; padding-top: var(--space-8); }
+  .stats-grid { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; }
+  .stats-tile--lead, .stats-tile--wide { grid-column: auto; }
+  .stats-tile { border-radius: var(--r-lg); }
+  .stats-num { padding-top: var(--space-5); }
+}

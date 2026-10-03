@@ -198,8 +198,9 @@
 .rd .hero--iraq ~ .coda .coda-line { max-width: 36ch; }
 
 /* ---------- Fixes after first render ---------- */
-.rd .hero.hero--opener.hero--iraq .kpi--lead .kpi-value { font-size: clamp(2.2rem, 3.5vw, 3.4rem); white-space: nowrap; }
-.rd .hero.hero--opener.hero--iraq .kpi-value--range { font-size: clamp(1.3rem, 1.75vw, 1.8rem); white-space: nowrap; }
+/* Ranges are long: sized to fit their tiles in the interface numeral face  */
+.rd .hero.hero--opener.hero--iraq .kpi--lead .kpi-value { font-size: clamp(1.6rem, 2.6vw, 2.3rem); white-space: nowrap; }
+.rd .hero.hero--opener.hero--iraq .kpi-value--range { font-size: clamp(1.2rem, 1.5vw, 1.5rem); white-space: nowrap; }
 @media (max-width: 640px) {
   .rd .hero.hero--opener.hero--iraq .kpi--lead .kpi-value { font-size: clamp(1.9rem, 9vw, 2.4rem); white-space: normal; }
   .rd .hero.hero--opener.hero--iraq .kpi-value--range { font-size: 1.3rem; }

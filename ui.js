@@ -187,3 +187,16 @@ document.addEventListener('keydown', e => {
   open.open = false;
   open.querySelector('summary').focus();
 });
+
+/* Spacing debug overlay (see "Layout primitives" in ui.css): ?debug=space, or Alt+Shift+G */
+(function () {
+  const root = document.documentElement;
+  const KEY = 'debug-space';
+  const set = on => { root.classList.toggle('debug-space', on); try { sessionStorage.setItem(KEY, on ? '1' : ''); } catch (e) {} };
+  let stored = false;
+  try { stored = sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+  set(new URLSearchParams(location.search).get('debug') === 'space' || stored);
+  document.addEventListener('keydown', e => {
+    if (e.altKey && e.shiftKey && e.code === 'KeyG') set(!root.classList.contains('debug-space'));
+  });
+})();

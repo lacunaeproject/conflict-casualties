@@ -12,7 +12,7 @@
 .opening {
   --opening-display: clamp(2.75rem, 1.5rem + 4.6vw, 6.25rem);
   --opening-dek:     clamp(1.0625rem, 0.96rem + 0.42vw, 1.3125rem);
-  --opening-beat:    clamp(var(--space-9), 7vh, var(--space-12));   /* the one vertical interval */
+  --opening-beat:    clamp(var(--s-48), 7vh, var(--s-64));   /* the one vertical interval */
   --opening-radius:  var(--r-xl);
 
   --opening-ease:   cubic-bezier(0.22, 1, 0.36, 1);
@@ -26,8 +26,8 @@
 .opening {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  column-gap: var(--space-10);
-  padding: var(--opening-beat) 0 var(--space-9);
+  column-gap: var(--s-64);
+  padding-block: var(--page-top) 0;   /* the page stack owns the space after it */
 }
 .opening-dateline { grid-column: 1 / -1; }
 /* Headline and dek share a last baseline, so the dek's final line sits on the headline's */
@@ -43,9 +43,9 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 var(--space-2);
-  margin: 0 0 var(--space-5);
-  font: 500 0.875rem/1.4 var(--font-body);
+  gap: 0 var(--s-8);
+  margin: 0 0 var(--s-24);
+  font: 500 0.875rem/var(--lh-label) var(--font-body);
   color: var(--text-3);
   font-variant-numeric: tabular-nums;
 }
@@ -53,7 +53,7 @@
 .opening-live {
   width: 6px;
   height: 6px;
-  margin-right: var(--space-1);
+  margin-right: var(--s-4);
   border-radius: 50%;
   background: var(--pal);
 }
@@ -64,7 +64,7 @@
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--opening-display);
-  line-height: 1.05;
+  line-height: var(--lh-display);
   letter-spacing: -0.032em;
   color: var(--text);
 }
@@ -83,23 +83,23 @@
   margin: 0;
   font-family: var(--font-display);
   font-size: var(--opening-dek);
-  line-height: 1.5;
+  line-height: var(--lh-caption);
   color: var(--text-2);
   text-wrap: pretty;
 }
 .opening-dek em { color: var(--text); }
 
 .opening-credit {
-  padding: var(--space-4) var(--edge) 0;
-  font: 400 0.75rem/1.5 var(--font-body);
+  padding: var(--s-16) var(--edge) 0;
+  font: 400 0.75rem/var(--lh-caption) var(--font-body);
   color: var(--text-3);
   text-wrap: pretty;
 }
 .opening-firekey {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  margin-right: var(--space-2);
+  gap: var(--s-8);
+  margin-right: var(--s-8);
   color: var(--text);
   font-weight: 600;
 }
@@ -162,7 +162,7 @@
   }
 }
 @keyframes opening-rise   { from { transform: translateY(105%); } to { transform: none; } }
-@keyframes opening-lift   { from { opacity: 0; transform: translateY(var(--space-4)); } to { opacity: 1; transform: none; } }
+@keyframes opening-lift   { from { opacity: 0; transform: translateY(var(--s-16)); } to { opacity: 1; transform: none; } }
 @keyframes opening-fade   { from { opacity: 0; } to { opacity: 1; } }
 @keyframes opening-widen  { to { clip-path: inset(0 0 round 0); } }
 @keyframes opening-settle { from { transform: scale(1.04); } to { transform: none; } }
@@ -173,7 +173,7 @@
 @media (max-width: 1199px) {
   .opening { grid-template-columns: minmax(0, 1fr); }
   .opening-title, .opening-dek { grid-column: 1; align-self: auto; }
-  .opening-dek { max-width: 34em; margin-top: var(--space-5); }
+  .opening-dek { max-width: 34em; margin-top: var(--s-24); }
 }
 @media (max-width: 900px) {
   .opening-frame { aspect-ratio: 2 / 1; }
@@ -182,9 +182,9 @@
 @media (max-width: 640px) {
   .opening {
     --opening-display: clamp(2.75rem, 1.2rem + 7.6vw, 3.5rem);
-    --opening-beat: var(--space-9);
+    --opening-beat: var(--s-48);
     --opening-radius: var(--r-lg);
-    padding-top: var(--space-8);
+    padding-top: var(--s-48);
   }
   .opening-dateline { font-size: 0.8125rem; }
   .opening-title { letter-spacing: -0.026em; }
@@ -210,22 +210,22 @@
   --opening-display: clamp(2.5rem, 1.6rem + 3.4vw, 4.75rem);
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   grid-template-rows: auto auto auto 1fr;
-  column-gap: var(--space-12);
+  column-gap: var(--s-64);
   align-items: start;
 }
 .opening--page > :not(.opening-plate) { grid-column: 1; }
 .opening--page .opening-title { align-self: auto; }
-.opening--page .opening-dek { align-self: auto; max-width: 34em; margin-top: var(--space-5); }
+.opening--page .opening-dek { align-self: auto; max-width: 34em; margin-top: var(--s-24); }
 .opening-sources {
-  margin: var(--space-4) 0 0;
-  font: 400 0.875rem/1.5 var(--font-body);
+  margin: var(--s-16) 0 0;
+  font: 400 0.875rem/var(--lh-caption) var(--font-body);
   color: var(--text-3);
   text-wrap: pretty;
 }
 .opening--page .opening-plate { grid-column: 2; grid-row: 1 / -1; margin: 0; }
 .opening--page .opening-frame { aspect-ratio: auto; clip-path: none; border-radius: var(--opening-radius); }
 .opening--page .opening-img { height: auto; }
-.opening--page .opening-credit { padding: var(--space-3) 0 0; }
+.opening--page .opening-credit { padding: var(--s-12) 0 0; }
 /* A document rather than a photograph (the Balfour Declaration): shown in greyscale, as paper, not cream */
 .opening-plate--doc .opening-img { filter: grayscale(1) contrast(1.05); }
 
@@ -233,7 +233,7 @@
 .opening--below { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
 .opening--below > :not(.opening-plate) { max-width: 46rem; }
 .opening--below .opening-plate { grid-column: 1; grid-row: auto; margin-top: var(--opening-beat); }
-.opening-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+.opening-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-16); }
 .opening-pair .opening-frame { aspect-ratio: 4 / 3; }
 .opening-pair .opening-img { height: 100%; }
 

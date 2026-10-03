@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="robots" content="noindex" />
+<title>Spacing system</title>
+<style>
+@font-face { font-family: "Alegreya"; src: url("../fonts/alegreya-roman.woff2") format("woff2"); font-weight: 400 900; size-adjust: 106%; }
+@font-face { font-family: "Alegreya Sans LF"; src: url("../fonts/alegreya-sans-lf-regular.woff2") format("woff2"); font-weight: 400; size-adjust: 106%; }
+@font-face { font-family: "Alegreya Sans LF"; src: url("../fonts/alegreya-sans-lf-medium.woff2") format("woff2"); font-weight: 500; size-adjust: 106%; }
+@font-face { font-family: "Alegreya Sans LF"; src: url("../fonts/alegreya-sans-lf-bold.woff2") format("woff2"); font-weight: 600 700; size-adjust: 106%; }
+
+/* ================= Proposed tokens (what the site would get) ================= */
+:root {
+  /* Scale: 4px base */
+  --s-4: 4px; --s-8: 8px; --s-12: 12px; --s-16: 16px; --s-24: 24px; --s-32: 32px;
+  --s-48: 48px; --s-64: 64px; --s-96: 96px; --s-128: 128px; --s-160: 160px;
+
+  /* Semantic: closest relation → widest separation (fluid between 375 and 1440px wide) */
+  --inline:        var(--s-8);                                   /* icon to label, chip to chip */
+  --stack-tight:   var(--s-8);                                   /* source line under a breakdown */
+  --stack-related: var(--s-16);                                  /* label to figure, heading to dek */
+  --stack-block:   var(--s-24);                                  /* one block to the next inside a card */
+  --pad-control:   var(--s-12);                                  /* inline padding of pills and controls */
+  --pad-tile:      var(--s-24);                                  /* small tiles */
+  --pad-card:      clamp(24px, 14.1px + 2.64vw, 48px);           /* chapter cards: 24 → 48 */
+  --gap-tile:      var(--s-24);                                  /* tile to tile within one grid */
+  --gap-card:      var(--s-32);                                  /* card to card */
+  --gap-section:   clamp(64px, 41.5px + 6vw, 128px);             /* part breaks, history, coda: 64 → 128 */
+  --page-margin:   max(clamp(16px, 13.9px + 0.56vw, 24px), env(safe-area-inset-left));
+  --container:     1240px;
+  --measure:       66ch;
+
+  --bg: #f4f5f7; --surface: #fff; --surface-2: #eceef1; --text: #111317; --text-2: #3b3f46; --text-3: #666b73; --text-4: #8b9098;
+  --hair: rgba(16,19,23,.1); --pal: #4a5831; --isr: #2f5577; --mark: #2f6fdf; --mark-bg: rgba(47,111,223,.12);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0a0b0d; --surface: #141619; --surface-2: #1d2024; --text: #f1f3f5; --text-2: #cfd3d9; --text-3: #a0a6af; --text-4: #7d838c;
+          --hair: rgba(255,255,255,.1); --pal: #a6b384; --isr: #97b1cb; --mark: #7aa7ff; --mark-bg: rgba(122,167,255,.14); }
+}
+
+/* ================= Specimen page chrome ================= */
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 1rem/1.5 "Alegreya Sans LF", sans-serif; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: var(--container); margin-inline: auto; padding: var(--s-64) var(--page-margin) var(--s-128); display: grid; gap: var(--gap-section); }
+h1 { margin: 0; font: 500 3rem/1.05 "Alegreya", serif; letter-spacing: -0.02em; }
+.lede { margin: var(--s-12) 0 0; max-width: 60ch; color: var(--text-2); font-size: 1.0625rem; }
+h2 { margin: 0 0 var(--s-8); font: 500 1.875rem/1.15 "Alegreya", serif; letter-spacing: -0.015em; }
+.sub { margin: 0 0 var(--s-24); color: var(--text-3); max-width: 70ch; }
+section { min-width: 0; }
+.card { background: var(--surface); border-radius: 28px; padding: var(--pad-card); }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; table-layout: fixed; overflow-wrap: anywhere; }
+th, td { text-align: left; padding: var(--s-12) var(--s-16) var(--s-12) 0; border-top: 1px solid var(--hair); vertical-align: baseline; }
+th { font-weight: 600; color: var(--text-3); font-size: .8125rem; }
+td code { font: 500 .8125rem/1 "Alegreya Sans LF"; color: var(--text-2); }
+.num { color: var(--text-3); white-space: nowrap; }
+
+/* Scale bars */
+.scale { display: grid; gap: var(--s-8); }
+.scale-row { display: grid; grid-template-columns: 4rem 1fr; align-items: center; gap: var(--s-16); }
+.scale-row b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.bar { height: 16px; background: var(--mark); border-radius: 2px; }
+.cut { color: var(--text-4); text-decoration: line-through; }
+
+/* Grouping demo */
+.groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--gap-card); }
+.demo-title { font: 600 .9375rem/1.3 "Alegreya Sans LF"; margin: 0 0 var(--s-12); color: var(--text-3); }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-tile); position: relative; }
+.tile { background: var(--surface); border-radius: 22px; padding: var(--pad-tile); position: relative; }
+.tile::before { content: ""; display: block; width: 32px; height: 2px; background: var(--pal); margin-bottom: var(--stack-related); }
+.tile--isr::before { background: var(--isr); }
+.t-label { font: 600 .9375rem/1.3 "Alegreya Sans LF"; color: var(--text-2); }
+.t-num { margin-top: var(--stack-block);   /* optical: a large figure needs more air above it than a line of text */
+  font: 600 2.75rem/1 "Alegreya Sans LF"; letter-spacing: -.025em; }
+.t-break { margin-top: var(--stack-related); font: 400 .875rem/1.45 "Alegreya Sans LF"; color: var(--text-2); }
+.t-src { margin-top: var(--stack-tight); font: 400 .8125rem/1.45 "Alegreya Sans LF"; color: var(--text-3); }
+.trim .t-label, .trim .t-num, .trim .t-break, .trim .t-src { text-box: trim-both cap alphabetic; }
+.before .tile { padding: 32px; }
+.before .tile::before { margin-bottom: 16px; }
+.before .t-num { margin-top: 0; padding-top: 24px; }
+.before .t-break { margin-top: 12px; }
+.before .tiles { gap: 12px; }
+/* spacing visualisation */
+.show .tile, .show .tiles { outline: 1px dashed var(--mark); outline-offset: -1px; }
+.show .t-label, .show .t-num, .show .t-break, .show .t-src { background: var(--mark-bg); }
+.toggle { display: inline-flex; gap: var(--s-8); align-items: center; min-height: 44px; padding: 0 var(--pad-control); border-radius: 999px; border: 1px solid var(--hair); background: var(--surface); color: var(--text); font: 500 .875rem/1 "Alegreya Sans LF"; cursor: pointer; margin-bottom: var(--s-16); }
+
+/* Rhythm diagrams */
+.rhythm { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--gap-card); }
+.col h3 { margin: 0 0 var(--s-12); font: 600 1rem/1.3 "Alegreya Sans LF"; }
+.page { display: flex; flex-direction: column; }
+.blk { display: flex; align-items: center; justify-content: space-between; padding: 0 var(--s-12); background: var(--surface); border-radius: 8px; font-size: .8125rem; color: var(--text-2); min-height: 28px; }
+.blk--part { background: transparent; color: var(--text-3); font-style: italic; }
+.blk--dark { background: #16181b; color: #e9ecef; }
+.gap { position: relative; display: flex; align-items: center; justify-content: flex-end; font-size: .6875rem; color: var(--mark); font-variant-numeric: tabular-nums; }
+.gap::before { content: ""; position: absolute; left: 50%; top: 2px; bottom: 2px; border-left: 1px solid var(--mark); }
+.gap--bad { color: #b4232c; }
+.gap--bad::before { border-color: #b4232c; }
+
+/* Line-height table samples */
+.lh-sample { margin: 0; max-width: 34ch; }
+.lh-sample--display { font: 500 2.75rem/1.05 "Alegreya", serif; letter-spacing: -.02em; }
+.lh-sample--title { font: 500 1.875rem/1.15 "Alegreya", serif; }
+.lh-sample--body { font: 400 1.0625rem/1.647 "Alegreya", serif; }
+.lh-sample--ui { font: 400 .9375rem/1.6 "Alegreya Sans LF"; }
+.lh-sample--caption { font: 400 .8125rem/1.54 "Alegreya Sans LF"; color: var(--text-3); }
+.baseline { background-image: linear-gradient(to bottom, transparent calc(100% - 1px), var(--mark-bg) 0); background-size: 100% 4px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header>
+  <h1>Spacing system</h1>
+  <p class="lede">The site’s spacing system: one scale, a handful of named spacings with a clear order (closer means more related), and one line-height per type role. Everything below is drawn with the live tokens. The rules are in <a href="spacing.md">spacing.md</a>.</p>
+</header>
+
+<!-- 1. The audit in numbers -->
+<section>
+  <h2>Before and after</h2>
+  <p class="sub">From parsing every stylesheet and measuring the rendered pages, before the migration and after it.</p>
+  <div class="card">
+    <table>
+      <tr><th>Finding</th><th>Before</th><th>After</th></tr>
+      <tr><td>Spacing declarations with a raw value instead of a token</td><td class="num">556 of 1,026</td><td>0 (lint enforces it)</td></tr>
+      <tr><td>Distinct spacing lengths</td><td class="num">57 · 28 off the 4px grid</td><td>11 scale steps; em optical offsets and 1px hairlines only</td></tr>
+      <tr><td>Two scales running side by side</td><td class="num">--space-* and --rd-*</td><td>One scale, each token defined once</td></tr>
+      <tr><td>Distinct line-heights</td><td class="num">24 + 11 in shorthand</td><td>7 role tokens</td></tr>
+      <tr><td>Gaps between major sections (home, 1440)</td><td class="num">0 · 24 · 40 · 72 · 115</td><td>32 between cards · 128 at every change of subject</td></tr>
+      <tr><td>Card-to-card gap on phones equals label-to-figure gap</td><td class="num">12 = 12</td><td>32 between cards, 24 label to figure</td></tr>
+      <tr><td>First-line leading inside tiles</td><td class="num">+2.3px above caps</td><td>Trimmed: padding measures to the ink</td></tr>
+      <tr><td>Margins that collapse through a parent</td><td class="num">13 on home</td><td>0: blocks carry no outer margins</td></tr>
+      <tr><td>Touch targets under 44px on phones</td><td class="num">32px</td><td>44px on touch screens</td></tr>
+      <tr><td>Safe-area insets</td><td class="num">none</td><td>Page margin never less than the inset</td></tr>
+      <tr><td><code>!important</code> on spacing</td><td class="num">10</td><td>0</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 2. Scale -->
+<section>
+  <h2>The scale</h2>
+  <p class="sub">Eleven steps on a 4px base. The old scale’s 20, 40, 56, 72, 88 and 104 are gone; each moved to its nearest step.</p>
+  <div class="card scale" id="scale"></div>
+</section>
+
+<!-- 3. Semantic tokens -->
+<section>
+  <h2>Named spacings, in order of relation</h2>
+  <p class="sub">Each spacing has a job, and every value is measured ink to ink (leading trimmed). The order is the point: 8 &lt; 16 &lt; 24 &lt; 32 &lt; 64–128, so the space inside a group is always clearly smaller than the space between groups.</p>
+  <div class="card">
+    <table>
+      <tr><th>Token</th><th>Value</th><th>Use</th></tr>
+      <tr><td><code>--inline</code></td><td class="num">8</td><td>Icon to label, chip to chip</td></tr>
+      <tr><td><code>--stack-tight</code></td><td class="num">8</td><td>A source line under its breakdown</td></tr>
+      <tr><td><code>--stack-related</code></td><td class="num">16</td><td>Kicker to title, small heading to its text, figure to breakdown</td></tr>
+      <tr><td><code>--stack-block</code></td><td class="num">24</td><td>Block to block in a card; a large title to its dek; a label to a large figure</td></tr>
+      <tr><td><code>--pad-control</code></td><td class="num">12</td><td>Inline padding of pills and controls (44px tall on phones)</td></tr>
+      <tr><td><code>--pad-tile</code></td><td class="num">24</td><td>Tiles and small cards</td></tr>
+      <tr><td><code>--pad-card</code></td><td class="num">24 → 48</td><td>Chapter cards, fluid 375–1440px wide</td></tr>
+      <tr><td><code>--gap-tile</code></td><td class="num">24</td><td>Tile to tile inside one grid</td></tr>
+      <tr><td><code>--gap-card</code></td><td class="num">32</td><td>Chapter card to chapter card</td></tr>
+      <tr><td><code>--gap-section</code></td><td class="num">64 → 128</td><td>Part breaks, the history, the pull quote, the coda, book sections</td></tr>
+      <tr><td><code>--page-margin</code></td><td class="num">16 → 24</td><td>Page edge to content, never less than the safe-area inset</td></tr>
+      <tr><td><code>--container</code> · <code>--measure</code></td><td class="num">1240 · 66ch</td><td>Max content width · long-form line length (≈ 60–75 characters)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 4. Grouping and leading trim -->
+<section>
+  <h2>Grouping and space measured to the ink</h2>
+  <p class="sub">The same two tiles. Left is a reconstruction of today’s spacing. Right uses the named spacings, and trims each line’s built-in leading so padding is measured from the cap height and the baseline. Switch on the overlay to see the boxes.</p>
+  <button class="toggle" type="button" aria-pressed="false" onclick="document.body.classList.toggle('show'); this.setAttribute('aria-pressed', document.body.classList.contains('show'))">Show spacing overlay</button>
+  <div class="groups">
+    <div class="before">
+      <p class="demo-title">Before (reconstructed)</p>
+      <div class="tiles">
+        <div class="tile"><div class="t-label">Palestinians killed in the West Bank</div><div class="t-num">1,123</div><div class="t-break"><b>240</b> children</div><div class="t-src">UN OCHA · to Sep 14, 2026</div></div>
+        <div class="tile tile--isr"><div class="t-label">Israeli soldiers killed in Gaza</div><div class="t-num">477</div><div class="t-break">Ground operation</div><div class="t-src">IDF, The Times of Israel</div></div>
+      </div>
+    </div>
+    <div class="trim">
+      <p class="demo-title">After</p>
+      <div class="tiles">
+        <div class="tile"><div class="t-label">Palestinians killed in the West Bank</div><div class="t-num">1,123</div><div class="t-break"><b>240</b> children</div><div class="t-src">UN OCHA · to Sep 14, 2026</div></div>
+        <div class="tile tile--isr"><div class="t-label">Israeli soldiers killed in Gaza</div><div class="t-num">477</div><div class="t-break">Ground operation</div><div class="t-src">IDF, The Times of Israel</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Page rhythm -->
+<section>
+  <h2>Page rhythm, home page at 1440</h2>
+  <p class="sub">Every gap between top-level blocks, measured. Red marks gaps that didn’t follow from their role. Now cards sit <code>--gap-card</code> apart, and anything that changes the subject gets <code>--gap-section</code>.</p>
+  <div class="card rhythm">
+    <div class="col"><h3>Before</h3><div class="page" id="now"></div></div>
+    <div class="col"><h3>After</h3><div class="page" id="next"></div></div>
+  </div>
+</section>
+
+<!-- 6. Line-height -->
+<section>
+  <h2>Line-height, one per role</h2>
+  <p class="sub">Unitless, set once with the type role, never overridden locally. Body text resolves to a multiple of 4px (shaded rows are a 4px grid).</p>
+  <div class="card">
+    <table>
+      <tr><th>Role</th><th>Face · size</th><th>Line-height</th><th>Sample</th></tr>
+      <tr><td>Display</td><td class="num">Alegreya · 44–100</td><td class="num">1.05</td><td><p class="lh-sample lh-sample--display">Every Life Is a Universe</p></td></tr>
+      <tr><td>Title</td><td class="num">Alegreya · 30–48</td><td class="num">1.15</td><td><p class="lh-sample lh-sample--title">The killing has slowed. It has not stopped.</p></td></tr>
+      <tr><td>Body</td><td class="num">Alegreya · 17</td><td class="num">1.647 → 28px</td><td><p class="lh-sample lh-sample--body baseline">Israel’s war on Gaza began the same day. In the 1,084 days since, the Gaza Ministry of Health has recorded 73,928 Palestinians killed.</p></td></tr>
+      <tr><td>Interface</td><td class="num">Alegreya Sans · 15</td><td class="num">1.6 → 24px</td><td><p class="lh-sample lh-sample--ui baseline">Palestinians killed in Gaza. Gaza Ministry of Health. About this figure.</p></td></tr>
+      <tr><td>Caption</td><td class="num">Alegreya Sans · 13</td><td class="num">1.54 → 20px</td><td><p class="lh-sample lh-sample--caption baseline">Satellite view of the Gaza Strip and southern Israel, October 7, 2023. Contains modified Copernicus Sentinel data.</p></td></tr>
+    </table>
+  </div>
+</section>
+
+</main>
+<script>
+  // Scale bars
+  const scale = [4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 160];
+  document.getElementById('scale').innerHTML = scale.map(v => `<div class="scale-row"><b>${v}</b><div class="bar" style="width:${v}px"></div></div>`).join('') +
+    '<p style="margin:var(--s-8) 0 0;color:var(--text-3)"><span class="cut">20 · 40 · 56 · 72 · 88 · 104</span> removed; each maps to its nearest step</p>';
+
+  // Rhythm diagrams (measured values on the left; proposed on the right)
+  const now = [['Opening', 0], ['Key figures', 24], ['In brief', 0, 'bad'], ['Part one', 40], ['The scale', 24], ['Over time', 24], ['By month', 24], ['Ceasefire', 24], ['Who was killed', 24], ['October 7', 24], ['West Bank', 0, 'bad'], ['Part two', 40], ['History intro', 72], ['History', 115, 'bad'], ['Pull quote', 115, 'bad'], ['Sources', 24], ['Notes', 72], ['In memory', null]];
+  const next = [['Opening', 128], ['Key figures', 128], ['In brief', 128], ['Part one', 32], ['The scale', 32], ['Over time', 32], ['By month', 32], ['Ceasefire', 32], ['Who was killed', 32], ['October 7', 32], ['West Bank', 128], ['Part two', 32], ['History intro', 128], ['History', 128], ['Pull quote', 128], ['Sources', 32], ['Notes', 128], ['In memory', null]];
+  const draw = (id, rows) => document.getElementById(id).innerHTML = rows.map(([name, gap, bad]) =>
+    `<div class="blk ${/^Part/.test(name) ? 'blk--part' : name === 'In memory' ? 'blk--dark' : ''}">${name}</div>` +
+    (gap == null ? '' : `<div class="gap ${bad ? 'gap--bad' : ''}" style="height:${Math.max(gap / 4, 10)}px">${gap}</div>`)).join('');
+  draw('now', now); draw('next', next);
+</script>
+</body>
+</html>

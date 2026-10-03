@@ -1,0 +1,12 @@
+{
+  "name": "conflict-casualties",
+  "private": true,
+  "description": "Static site. These dev dependencies are for linting only; nothing is built.",
+  "scripts": {
+    "lint:css": "stylelint \"*.css\"",
+    "test": "node --test tests/app.test.js"
+  },
+  "devDependencies": {
+    "stylelint": "^16.10.0"
+  }
+}

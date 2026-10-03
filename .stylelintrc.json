@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "declaration-property-value-disallowed-list": [
+      {
+        "/^(margin|padding)(-(top|right|bottom|left|block|inline)(-(start|end))?)?$/": ["/(^|[\\s(,])-?(?!0(?![\\d.]))(?!1px\\b)\\d*\\.?\\d+(px|rem)\\b/"],
+        "/^(gap|row-gap|column-gap)$/": ["/(^|[\\s(,])-?(?!0(?![\\d.]))(?!1px\\b)\\d*\\.?\\d+(px|rem)\\b/"],
+        "line-height": ["/^-?\\d/"],
+        "font": ["/\\/\\s*\\d/"]
+      },
+      {
+        "message": "Spacing comes from the scale (var(--s-*)) or a named spacing; line-height from a role token (var(--lh-*)). See docs/spacing.md."
+      }
+    ]
+  }
+}

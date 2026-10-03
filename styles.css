@@ -12,7 +12,7 @@
    charts. It's Alegreya Sans (OFL 1.1) with lining figures made the default, renamed
    as the licence asks of modified versions, so every figure in the interface lines up
    without per-element feature rules, and canvas charts get lining figures too.
-   Both are self-hosted, subset to Latin (Arabic falls back to the system face).
+   Both are self-hosted and subset to Latin; Arabic is set in Markazi Text (below).
    Both are set 6% larger than nominal (size-adjust): Alegreya's x-height is small for
    its point size, and this keeps every existing size step legible without touching them. */
 @font-face {
@@ -35,6 +35,20 @@
 @font-face { font-family: "Alegreya Sans LF"; src: url("fonts/alegreya-sans-lf-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; size-adjust: 106%; }
 @font-face { font-family: "Alegreya Sans LF"; src: url("fonts/alegreya-sans-lf-medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; size-adjust: 106%; }
 @font-face { font-family: "Alegreya Sans LF"; src: url("fonts/alegreya-sans-lf-bold.woff2") format("woff2"); font-weight: 600 700; font-style: normal; font-display: swap; size-adjust: 106%; }
+
+/* Arabic: Markazi Text (Borna Izadpanah, OFL 1.1), a Naskh drawn as an Arabic–Latin pair.
+   It joins both families above for the Arabic block only, so Arabic anywhere on the site sets
+   in it, and the 37 KB file loads only when Arabic is on screen. Scaled so the alef stands at
+   Alegreya's cap height (0.512 em × 1.25 ≈ 0.637 em), times the families' 106%.
+   Each face repeats the weight and style of the Latin face it joins, exactly: browsers choose a
+   face by weight and style before they look at unicode-range, so a face with different
+   descriptors would compete with the Latin one instead of combining with it. */
+@font-face { font-family: "Alegreya"; font-weight: 400 900; font-style: normal; src: url("fonts/markazi-arabic.woff2") format("woff2"); font-display: swap; size-adjust: 132%; unicode-range: U+0600-06FF, U+200C-200F; }
+@font-face { font-family: "Alegreya"; font-weight: 400 900; font-style: italic; src: url("fonts/markazi-arabic.woff2") format("woff2"); font-display: swap; size-adjust: 132%; unicode-range: U+0600-06FF, U+200C-200F; }
+@font-face { font-family: "Alegreya Sans LF"; font-weight: 400; font-style: normal; src: url("fonts/markazi-arabic.woff2") format("woff2"); font-display: swap; size-adjust: 132%; unicode-range: U+0600-06FF, U+200C-200F; }
+@font-face { font-family: "Alegreya Sans LF"; font-weight: 400; font-style: italic; src: url("fonts/markazi-arabic.woff2") format("woff2"); font-display: swap; size-adjust: 132%; unicode-range: U+0600-06FF, U+200C-200F; }
+@font-face { font-family: "Alegreya Sans LF"; font-weight: 500; font-style: normal; src: url("fonts/markazi-arabic.woff2") format("woff2"); font-display: swap; size-adjust: 132%; unicode-range: U+0600-06FF, U+200C-200F; }
+@font-face { font-family: "Alegreya Sans LF"; font-weight: 600 700; font-style: normal; src: url("fonts/markazi-arabic.woff2") format("woff2"); font-display: swap; size-adjust: 132%; unicode-range: U+0600-06FF, U+200C-200F; }
 
 /* Metric-matched fallbacks: while the faces load, local Georgia and Arial are scaled to
    Alegreya's widths and line metrics, so text doesn't reflow when they swap in. */
@@ -2294,7 +2308,6 @@ h1, h2, h3, h4, .story-dek, .coda-line { text-wrap: balance; }
 .names-wall.is-open { max-height: none; -webkit-mask-image: none; mask-image: none; }
 .names-wall span { white-space: nowrap; }
 .names-wall span + span::before { content: "·"; margin: 0 0.6em; color: var(--night-ink-3); }
-.names-wall[lang="ar"] { font-family: "Noto Naskh Arabic", "Geeza Pro", "Arial", serif; font-size: 1.1rem; }
 .names-more {
   appearance: none;
   margin-top: var(--s-24);

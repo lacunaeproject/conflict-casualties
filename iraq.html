@@ -44,10 +44,12 @@
 <link rel="preload" href="fonts/alegreya-roman.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/alegreya-sans-lf-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="img/baghdad-smoke-aster-2003.webp" fetchpriority="high" />
-<link rel="stylesheet" href="styles.css?v=202610031800" />
-<link rel="stylesheet" href="resources.css?v=202610031800" />
-<link rel="stylesheet" href="ui.css?v=202610031800" />
-<link rel="stylesheet" href="iraq.css?v=202610031800" />
+<link rel="stylesheet" href="styles.css?v=202610041400" />
+<link rel="stylesheet" href="resources.css?v=202610041400" />
+<link rel="stylesheet" href="ui.css?v=202610041400" />
+<link rel="stylesheet" href="opening.css?v=202610041400" />
+<link rel="stylesheet" href="stats.css?v=202610041400" />
+<link rel="stylesheet" href="iraq.css?v=202610041400" />
 </head>
 <body>
 
@@ -78,47 +80,56 @@
       <a href="iraq.html#sources">Sources</a>
     </nav>
   </div>
-  <nav class="chapter-rail" aria-label="Chapters on this page" hidden></nav>
 </header>
 
 <main class="wrap" id="main-content">
 
-<!-- HERO: Baghdad under oil-fire smoke, March 31, 2003 -->
-<section class="hero hero--opener hero--iraq">
-  <div class="card">
-    <div class="hero-grain" aria-hidden="true"></div>
-    <div class="hero-inner">
-      <div class="hero-dateline">
-        <span>US withdrawal completed <time datetime="2026-09-30">Sep 30, 2026</time></span>
-        <span>2003 – 2026</span>
-      </div>
-      <h1>Twenty-Three Years</h1>
-      <p class="hero-dek">The last American troops left Iraq on September 30, 2026, twenty-three years after the invasion. No one counted the Iraqi dead as they fell, and estimates still differ by hundreds of thousands. This page sets out what is known, and where each number comes from.</p>
-      <p class="hero-sources">Sources: Costs of War (Brown University) · Iraq Body Count · <em>The Lancet</em> · <em>PLOS Medicine</em> · WHO · UNHCR</p>
+<!-- OPENING: headline and dek on the page ground; Baghdad on March 31, 2003 as a plate beside them -->
+<section class="opening opening--page" aria-labelledby="opening-title">
+  <p class="opening-dateline">US withdrawal completed <time datetime="2026-09-30">Sep 30, 2026</time><span class="opening-sep" aria-hidden="true">·</span>2003 – 2026</p>
+  <h1 class="opening-title" id="opening-title">Twenty-Three Years</h1>
+  <p class="opening-dek">The last American troops left Iraq on September 30, 2026, twenty-three years after the invasion. No one counted the Iraqi dead as they fell, and estimates still differ by hundreds of thousands. This page sets out what is known, and where each number comes from.</p>
+  <figure class="opening-plate">
+    <div class="opening-frame">
+        <picture>
+          <source type="image/avif" srcset="img/plate-baghdad-700.avif 700w, img/plate-baghdad-1400.avif 1400w" sizes="(max-width: 900px) 100vw, 46vw">
+          <img class="opening-img" src="img/plate-baghdad-1400.webp" srcset="img/plate-baghdad-700.webp 700w, img/plate-baghdad-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 46vw"
+               width="1400" height="1541" decoding="async" fetchpriority="high"
+               alt="Baghdad seen from orbit on March 31, 2003, eleven days into the invasion, in false color: vegetation shows red and black plumes of burning oil drift across the city.">
+        </picture>
     </div>
-    <section class="kpi-row" aria-label="Headline totals">
-      <div class="kpi kpi--lead">
-        <div class="kpi-label">Killed by the war’s direct violence, all sides</div>
-        <div class="kpi-value">280,771 – 315,190</div>
-        <div class="kpi-foot">Costs of War, Brown University · March 2003 – March 2023</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">Civilian deaths documented</div>
-        <div class="kpi-value kpi-value--range">200,065 – 226,628</div>
-        <div class="kpi-foot">Iraq Body Count · 2003 – 2026</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">Iraqis displaced</div>
-        <div class="kpi-value">9.2 million</div>
-        <div class="kpi-foot">refugees and internally displaced, 2003 – 2019</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">US service members killed</div>
-        <div class="kpi-value">4,599</div>
-        <div class="kpi-foot"><span>32,000+</span> wounded · <span>3,650</span> US contractors killed</div>
-      </div>
-    </section>
-    <p class="hero-credit">Baghdad from orbit, March 31, 2003, eleven days into the invasion. Black plumes are burning oil. False color: vegetation shows red. NASA/METI/AIST/Japan Space Systems and the U.S./Japan ASTER Science Team · via <a href="https://commons.wikimedia.org/wiki/File:Baghdad,_Iraq_(ASTER).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</p>
+    <figcaption class="opening-credit">Baghdad from orbit, March 31, 2003, eleven days into the invasion. Black plumes are burning oil. False color: vegetation shows red. NASA/METI/AIST/Japan Space Systems and the U.S./Japan ASTER Science Team · via <a href="https://commons.wikimedia.org/wiki/File:Baghdad,_Iraq_(ASTER).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</figcaption>
+  </figure>
+</section>
+
+<!-- KEY FIGURES: the war's headline counts as bento tiles (styles in stats.css) -->
+<section class="stats" aria-labelledby="stats-title">
+  <h2 class="stats-title" id="stats-title">Since the invasion of March&nbsp;2003</h2>
+  <dl class="stats-grid">
+    <div class="stats-tile stats-tile--lead stats-tile--neutral">
+      <dt class="stats-label">Killed by the war’s direct violence, all sides</dt>
+      <dd class="stats-num stats-num--range"><span class="visually-hidden">280,771</span><span aria-hidden="true">280<span class="stats-comma">,</span>771</span>&#8201;–&#8201;<span class="visually-hidden">315,190</span><span aria-hidden="true">315<span class="stats-comma">,</span>190</span></dd>
+      <dd class="stats-src"><span>Costs of War, Brown University</span><span>March 2003 – March 2023</span></dd>
+    </div>
+    <div class="stats-tile stats-tile--wide stats-tile--neutral">
+      <dt class="stats-label">Civilian deaths documented</dt>
+      <dd class="stats-num stats-num--range"><span class="visually-hidden">200,065</span><span aria-hidden="true">200<span class="stats-comma">,</span>065</span>&#8201;–&#8201;<span class="visually-hidden">226,628</span><span aria-hidden="true">226<span class="stats-comma">,</span>628</span></dd>
+      <dd class="stats-src"><span>Iraq Body Count</span><span>2003 – 2026</span></dd>
+    </div>
+    <div class="stats-tile stats-tile--neutral">
+      <dt class="stats-label">Iraqis displaced</dt>
+      <dd class="stats-num">9.2<span class="stats-unit">&nbsp;million</span></dd>
+      <dd class="stats-break"><span>refugees and internally displaced</span></dd>
+      <dd class="stats-src"><span>2003 – 2019</span></dd>
+    </div>
+    <div class="stats-tile stats-tile--neutral">
+      <dt class="stats-label">US service members killed</dt>
+      <dd class="stats-num"><span class="visually-hidden">4,599</span><span aria-hidden="true">4<span class="stats-comma">,</span>599</span></dd>
+      <dd class="stats-break"><span><b>32,000+</b> wounded</span><span><b>3,650</b> US contractors killed</span></dd>
+    </div>
+  </dl>
+  <div class="stats-foot">
+    <p class="stats-asof">Sources: Costs of War (Brown University) · Iraq Body Count · <em>The Lancet</em> · <em>PLOS Medicine</em> · WHO · UNHCR. Each figure is its source’s own count over the period shown; estimates differ, and they aren’t added together.</p>
   </div>
 </section>
 
@@ -235,7 +246,7 @@
 </section>
 
 <!-- THE ESTIMATES -->
-<section class="panel" id="estimates" data-chapter="The estimates" data-short="Estimates">
+<section class="panel" id="estimates" data-chapter="The estimates">
   <div class="card">
     <div class="panel-head">
       <div class="eyebrow">Chapter 2 · The estimates</div>
@@ -305,7 +316,7 @@
 </section>
 
 <!-- BEYOND THE VIOLENCE -->
-<section class="context-card context-card--band" data-chapter="Beyond the violence" data-short="Indirect deaths">
+<section class="context-card context-card--band" data-chapter="Beyond the violence">
   <div class="card">
     <div class="context-inner">
       <div class="context-lede">
@@ -342,7 +353,7 @@
 </section>
 
 <!-- THE AMERICAN TOLL -->
-<section class="panel" data-chapter="The American toll" data-short="US toll">
+<section class="panel" data-chapter="The American toll">
   <div class="card">
     <div class="panel-head">
       <div class="eyebrow">Chapter 4 · The American toll</div>
@@ -482,7 +493,7 @@
   </div>
 </section>
 
-<section class="foot-meta" id="notes" data-chapter="Notes" data-rail="off" data-part="Method">
+<section class="foot-meta" id="notes" data-chapter="Notes" data-part="Method">
   <div class="card">
     <h3>Notes &amp; caveats</h3>
     <ul>
@@ -566,6 +577,6 @@
   </div>
 </footer>
 
-<script src="iraq.js?v=202610011700" defer></script><script src="ui.js?v=202610011900" defer></script><script src="motion.js?v=202609271530" defer></script>
+<script src="iraq.js?v=202610011700" defer></script><script src="ui.js?v=202610041400" defer></script><script src="motion.js?v=202609271530" defer></script>
 </body>
 </html>

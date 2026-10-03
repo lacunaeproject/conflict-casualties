@@ -8,15 +8,6 @@
   .rd:not([data-theme="light"]) { --iq: #d9dde3; --iq-soft: rgba(217, 221, 227, 0.26); --iq-band: rgba(160, 166, 178, 0.07); }
 }
 
-/* ---------- Hero: Baghdad from orbit ---------- */
-.hero--iraq.hero--opener .card::before {
-  background: url("img/baghdad-smoke-aster-2003.webp") 50% 38% / cover no-repeat;
-  filter: saturate(0.55) contrast(1.05) brightness(0.8);
-  transform: none;
-}
-.rd .hero.hero--opener.hero--iraq .kpi-label::before { background: #c9ced6; }
-.rd .hero--iraq .kpi { border-top-color: rgba(255, 255, 255, 0.4) !important; }
-
 /* ---------- Chapter 1: documented deaths by year ---------- */
 .yr { margin: 8px 0 0; }
 .yr-readout { margin: 0 0 14px; min-height: 1.6em; font-size: 0.95rem; color: var(--text-3); }
@@ -195,16 +186,9 @@
 }
 
 /* Coda without a names wall needs less room */
-.rd .hero--iraq ~ .coda .coda-line { max-width: 36ch; }
 
 /* ---------- Fixes after first render ---------- */
 /* Ranges are long: sized to fit their tiles in the interface numeral face  */
-.rd .hero.hero--opener.hero--iraq .kpi--lead .kpi-value { font-size: clamp(1.6rem, 2.6vw, 2.3rem); white-space: nowrap; }
-.rd .hero.hero--opener.hero--iraq .kpi-value--range { font-size: clamp(1.2rem, 1.5vw, 1.5rem); white-space: nowrap; }
-@media (max-width: 640px) {
-  .rd .hero.hero--opener.hero--iraq .kpi--lead .kpi-value { font-size: clamp(1.9rem, 9vw, 2.4rem); white-space: normal; }
-  .rd .hero.hero--opener.hero--iraq .kpi-value--range { font-size: 1.3rem; }
-}
 .rd .who-chart { background: none; box-shadow: none; padding: 0; border-radius: 0; }
 /* Indirect-deaths band: neutral numbers, facts span the card */
 .rd .context-inner > .yr-facts { grid-column: 1 / -1; margin-top: 0; }

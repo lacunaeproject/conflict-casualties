@@ -353,58 +353,14 @@ body.locked {
 }
 .gallery-head { margin-top: var(--space-4); }
 
-/* Opener imagery: Be'eri (left) and Gaza City (right), toned down
-   behind the headline — one frame from each side. */
-.destruction-body .hero .card { position: relative; isolation: isolate; }
-.destruction-body .hero .card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    url("img/beeri-burned-home.webp") left center / 50% auto no-repeat,
-    url("img/rimal-gaza-city.webp") right center / 50% auto no-repeat;
-  background-size: 50% 100%, 50% 100%;
-  filter: grayscale(1) contrast(1.05) brightness(0.55);
-}
-.destruction-body .hero .card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(0deg, rgba(16, 19, 23, 0.9) 0%, rgba(16, 19, 23, 0.25) 60%),
-    rgba(16, 19, 23, 0.55);
-}
-
-
 /* Wide photos settle from a slight zoom as they arrive */
 html.motion .photo.wide.reveal img {
   transform: scale(1.06);
   transition: transform 2.2s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 html.motion .photo.wide.reveal.in img { transform: none; }
-.destruction-body .hero h1,
-.destruction-body .hero p { text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55); }
 
 /* Editorial pass */
-/* Opener: each photo in its own half, cross-faded — no stretching, no seam */
-.destruction-body .hero .card::before {
-  inset: 0 50% 0 0;
-  background: url("img/beeri-burned-home.webp") center / cover no-repeat;
-  -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent);
-  mask-image: linear-gradient(90deg, #000 78%, transparent);
-}
-.destruction-body .hero .card { overflow: hidden; }
-.destruction-body .hero > .card > .hero-right {
-  position: absolute;
-  inset: 0 0 0 50%;
-  z-index: -1;
-  background: url("img/rimal-gaza-city.webp") center / cover no-repeat;
-  filter: grayscale(1) contrast(1.05) brightness(0.55);
-  -webkit-mask-image: linear-gradient(270deg, #000 78%, transparent);
-  mask-image: linear-gradient(270deg, #000 78%, transparent);
-}
 /* Content warning fits small screens */
 .cw-gate { overflow-y: auto; align-items: flex-start; }
 .cw-card { margin: auto; }
@@ -422,5 +378,6 @@ html.motion .photo.wide.reveal.in img { transform: none; }
 .photo.wide figcaption p, .gallery-head p { max-width: 68ch; }
 .gallery-head p { font-family: var(--font-display); font-size: 1.08rem; }
 .note-panel { margin-bottom: var(--gap-chapter); border: 0; border-top: 1px solid var(--ink); border-radius: 0; background: transparent; padding: var(--space-7) 0 0; }
-.hero h1[tabindex="-1"]:focus { outline: none; }
+/* The gate moves focus to the headline for screen readers; that programmatic focus needs no ring */
+.opening-title[tabindex="-1"]:focus { outline: none; }
 .note-panel em { font-family: inherit; font-style: italic; }

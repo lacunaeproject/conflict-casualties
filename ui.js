@@ -5,7 +5,7 @@
    - --rd-head tracks the real header height for sticky elements
    - Phone: chart filters open in a bottom sheet
    - Conflict switcher in the header, built from CONFLICTS below
-   - Chapter rail under the header, built from [data-chapter] */
+   - "In this article" contents, built from [data-chapter] */
 
 // Every conflict the site covers. To add one: give it a page, add an entry
 // here, and add it to the footer's Conflicts column. Order = menu order.
@@ -153,7 +153,6 @@ const CONFLICTS = [
   // Chapters: every [data-chapter] section, grouped by part.
   // A section's part is its data-part, else the nearest .part-head above it.
   const chapters = Array.from(document.querySelectorAll('[data-chapter]'));
-  const rail = document.querySelector('.chapter-rail');
   if (!chapters.length) return;
   const partHeads = Array.from(document.querySelectorAll('.part-head'));
   const partOf = el => {
@@ -178,49 +177,6 @@ const CONFLICTS = [
       g.items.map(({ el, n }) => `<li><a href="#${el.id}"><b>${n}</b><span>${el.dataset.chapter}</span></a></li>`).join('') +
       '</ol></div>').join('');
   }
-
-  if (!rail) return;
-  // The rail is a short index: brief labels (data-short), no numbers, and
-  // only the main stops (data-rail="off" leaves a chapter out). Parts are
-  // separated by a quiet gap rather than a label.
-  const stops = groups.map(g => g.items.map(x => x.el).filter(el => el.dataset.rail !== 'off')).filter(g => g.length);
-  rail.innerHTML = '<div class="cr-track">' + stops.map(g =>
-    g.map(el => `<a href="#${el.id}">${el.dataset.short || el.dataset.chapter}</a>`).join('')
-  ).join('<span class="cr-gap" aria-hidden="true"></span>') + '</div>';
-  rail.hidden = false;
-  const track = rail.querySelector('.cr-track');
-  const links = Array.from(rail.querySelectorAll('a'));
-  const railChapters = stops.flat();
-
-  const setCurrent = el => {
-    links.forEach(a => {
-      const on = !!el && a.getAttribute('href') === '#' + el.id;
-      a.classList.toggle('is-current', on);
-      if (on) {
-        a.setAttribute('aria-current', 'location');
-        // Keep the current chapter in view inside the rail, never scrolling the page.
-        const left = a.offsetLeft - (track.clientWidth - a.offsetWidth) / 2;
-        track.scrollTo({ left, behavior: 'smooth' });
-      } else a.removeAttribute('aria-current');
-    });
-  };
-
-  // Phone: the rail takes the site nav's row once the reader is past the opener.
-  const hero = document.querySelector('.hero, .opening');
-  let current, queued = false;
-  const check = () => {
-    queued = false;
-    const line = (head ? head.offsetHeight : 0) + (window.innerHeight - (head ? head.offsetHeight : 0)) * 0.35;
-    // The last chapter whose top has crossed the reading line.
-    let hit = null;
-    for (const el of railChapters) { if (el.getBoundingClientRect().top <= line) hit = el; }
-    if (hit !== current) { current = hit; setCurrent(hit); }
-    if (head && hero) head.classList.toggle('is-reading', hero.getBoundingClientRect().bottom < (head.offsetHeight || 0));
-  };
-  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(check); } };
-  window.addEventListener('scroll', queue, { passive: true });
-  window.addEventListener('resize', queue);
-  check();
 })();
 
 /* Key figures: Escape closes an open detail layer and returns focus to its control */

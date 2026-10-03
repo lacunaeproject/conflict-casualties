@@ -174,70 +174,6 @@
 }
 .rd .read-progress { top: auto; bottom: -1px; position: absolute; height: 2px; background: var(--text); opacity: 0.5; }
 
-/* ---------- Hero: an inset, rounded image surface ---------- */
-.rd .hero.hero--opener { width: auto; margin: 8px 0 0; }
-.rd .hero.hero--opener .card {
-  width: auto;
-  margin: 0;
-  border-radius: var(--r-xl);
-  min-height: min(calc(100svh - var(--rd-head) - 16px), 980px);
-  padding: clamp(28px, 5vw, 64px) !important;
-  padding-bottom: clamp(24px, 3.5vw, 40px) !important;
-  box-shadow: var(--e2);
-  overflow: hidden;
-  isolation: isolate;
-  border: 0;
-}
-.rd .hero-dateline { gap: 10px; margin-bottom: clamp(20px, 3vw, 32px); }
-.rd .hero-dateline > span {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
-  border-radius: var(--pill);
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-  color: #f1f3f5;
-  font-weight: 500;
-}
-.rd .hero-dateline .byline-live { font-weight: 600; }
-.rd .hero-dateline .live-dot { margin: 0; }
-.rd .hero.hero--opener h1 { letter-spacing: -0.045em; }
-.rd .hero.hero--opener .kpi-row { gap: 12px; margin-top: clamp(32px, 7vh, 80px); }
-.rd .hero.hero--opener .kpi {
-  border: 0 !important;
-  border-radius: var(--r-md);
-  padding: 18px 20px 20px;
-  background: rgba(20, 22, 26, 0.38);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-}
-.rd .hero.hero--opener .kpi-label { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; }
-.rd .hero.hero--opener .kpi-label::before {
-  content: "";
-  flex: none;
-  width: 8px; height: 8px; margin-top: 0.42em;
-  border-radius: 50%;
-  background: #b4c290;
-}
-.rd .hero.hero--opener .kpi-isr .kpi-label::before { background: #9db8d4; }
-.rd .hero.hero--opener .kpi-value { margin-top: 6px; }
-.rd .hero.hero--opener .hero-credit { top: clamp(28px, 5vw, 64px); right: clamp(28px, 5vw, 64px); }
-@media (max-width: 1000px) {
-  .rd .hero.hero--opener .kpi-row { grid-template-columns: 1fr 1fr; }
-  .rd .hero.hero--opener .kpi--lead { grid-column: 1 / -1; }
-}
-@media (max-width: 640px) {
-  .rd .hero.hero--opener { margin: 4px calc(-1 * var(--gutter) + 8px) 0; }
-  .rd .hero.hero--opener .card { border-radius: var(--r-lg); padding: 24px 20px 20px !important; min-height: 0; }
-  .rd .hero.hero--opener .kpi-row { gap: 8px; }
-  .rd .hero.hero--opener .kpi { padding: 14px 14px 16px; border-radius: var(--r-sm); }
-  .rd .hero.hero--opener .hero-credit { position: static; text-align: left; max-width: none; margin-top: 16px; }
-}
-
 /* ---------- Kickers: quiet sentence-case text above a heading, never a chip ---------- */
 .rd .eyebrow,
 .rd .era-years,
@@ -765,11 +701,10 @@
   .rd .site-head, .rd .century-wrap { background: var(--surface) !important; backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
 
-
 /* =========================================================
    Refinement pass — one edge, one rhythm, every breakpoint
    Breakpoints: phone ≤640 · tablet 641–1023 · desktop ≥1024 · wide ≥1440
-   Gutter  12 · 20 · 24 · 24      (page edge → card edge; hero shares it)
+   Gutter  12 · 20 · 24 · 24      (page edge → card edge; the opening shares it)
    Pad     20 · 32 · 48 · 56      (card edge → content)
    Gap     12 · 16 · 24 · 24      (card → card)
    Inside a card everything shares one left edge; prose is capped
@@ -795,46 +730,6 @@
   .rd .site-head .brand-sub { font-size: 0.62rem; }
   .rd .site-nav { margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter); }
   .rd .site-nav a { min-height: 34px; padding: 0 13px; }
-}
-
-/* Hero: same edges and padding as the cards below it */
-.rd .hero.hero--opener { margin: 0; }
-.rd .hero.hero--opener .card {
-  padding: var(--rd-pad) !important;
-  padding-bottom: calc(var(--rd-pad) * 0.75) !important;
-  min-height: min(calc(100svh - var(--rd-head) - var(--gutter)), 960px);
-  border-radius: var(--r-xl);
-}
-.rd .hero.hero--opener .hero-credit { top: var(--rd-pad); right: var(--rd-pad); }
-.rd .hero-dateline { flex-wrap: wrap; gap: 8px; }
-.rd .hero-dateline > span { min-height: 32px; padding: 0 12px; font-size: 0.8rem; white-space: nowrap; }
-.rd .hero.hero--opener .hero-dek { max-width: 36rem; }
-
-/* KPI tiles: label / value / foot rows line up across the band */
-.rd .hero.hero--opener .kpi-row { grid-template-rows: auto auto auto; row-gap: 0; }
-.rd .hero.hero--opener .kpi {
-  display: grid;
-  grid-row: span 3;
-  grid-template-rows: subgrid;
-  row-gap: 0;
-  align-content: start;
-}
-.rd .hero.hero--opener .kpi-label { align-self: start; line-height: 1.3; }
-.rd .hero.hero--opener .kpi-value { align-self: end; margin: 14px 0 8px; line-height: 1; }
-.rd .hero.hero--opener .kpi-foot { align-self: start; line-height: 1.45; }
-@media (max-width: 1023px) {
-  .rd .hero.hero--opener .kpi-row { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: repeat(6, auto); }
-  .rd .hero.hero--opener .kpi--lead { grid-column: 1 / -1; }
-}
-@media (max-width: 640px) {
-  .rd .hero.hero--opener { margin: 0; }
-  .rd .hero.hero--opener .card { border-radius: var(--r-lg); min-height: 0; }
-  .rd .hero.hero--opener h1 { font-size: clamp(2.6rem, 12.5vw, 3.4rem); margin-bottom: 20px; }
-  .rd .hero.hero--opener .kpi-row { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(9, auto); gap: 0 8px; }
-  .rd .hero.hero--opener .kpi { margin-bottom: 8px; padding: 14px 14px 14px; }
-  .rd .hero.hero--opener .kpi-value { margin: 10px 0 6px; }
-  .rd .hero.hero--opener .kpi-label { font-size: 0.78rem; }
-  .rd .hero.hero--opener .kpi-foot { font-size: 0.74rem; }
 }
 
 /* Sections: identical spacing between every card */
@@ -942,37 +837,6 @@
 @media (max-width: 640px) {
   .rd .legend-chips { margin: 16px calc(-1 * var(--rd-pad)) 4px; }
   .rd .annotations { margin: 20px calc(-1 * var(--rd-pad)) 0; }
-
-  /* Hero dateline fits one line at 360 */
-  .rd .hero-dateline { gap: 6px; flex-wrap: nowrap; }
-  .rd .hero-dateline > span { min-height: 30px; padding: 0 10px; font-size: 0.74rem; gap: 6px; }
-
-  /* Headline totals: lead tile, then one grouped list (label left, figure right) */
-  .rd .hero.hero--opener .kpi-row { display: flex; flex-direction: column; gap: 0; margin-top: 28px; }
-  .rd .hero.hero--opener .kpi {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: "label value" "foot value";
-    grid-template-rows: auto auto;
-    column-gap: 16px;
-    margin: 0;
-    padding: 14px 16px;
-    border-radius: 0;
-  }
-  .rd .hero.hero--opener .kpi > .kpi-label { grid-area: label; }
-  .rd .hero.hero--opener .kpi > .kpi-value { grid-area: value; align-self: center; margin: 0; font-size: 1.9rem; }
-  .rd .hero.hero--opener .kpi > .kpi-foot { grid-area: foot; margin-top: 4px; }
-  .rd .hero.hero--opener .kpi--lead {
-    grid-template-columns: 1fr;
-    grid-template-areas: "label" "value" "foot";
-    border-radius: var(--r-md);
-    margin-bottom: 8px;
-    padding: 16px;
-  }
-  .rd .hero.hero--opener .kpi--lead > .kpi-value { align-self: start; margin: 10px 0 8px; font-size: 3.2rem; }
-  .rd .hero.hero--opener .kpi--lead + .kpi { border-radius: var(--r-md) var(--r-md) 0 0; }
-  .rd .hero.hero--opener .kpi:last-child { border-radius: 0 0 var(--r-md) var(--r-md); }
-  .rd .hero.hero--opener .kpi:not(.kpi--lead) + .kpi { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.06); margin-top: -1px; }
 }
 
 /* ---------- Final spacing fixes ---------- */
@@ -1044,52 +908,9 @@
   .rd .scrolly-steps { z-index: 1; }
 }
 
-/* =========================================================
-   Full-bleed heroes (all pages)
-   The image runs edge to edge under the frosted header; its text
-   sits on the page's content edge, in line with the logo.
-   ========================================================= */
+/* The content edge: where page text sits, in line with the logo. Full-bleed
+   elements (the opening plate) use it to line their insides up with the page. */
 .rd { --edge: max(var(--gutter), calc((100vw - 1240px) / 2 + var(--gutter))); }
-.rd .hero,
-.rd .hero.hero--opener {
-  width: 100vw;
-  margin: 0 calc(50% - 50vw);
-}
-.rd .hero .card,
-.rd .hero.hero--opener .card {
-  border-radius: 0;
-  box-shadow: none;
-  padding-left: var(--edge) !important;
-  padding-right: var(--edge) !important;
-}
-.rd .hero.hero--opener .card {
-  min-height: min(calc(100svh - var(--rd-head)), 980px);
-  padding-top: clamp(40px, 7vh, 88px) !important;
-  padding-bottom: clamp(28px, 5vh, 48px) !important;
-}
-.rd .hero.hero--opener .hero-credit { top: clamp(40px, 7vh, 88px); right: var(--edge); }
-@media (max-width: 640px) {
-  .rd .hero.hero--opener .card { border-radius: 0; min-height: 0; padding-top: 28px !important; padding-bottom: 24px !important; }
-}
-
-/* Page openers (Reading list, Destruction, Donate) */
-.rd .hero--page { margin-bottom: 0; }
-.rd .hero--page .card {
-  min-height: min(calc(64svh - var(--rd-head)), 620px);
-  padding-top: clamp(48px, 8vw, 104px) !important;
-  padding-bottom: clamp(40px, 6vw, 72px) !important;
-}
-.rd .hero--page .eyebrow {
-  background: rgba(255, 255, 255, 0.12);
-  color: #eef1e6;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-}
-.rd .hero--page h1 { letter-spacing: -0.045em; }
-@media (max-width: 640px) {
-  .rd .hero--page .card { min-height: 0; padding-top: 36px !important; padding-bottom: 32px !important; }
-}
 
 /* Open section heads on these pages: same scale as chapter heads */
 .rd .section-head,
@@ -1346,7 +1167,7 @@
 .rd .btn-primary, .rd .btn-ghost { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
 
 /* =========================================================
-   Many conflicts: switcher in the header, chapter rail below it
+   Many conflicts: switcher in the header
    Graphite only, like the rest of the chrome; colour stays with
    the data.
    ========================================================= */
@@ -1428,46 +1249,7 @@
 .rd .cs-here { position: absolute; top: 14px; right: 12px; font-size: 0.72rem; font-weight: 600; color: var(--text-3); }
 .rd .cs-foot { margin: 6px 12px 6px; font-size: 0.78rem; color: var(--text-4); }
 
-/* Chapter rail: the page's chapters, current one filled */
-.rd .chapter-rail { border-top: 1px solid var(--glass-edge); }
-.rd .chapter-rail[hidden] { display: none; }
-/* ui.js always fills and shows the rail; hold its height until then so the page doesn't drop
-   (one 32px row + 6px track padding top and bottom + the 1px rule). Phones overlay it instead. */
-@media (min-width: 641px) {
-  .rd .chapter-rail[hidden] { display: block; visibility: hidden; min-height: calc(32px + 2 * 6px + 1px); }
-}
-.rd .cr-track {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 6px var(--gutter);
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - 48px), transparent);
-  mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - 48px), transparent);
-}
-.rd .cr-track::-webkit-scrollbar { display: none; }
-.rd .cr-track a {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  min-height: 32px;
-  padding: 0 12px;
-  border-radius: var(--pill);
-  font-size: 0.86rem;
-  font-weight: 500;
-  color: var(--text-3);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color 0.15s var(--ease), color 0.15s var(--ease);
-}
-.rd .cr-track a:hover { color: var(--text); }
-.rd .cr-track a.is-current { background: var(--fill); color: var(--text); font-weight: 600; }
-.rd .cr-gap { flex: none; width: 1px; height: 14px; margin: 0 8px; background: var(--rule-2); }
-
-/* Jumps land below the header and rail */
+/* Jumps land below the header */
 .rd [data-chapter], .rd .part-head { scroll-margin-top: calc(var(--rd-head) + 16px); }
 
 /* Footer: a second heading inside a column */
@@ -1481,29 +1263,13 @@
   .rd .site-head .brand-text { display: none; }
 }
 
-/* Phone: brand and switcher share the top row. Past the opener the rail
-   takes the site nav's row, so the header never changes height. */
+/* Phone: brand and switcher share the top row. */
 @media (max-width: 640px) {
   .rd .head-id { justify-content: space-between; gap: 8px; }
   .rd .site-head .brand-title { font-size: 0.98rem; }
   .rd .site-head .brand-mark { width: 26px; height: 26px; }
   .rd .cs-btn { min-height: 32px; padding: 0 9px 0 12px; font-size: 0.82rem; }
   .rd .cs-menu { left: auto; right: 0; width: calc(100vw - 2 * var(--gutter)); }
-  .rd .site-nav { transition: opacity 0.2s var(--ease), visibility 0.2s; }
-  .rd .chapter-rail {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-top: 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s var(--ease), visibility 0.2s;
-  }
-  .rd .site-head.is-reading .chapter-rail { opacity: 1; visibility: visible; }
-  .rd .site-head.is-reading .site-nav { opacity: 0; visibility: hidden; }
-  .rd .cr-track { padding: 0 var(--gutter) 8px; }
-  .rd .cr-track a { min-height: 34px; }
 }
 @media (prefers-reduced-transparency: reduce) {
   .rd .cs-menu { background: var(--surface); }
@@ -1519,7 +1285,6 @@
 /* Data figures that were set in the mono face keep column alignment with tabular numerals */
 .rd :is(.pyr-num, .pyr-lbl span, .viz-total, .rate-val, .stack-key strong, .dots-readout strong,
         .rp-readout strong, .tl-when, .yr-x, .contents a b, .toc-list a b) { font-variant-numeric: tabular-nums lining-nums; }
-.rd .kpi-value { font-family: var(--font-num); font-weight: 400; letter-spacing: -0.03em; }
 .rd .rm-num { font-family: var(--font-num); font-weight: 600; letter-spacing: -0.03em; }
 .rd .era-stats strong,
 .rd .cell .val,

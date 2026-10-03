@@ -240,3 +240,15 @@
   .stats-tile { border-radius: var(--r-lg); }
   .stats-num { padding-top: var(--space-5); }
 }
+
+/* ---------- Variants ---------- */
+/* A unit after a figure ("9.2 million"): set small, on the figure's baseline */
+.stats-unit { font-size: 0.42em; font-weight: 600; letter-spacing: 0; }
+/* Figures with no side (the Iraq page): a neutral mark */
+.stats-tile--neutral { --stats-mark: var(--rule-3); }
+/* Ranges ("280,771–315,190") run twice as long as a single figure: sized so they fit their tile */
+.stats-num--range { font-size: clamp(2rem, 1.2rem + 1.6vw, 3rem); white-space: nowrap; }
+.stats-tile--lead .stats-num--range { font-size: clamp(2.5rem, 1.2rem + 2.8vw, 4.5rem); }
+@media (max-width: 640px) {
+  .stats-num--range, .stats-tile--lead .stats-num--range { font-size: clamp(1.75rem, 0.6rem + 6vw, 2.5rem); }
+}

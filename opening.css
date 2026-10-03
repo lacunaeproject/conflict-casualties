@@ -198,3 +198,61 @@
     }
   }
 }
+
+/* =========================================================
+   Page opener (--page): the same opening for the other pages.
+   Their photographs are 1,000–1,600px wide, too small to run
+   full bleed, so the plate sits beside the copy at its native
+   quality and settles as it scrolls in instead of widening.
+   --below puts a pair of plates under the copy instead.
+   ========================================================= */
+.opening--page {
+  --opening-display: clamp(2.5rem, 1.6rem + 3.4vw, 4.75rem);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto auto 1fr;
+  column-gap: var(--space-12);
+  align-items: start;
+}
+.opening--page > :not(.opening-plate) { grid-column: 1; }
+.opening--page .opening-title { align-self: auto; }
+.opening--page .opening-dek { align-self: auto; max-width: 34em; margin-top: var(--space-5); }
+.opening-sources {
+  margin: var(--space-4) 0 0;
+  font: 400 0.875rem/1.5 var(--font-body);
+  color: var(--text-3);
+  text-wrap: pretty;
+}
+.opening--page .opening-plate { grid-column: 2; grid-row: 1 / -1; margin: 0; }
+.opening--page .opening-frame { aspect-ratio: auto; clip-path: none; border-radius: var(--opening-radius); }
+.opening--page .opening-img { height: auto; }
+.opening--page .opening-credit { padding: var(--space-3) 0 0; }
+/* A document rather than a photograph (the Balfour Declaration): shown in greyscale, as paper, not cream */
+.opening-plate--doc .opening-img { filter: grayscale(1) contrast(1.05); }
+
+/* Two plates under the copy, at equal size (Destruction: both sides of the fence) */
+.opening--below { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+.opening--below > :not(.opening-plate) { max-width: 46rem; }
+.opening--below .opening-plate { grid-column: 1; grid-row: auto; margin-top: var(--opening-beat); }
+.opening-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+.opening-pair .opening-frame { aspect-ratio: 4 / 3; }
+.opening-pair .opening-img { height: 100%; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .opening--page .opening-title { animation: opening-lift 0.9s var(--opening-ease) 0.05s both; }
+  .opening--page .opening-frame { animation: none; }
+  @supports (animation-timeline: view()) {
+    .opening--page .opening-img {
+      animation: opening-settle linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .opening--page { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .opening--page .opening-plate { grid-column: 1; grid-row: auto; margin-top: var(--opening-beat); }
+}
+@media (max-width: 640px) {
+  .opening-pair { grid-template-columns: minmax(0, 1fr); }
+}

@@ -15,7 +15,6 @@
   --stats-lead: clamp(3.75rem, 1.8rem + 5.2vw, 7.5rem);
   --stats-pad:  var(--s-32);
   --stats-gap:  var(--gap-tile);
-  --stats-ease: cubic-bezier(0.28, 0.11, 0.32, 1);
 
   /* Side colours: light theme's olive and navy are already matched (L 0.087 / 0.084) */
   --stats-pal: var(--pal);
@@ -35,7 +34,7 @@
   max-width: 20ch;
   margin: 0 0 clamp(var(--s-48), 5vh, var(--s-64));
   font: 500 clamp(1.875rem, 1.3rem + 1.8vw, 3rem)/var(--lh-display) var(--font-display);
-  letter-spacing: -0.028em;
+  letter-spacing: var(--track-display);
   color: var(--text);
   text-wrap: balance;
 }
@@ -59,7 +58,7 @@
   border-radius: var(--r-xl);
   background: var(--surface);
   box-shadow: var(--e1);
-  overflow: hidden;
+  overflow: clip; /* clip, not hidden: hidden makes a scroll container, which captures scroll-driven timelines */
 }
 /* Side mark: a short rule at the top of the tile, in the data colour */
 .stats-tile::before {
@@ -85,19 +84,19 @@
   margin-top: auto;   /* the lead figure sits low in its tall tile */
   padding-top: var(--s-24);
   font: 600 var(--stats-num)/var(--lh-figure) var(--font-ui);
-  letter-spacing: -0.025em;
+  letter-spacing: var(--track-display);
   font-variant-numeric: tabular-nums lining-nums;
   background: linear-gradient(180deg, var(--stats-grad-a) 35%, var(--stats-grad-b) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-.stats-tile--lead .stats-num { font-size: var(--stats-lead); letter-spacing: -0.035em; }
+.stats-tile--lead .stats-num { font-size: var(--stats-lead); letter-spacing: var(--track-display); }
 /* Smaller tiles hang the figure from the label, so figures in a row share one line
    whatever the length of their breakdowns; the controls share the bottom edge instead */
 .stats-tile:not(.stats-tile--lead) .stats-num { margin-top: 0; }
 .stats-tile:not(.stats-tile--lead) .stats-more { margin-top: auto; padding-top: var(--s-16); }
-.stats-comma { margin-left: -0.02em; letter-spacing: -0.06em; }
+.stats-comma { margin-left: -0.02em; letter-spacing: -0.06em; } /* floor-ignore: optical kerning of the comma inside large figures, in em so it scales with them */
 
 .stats-break {
   margin-top: var(--s-12);
@@ -138,7 +137,7 @@
   color: var(--text-2);
   list-style: none;
   cursor: pointer;
-  transition: background-color 0.2s var(--stats-ease), color 0.2s var(--stats-ease);
+  transition: background-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out);
 }
 .stats-info::-webkit-details-marker { display: none; }
 .stats-info::after {
@@ -148,7 +147,7 @@
   border-right: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
   transform: translateY(-1px) rotate(45deg);
-  transition: transform 0.3s var(--stats-ease);
+  transition: transform var(--dur-ui) var(--ease-in-out);
 }
 .stats-details[open] .stats-info::after { transform: translateY(1px) rotate(-135deg); }
 .stats-info-close { display: none; }
@@ -175,12 +174,12 @@
 .stats-detail a { color: var(--text); text-decoration-color: var(--rule-3); text-underline-offset: 0.2em; }
 .stats-detail a:hover { text-decoration-color: currentColor; }
 @media (prefers-reduced-motion: no-preference) {
-  .stats-details[open] .stats-detail { animation: stats-settle 0.32s var(--stats-ease); }
-  .stats-details[open] .stats-detail > * { animation: stats-lift 0.4s var(--stats-ease) both; }
-  .stats-details[open] .stats-detail > :nth-child(2) { animation-delay: 0.04s; }
-  .stats-details[open] .stats-detail > :nth-child(3) { animation-delay: 0.08s; }
+  /* The surface covers the tile at once (the answer to the press); only its text lifts in,
+     so the tile's own figure and the detail's words are never on screen together. */
+  .stats-details[open] .stats-detail > * { animation: stats-lift var(--dur-emphasis) var(--ease-out) both; }
+  .stats-details[open] .stats-detail > :nth-child(2) { animation-delay: var(--stagger); }
+  .stats-details[open] .stats-detail > :nth-child(3) { animation-delay: calc(var(--stagger) * 2); }
 }
-@keyframes stats-settle { from { opacity: 0; } }
 @keyframes stats-lift   { from { opacity: 0; transform: translateY(var(--s-8)); } }
 
 /* ---------- Foot: key, the one as-of date, sources ---------- */
@@ -202,30 +201,24 @@
 .stats-asof a { color: var(--text-2); text-decoration-color: var(--rule-3); text-underline-offset: 0.2em; }
 .stats-asof a:hover { color: var(--text); text-decoration-color: currentColor; }
 
-/* ---------- Motion: each tile reveals on its own view timeline ----------
-   Tile rises; then its label; the figure pulls into focus behind a wipe;
-   the breakdown and source follow. Ranges are offsets on the tile's own entry. */
+/* ---------- Motion: each figure comes into focus ----------
+   Every figure sharpens as it reaches the reading line, on its own view
+   timeline, so it reverses on scroll back. Its value never changes.
+   Reduced motion: no pull, figures at rest. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .stats-tile { view-timeline: --stats-tile block; }
-    .stats-tile, .stats-tile > * {
-      animation-duration: auto;
-      animation-fill-mode: both;
-      animation-timing-function: var(--stats-ease);
+    .stats-tile > .stats-num, .coda-num {
+      animation: stats-focus linear both; /* floor-ignore: scroll-driven, progress maps 1:1 to scroll */
+      animation-timeline: view();
+      animation-range: entry 60% cover 50%;
     }
-    .stats-tile               { animation-name: stats-rise;  animation-timeline: view(); animation-range: entry 5% cover 28%; }
-    .stats-tile > .stats-label { animation-name: stats-in;    animation-timeline: --stats-tile; animation-range: entry 20% cover 32%; }
-    .stats-tile > .stats-num   { animation-name: stats-focus; animation-timeline: --stats-tile; animation-range: entry 30% cover 40%; }
-    .stats-tile > .stats-break { animation-name: stats-in;    animation-timeline: --stats-tile; animation-range: entry 45% cover 44%; }
-    .stats-tile > .stats-src,
-    .stats-tile > .stats-more  { animation-name: stats-in;    animation-timeline: --stats-tile; animation-range: entry 55% cover 47%; }
+    /* The closing number sits alone on a dark ground: it focuses over a longer stretch */
+    .coda-num { animation-range: entry 20% cover 45%; }
   }
 }
-@keyframes stats-rise  { from { opacity: 0; transform: translateY(48px); } }
-@keyframes stats-in    { from { opacity: 0; transform: translateY(24px); } }
 @keyframes stats-focus {
-  from { opacity: 0; transform: translateY(32px); filter: blur(8px); clip-path: inset(0 0 100% 0); }
-  to   { opacity: 1; transform: none; filter: blur(0); clip-path: inset(0 0 -0.2em 0); }
+  from { opacity: 0.5; filter: blur(var(--reveal-blur)); transform: scale(0.985); }
+  to   { opacity: 1; filter: blur(0); transform: none; }
 }
 
 /* ---------- Responsive ---------- */

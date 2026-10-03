@@ -1,0 +1,550 @@
+/* =========================================================
+   Story mode (story.html) — the record told as one continuous
+   scene. Each .scene is a run of scroll; its .stage is pinned
+   while the reader moves through it. story.js writes --p (0→1
+   through the scene) on each scene and --o / --t on each beat.
+   Everything moves by scroll position, so it reverses, and the
+   reader sets the pace. Reduced motion: scenes stack, static.
+   ========================================================= */
+.storymode {
+  --st-ground: #0b0c0e;
+  --st-ink: #eef0f2;
+  --st-ink-2: #c3c8cf;
+  --st-ink-3: #8e949c;
+  --st-glass: rgba(11, 12, 14, 0.74);
+  --st-rule: rgba(255, 255, 255, 0.16);
+  --st-accent: var(--pal-on-night, #b9c79a);
+  margin: 0;
+  background: var(--st-ground);
+  color: var(--st-ink);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+.storymode main { display: block; }
+.storymode em { font-style: italic; }
+.storymode b { font-weight: 600; color: var(--st-ink); }
+
+/* ---------- Header: brand, chapter rail, a reading line ---------- */
+.st-head {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--s-24);
+  padding: var(--s-16) var(--page-margin);
+  font: 500 var(--text-note)/var(--lh-figure) var(--font-ui);
+  background: linear-gradient(180deg, rgba(11, 12, 14, 0.7), transparent);
+}
+.st-head a { color: var(--st-ink-2); text-decoration: none; transition: color var(--dur-micro) var(--ease-out); }
+.st-head a:hover { color: var(--st-ink); }
+.st-head a:focus-visible { outline: 2px solid var(--st-ink); outline-offset: 4px; border-radius: 2px; }
+.st-brand { font: 600 var(--text-ui)/var(--lh-figure) var(--font-display); color: var(--st-ink) !important; }
+/* Which story: a two-way switch */
+.st-switch {
+  display: flex;
+  gap: var(--s-4);
+  margin-inline: auto;
+  padding: var(--s-4);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.st-switch a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 var(--s-16);
+  border-radius: 999px;
+  font-weight: 600;
+}
+.st-switch a[aria-current="page"] { background: var(--st-ink); color: var(--st-ground); }
+.st-switch a[aria-current="page"]:hover { color: var(--st-ground); }
+.st-full {
+  padding: var(--s-8) var(--s-16);
+  border: 1px solid var(--st-rule);
+  border-radius: 999px;
+}
+.st-progress { position: absolute; inset: auto 0 0; height: 2px; background: transparent; }
+.st-progress i { display: block; height: 100%; background: var(--st-ink); transform-origin: 0 50%; transform: scaleX(var(--read, 0)); }
+@media (max-width: 760px) {
+  .st-brand { display: none; }
+  .st-switch { margin-inline: 0 auto; }
+}
+
+/* ---------- Chapter rail (wide screens) ----------
+   A tick per chapter down the left edge. The current one is long and lit,
+   with its name; hover or focus the rail to read every name. */
+.st-nav {
+  position: fixed;
+  left: var(--s-24);
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 20;
+}
+.st-nav ol { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-4); }
+.st-nav a {
+  display: flex;
+  align-items: center;
+  gap: var(--s-12);
+  min-height: 28px;
+  color: var(--st-ink-3);
+  text-decoration: none;
+  font: 500 var(--text-note)/var(--lh-figure) var(--font-ui);
+}
+.st-nav-tick {
+  width: 12px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.6;
+  transition: width var(--dur-ui) var(--ease-out), opacity var(--dur-ui) var(--ease-out);
+}
+.st-nav-name {
+  opacity: 0;
+  translate: -4px 0;
+  white-space: nowrap;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
+  transition: opacity var(--dur-ui) var(--ease-out), translate var(--dur-ui) var(--ease-out);
+}
+.st-nav a.is-past { color: var(--st-ink-2); }
+.st-nav a.is-current { color: var(--st-ink); }
+.st-nav a.is-current .st-nav-tick { width: 28px; opacity: 1; }
+.st-nav:hover .st-nav-name,
+.st-nav:focus-within .st-nav-name { opacity: 1; translate: 0 0; }
+.st-nav:hover a:not(.is-current) .st-nav-name,
+.st-nav:focus-within a:not(.is-current) .st-nav-name { opacity: 0.75; }
+/* The rail opens over a soft shade so names stay readable over any scene */
+.st-nav::before { content: ""; position: absolute; inset: -40px -200px -40px -60px; background: radial-gradient(closest-side, rgba(11, 12, 14, 0.75), transparent); opacity: 0; pointer-events: none; transition: opacity var(--dur-ui) var(--ease-out); }
+.st-nav:hover::before, .st-nav:focus-within::before { opacity: 1; }
+.st-nav a:hover { color: var(--st-ink); }
+.st-nav a:hover .st-nav-tick { width: 20px; opacity: 1; }
+.st-nav a:focus-visible { outline: 2px solid var(--st-ink); outline-offset: 3px; border-radius: 3px; }
+
+/* ---------- Chapter pager (phones) ---------- */
+.st-pager {
+  position: fixed;
+  left: 50%;
+  bottom: max(var(--s-16), env(safe-area-inset-bottom));
+  translate: -50% 0;
+  z-index: 20;
+  display: none;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-4);
+  border-radius: 999px;
+  background: rgba(20, 22, 25, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  max-width: calc(100vw - 2 * var(--s-16));
+}
+.st-pager button {
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--st-ink);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-press), opacity var(--dur-micro) var(--ease-out);
+}
+.st-pager-btn { width: 44px; display: grid; place-items: center; }
+.st-pager-btn svg { width: 16px; height: 16px; }
+.st-pager-btn:disabled { opacity: 0.3; cursor: default; }
+.st-pager button:not(:disabled):active { transform: scale(var(--press-scale)); background: rgba(255, 255, 255, 0.1); }
+.st-pager button:focus-visible { outline: 2px solid var(--st-ink); outline-offset: 1px; }
+.st-pager-name { display: grid; justify-items: center; gap: var(--s-4); min-width: 9.5rem; white-space: nowrap; padding: 0 var(--s-12); font: 600 var(--text-note)/var(--lh-display) var(--font-ui); }
+.st-pager-count { font-weight: 400; font-size: var(--text-2xs); color: var(--st-ink-3); }
+.st-sheet {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + var(--s-8));
+  translate: -50% 0;
+  min-width: 15rem;
+  padding: var(--s-8);
+  border-radius: var(--r-lg, 14px);
+  background: rgba(20, 22, 25, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.7);
+  animation: st-sheet var(--dur-ui) var(--ease-out);
+}
+.st-sheet ol { list-style: none; margin: 0; padding: 0; }
+.st-sheet a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--s-16);
+  border-radius: var(--r-md, 10px);
+  color: var(--st-ink-2);
+  text-decoration: none;
+  font: 500 var(--text-ui)/var(--lh-figure) var(--font-ui);
+}
+.st-sheet a[aria-current] { color: var(--st-ink); background: rgba(255, 255, 255, 0.08); font-weight: 600; }
+.st-sheet a:focus-visible { outline: 2px solid var(--st-ink); outline-offset: -2px; }
+@keyframes st-sheet { from { opacity: 0; transform: translateY(var(--s-8)); } }
+@media (max-width: 900px) {
+  .st-nav { display: none; }
+  .st-pager { display: flex; }
+  .st-credit { bottom: calc(var(--s-16) + 64px); }
+  .st-card--left { margin-bottom: calc(var(--s-96) * 2); }
+}
+
+/* ---------- Scenes ---------- */
+.scene { position: relative; height: calc(var(--len, 2) * 100svh); }
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+.st-js .beat {
+  opacity: calc(var(--o, 0) * clamp(0, 1 - var(--out, 0) * 3, 1));
+  transform: translate3d(0, calc((0.5 - var(--t, 0.5)) * 56px), 0);
+}
+.beat { position: relative; z-index: 3; }
+.stage > .beat { grid-area: 1 / 1; }
+
+/* Continuity: each scene overlaps the one before it by a screen plus the dissolve.
+   While the earlier scene is still pinned, the next one fades in on top of it, so
+   the story dissolves from image to image and never passes through black. */
+.st-js .scene + .scene { margin-top: calc(-100svh - var(--dissolve)); }
+.st-js .scene + .scene { height: calc((var(--len, 2) + 1.2) * 100svh); }   /* pays back the overlap, so pacing holds */
+.storymode { --dissolve: 70svh; }
+.st-js .scene + .scene > .stage { opacity: var(--in, 0); }
+/* Words that aren't beats (numerals, years, credits, title) clear with the scene too */
+.st-js :is(.st-numeral, .st-year, .st-credit, .st-title, .st-note) { --clear: clamp(0, 1 - var(--out, 0) * 3, 1); }
+.st-js :is(.st-year, .st-credit) { opacity: var(--clear); }
+
+/* Small print that always sits at the foot of a stage */
+.st-credit {
+  position: absolute;
+  left: var(--page-margin);
+  right: var(--page-margin);
+  bottom: var(--s-16);
+  z-index: 4;
+  margin: 0;
+  max-width: 62ch;
+  font: 400 var(--text-2xs)/var(--lh-caption) var(--font-ui);
+  color: var(--st-ink-3);
+}
+
+/* ---------- 1. Prologue ---------- */
+.scene--prologue .stage { background: var(--st-ground); }
+.scene--prologue .st-plate { opacity: 0.3; filter: blur(2px) saturate(0.8); transform: scale(1.06); }
+.scene--prologue .st-plate::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(11, 12, 14, 0.55), rgba(11, 12, 14, 0.85)); }
+.st-line {
+  max-width: 26ch;
+  margin: 0;
+  padding-inline: var(--page-margin);
+  text-align: center;
+  font: 400 clamp(1.5rem, 1rem + 2vw, 2.5rem)/var(--lh-label) var(--font-display);
+  color: var(--st-ink);
+  text-wrap: balance;
+}
+.st-line--small { font-size: clamp(1.125rem, 0.9rem + 1vw, 1.5rem); color: var(--st-ink-2); }
+
+/* ---------- 2. Title ---------- */
+.st-plate { position: absolute; inset: 0; z-index: 0; }
+.st-plate img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scene--title .st-plate {
+  opacity: clamp(0.3, calc(0.3 + var(--p, 1) * 1.6), 1);
+  transform: scale(calc(1.06 - 0.06 * var(--p, 1)));
+}
+.scene--title .st-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(11, 12, 14, 0.25), rgba(11, 12, 14, 0.75));
+}
+.st-title {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  font: 500 clamp(3.25rem, 1rem + 11vw, 11.5rem)/var(--lh-figure) var(--font-display);
+  letter-spacing: var(--track-display);
+  text-align: center;
+  color: var(--st-ink);
+  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.35);
+  transform: scale(calc(1 + 0.08 * var(--p, 0)));
+  opacity: calc(clamp(0, calc((1 - var(--p, 0)) * 3.2), 1) * var(--clear, 1));
+}
+.st-title span { display: block; }
+/* Before the plate arrives, the satellite view shows through the letters */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .st-js .st-title span {
+    background: linear-gradient(rgba(255, 255, 255, var(--ink-mix, 0)), rgba(255, 255, 255, var(--ink-mix, 0))), var(--title-img, url("img/oct7-plate-1600.webp")) center / 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+  }
+  .st-js .scene--title { --ink-mix: clamp(0, calc((var(--p, 0) - 0.2) * 4), 1); }
+}
+.st-dateline {
+  position: absolute !important;
+  bottom: var(--s-48);
+  margin: 0;
+  font: 500 var(--text-note)/var(--lh-label) var(--font-ui);
+  color: var(--st-ink-2);
+}
+
+/* ---------- 3. The strip ---------- */
+.st-plate--held img { transform: scale(calc(1.08 - 0.08 * var(--p, 1))); }
+.st-plate--held::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(11, 12, 14, 0.55), rgba(11, 12, 14, 0.15) 50%, rgba(11, 12, 14, 0.55));
+}
+.st-card {
+  max-width: 27rem;
+  margin: 0 var(--page-margin);
+  padding: var(--s-24) var(--s-32);
+  border-radius: var(--r-md, 10px);
+  background: var(--st-glass);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  font: 400 clamp(1.0625rem, 0.95rem + 0.45vw, 1.25rem)/var(--lh-caption) var(--font-display);
+  color: var(--st-ink-2);
+  justify-self: start;
+}
+.st-card p { margin: 0; }
+.st-card p + p { margin-top: var(--s-12); }
+.st-card--right { justify-self: end; }
+.st-card--center { justify-self: center; text-align: center; max-width: 34rem; }
+.st-card--left { justify-self: start; align-self: end; margin-bottom: var(--s-96); }
+@media (min-width: 901px) {
+  .st-card:not(.st-card--center):not(.st-card--right) { margin-left: max(var(--page-margin), var(--s-96)); }
+  .st-credit { left: max(var(--page-margin), var(--s-96)); }
+}
+.st-card--plain { background: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.st-big-line { font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem); line-height: var(--lh-title); color: var(--st-ink); text-wrap: balance; }
+.st-small { font: 400 var(--text-note)/var(--lh-caption) var(--font-ui); color: var(--st-ink-3); }
+.st-kicker { font: 600 var(--text-note)/var(--lh-label) var(--font-ui); color: var(--st-accent); margin-bottom: var(--s-12) !important; }
+.st-card h2 {
+  margin: 0 0 var(--s-12);
+  font: 500 clamp(1.75rem, 1.2rem + 2vw, 2.75rem)/var(--lh-display) var(--font-display);
+  letter-spacing: var(--track-title);
+  color: var(--st-ink);
+  text-wrap: balance;
+}
+
+/* ---------- 4. The number ---------- */
+.scene--number .stage { background: var(--st-ground); }
+.st-numeral {
+  margin: 0;
+  font: 500 clamp(6rem, 27vw, 30rem)/var(--lh-figure) var(--font-display);
+  letter-spacing: -0.04em;
+  font-variant-numeric: lining-nums;
+  color: var(--st-ink);
+  transform: scale(calc(1.14 - 0.14 * var(--p, 1))) translateY(calc((0.4 - var(--p, 0.4)) * 6vh));
+  opacity: calc(clamp(0.2, calc(0.2 + var(--p, 1) * 2.4), 1) * var(--clear, 1));
+  white-space: nowrap;
+}
+.st-note {
+  position: absolute !important;
+  max-width: 17rem;
+  margin: 0;
+  font: 400 var(--text-note)/var(--lh-caption) var(--font-ui);
+  color: var(--st-ink-2);
+}
+.st-note-h { display: block; margin-bottom: var(--s-4); font-weight: 600; color: var(--st-ink); }
+.scene--number .st-numeral { translate: 0 -9vh; }
+.st-note--a { bottom: 12vh; left: var(--page-margin); }
+.st-note--b { bottom: 12vh; left: 50%; translate: -50% 0; }
+.st-note--c { bottom: 12vh; right: var(--page-margin); }
+@media (max-width: 760px) {
+  .scene--number .st-numeral { translate: 0 -18vh; }
+  .st-note { left: var(--page-margin) !important; right: var(--page-margin) !important; max-width: none; translate: none !important; }
+  .st-note--a { bottom: 38vh; }
+  .st-note--b { bottom: 23vh; }
+  .st-note--c { bottom: 8vh; }
+}
+
+/* ---------- 5. The dots ---------- */
+.scene--dots .stage { background: var(--st-ground); }
+.st-dots { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+.scene--dots .st-card { background: rgba(11, 12, 14, 0.82); }
+
+/* ---------- 6. A hundred years ---------- */
+.scene--century .stage { background: var(--st-ground); }
+.st-float { position: absolute; margin: 0; z-index: 1; }
+.st-float img { display: block; width: 100%; height: auto; filter: grayscale(1) contrast(1.04) brightness(0.8); border-radius: 2px; }
+.st-float--1 { width: clamp(9rem, 22vw, 20rem); left: 6vw; top: 12vh; transform: translateY(calc((0.5 - var(--p, 0.5)) * 60vh)); }
+.st-float--2 { width: clamp(7rem, 15vw, 14rem); right: 8vw; top: 18vh; transform: translateY(calc((0.5 - var(--p, 0.5)) * 110vh)); }
+.st-float--3 { width: clamp(8rem, 18vw, 17rem); left: 12vw; bottom: 8vh; transform: translateY(calc((0.5 - var(--p, 0.5)) * 90vh)); }
+.st-float--4 { width: clamp(8rem, 20vw, 18rem); right: 5vw; bottom: 14vh; transform: translateY(calc((0.5 - var(--p, 0.5)) * 45vh)); }
+.scene--century .st-card { max-width: 38rem; }
+@media (max-width: 760px) {
+  .st-float { opacity: 0.4; }
+  .st-float--1, .st-float--3 { left: -6vw; }
+  .st-float--2, .st-float--4 { right: -6vw; }
+}
+.scene--century .st-card p { font-size: clamp(1.25rem, 0.95rem + 1.2vw, 1.75rem); line-height: var(--lh-label); color: var(--st-ink); text-shadow: 0 0 24px var(--st-ground), 0 0 4px var(--st-ground); }
+.scene--century .st-kicker { font-size: var(--text-note) !important; text-shadow: none !important; }
+
+/* ---------- 7. The declarations ---------- */
+.st-photo { position: absolute; inset: 0; z-index: 0; background: #16181b; }
+.st-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(1) contrast(1.06) brightness(calc(0.55 + 0.25 * var(--p, 1)));
+  transform: scale(calc(1.1 - 0.1 * var(--p, 1)));
+}
+.st-photo--doc { display: grid; place-items: center; }
+.st-photo--doc img { width: auto; height: 82%; object-fit: contain; filter: grayscale(1) brightness(0.85); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); }
+.st-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(11, 12, 14, 0.82) 0%, rgba(11, 12, 14, 0.35) 55%, rgba(11, 12, 14, 0.15)), linear-gradient(0deg, rgba(11, 12, 14, 0.7), transparent 45%);
+}
+.st-year {
+  position: absolute;
+  right: var(--page-margin);
+  top: 8vh;
+  z-index: 1;
+  margin: 0;
+  font: 500 clamp(5rem, 22vw, 22rem)/var(--lh-figure) var(--font-display);
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.55);
+  transform: translateX(calc((0.5 - var(--p, 0.5)) * 18vw));
+}
+.scene--era .st-card { max-width: 32rem; }
+.scene--era .st-card p { color: var(--st-ink-2); }
+
+/* ---------- 8. Now ---------- */
+.scene--now .stage { background: var(--st-ground); }
+.scene--now .st-card { max-width: 46rem; }
+
+/* ---------- 9. In memory ---------- */
+.st-memory {
+  padding: var(--gap-section) var(--page-margin) var(--s-96);
+  text-align: center;
+  background: var(--st-ground);
+}
+.st-memory .st-kicker { margin: 0 0 var(--s-16); }
+.st-memory-num {
+  margin: 0;
+  font: 400 clamp(4rem, 1rem + 12vw, 10rem)/var(--lh-figure) var(--font-display);
+  letter-spacing: var(--track-display);
+  color: var(--st-ink);
+}
+.st-memory-line { max-width: 32ch; margin: var(--s-16) auto 0; font: 400 clamp(1.125rem, 1rem + 0.6vw, 1.4rem)/var(--lh-caption) var(--font-display); color: var(--st-ink-2); text-wrap: balance; }
+.st-memory-lede { max-width: 40ch; margin: var(--s-48) auto var(--s-24); font: 400 var(--text-base)/var(--lh-ui) var(--font-display); color: var(--st-ink-2); }
+.st-names {
+  max-width: 64rem;
+  max-height: 60vh;
+  margin: 0 auto;
+  overflow: clip;
+  font: 400 var(--text-ui)/var(--lh-body) var(--font-display);
+  color: var(--st-ink-2);
+  -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent);
+  mask-image: linear-gradient(180deg, #000 70%, transparent);
+}
+.st-names span + span::before { content: "·"; margin-inline: 0.6em; color: var(--st-ink-3); } /* floor-ignore: em gap scales with the names */
+.st-next { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--s-12); margin-top: var(--s-48); }
+.st-next a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--s-24);
+  border-radius: 999px;
+  font: 600 var(--text-note)/var(--lh-figure) var(--font-ui);
+  text-decoration: none;
+  color: var(--st-ground);
+  background: var(--st-ink);
+  transition: transform var(--dur-micro) var(--ease-press), opacity var(--dur-micro) var(--ease-out);
+}
+.st-next a + a { color: var(--st-ink); background: transparent; box-shadow: inset 0 0 0 1px var(--st-rule); }
+.st-next a:active { transform: scale(var(--press-scale)); }
+.st-next a:focus-visible { outline: 2px solid var(--st-ink); outline-offset: 3px; }
+
+/* ---------- Iraq ---------- */
+.st-title--iraq { --title-img: url("img/plate-baghdad-1400.webp"); }
+.st-numeral--range { display: grid; justify-items: center; font-size: clamp(4.5rem, 19vw, 21rem); }
+.st-numeral--range span { font-size: 0.32em; letter-spacing: var(--track-title); color: var(--st-ink-2); margin-top: 0.12em; }
+/* Eras without a photograph of their own: Baghdad from orbit, dark and soft */
+.st-photo--plate img { filter: grayscale(0.6) blur(3px) brightness(calc(0.35 + 0.15 * var(--p, 1))); transform: scale(calc(1.2 - 0.08 * var(--p, 1))); }
+.st-photo--close img { transform: scale(calc(1.5 - 0.2 * var(--p, 1))); transform-origin: 30% 60%; }
+
+/* ---------- Iraq: the years ---------- */
+.scene--years .stage { background: var(--st-ground); }
+.st-bars {
+  position: absolute;
+  inset: 40vh max(var(--page-margin), var(--s-96)) 14vh;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-items: end;
+  gap: clamp(var(--s-4), 0.5vw, var(--s-8));
+  z-index: 0;
+}
+.st-bar { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+.st-bar i { display: block; height: calc(var(--v) * 100%); min-height: 2px; border-radius: 2px 2px 0 0; background: rgba(238, 240, 242, 0.62); transition: background-color var(--dur-emphasis) var(--ease-in-out), opacity var(--dur-emphasis) var(--ease-in-out); }
+.st-bar span { position: absolute; top: 100%; left: 50%; translate: -50% 0; margin-top: var(--s-8); font: 500 var(--text-2xs)/var(--lh-figure) var(--font-ui); color: var(--st-ink-3); }
+.st-bar b { position: absolute; bottom: calc(var(--v) * 100% + var(--s-8)); left: 50%; translate: -50% 0; font: 600 var(--text-2xs)/var(--lh-figure) var(--font-ui); color: var(--st-ink); opacity: 0; transition: opacity var(--dur-ui) var(--ease-out); white-space: nowrap; }
+.st-bar.is-dim i { opacity: 0.22; }
+.st-bar.is-on i { background: #c9d3ae; }
+.st-bar.is-peak b { opacity: 1; }
+.scene--years .st-card { justify-self: start; align-self: start; margin: 13vh 0 0 max(var(--page-margin), var(--s-96)); max-width: 30rem; padding: 0; background: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+@media (max-width: 760px) {
+  .st-bars { inset: 46vh var(--page-margin) 12vh; }
+  .st-bar span { display: none; }
+  .st-bar:nth-child(4n + 1) span { display: block; }
+  .scene--years .st-card { margin: 12vh var(--page-margin) 0; }
+}
+
+/* ---------- Iraq: the estimates on one scale ---------- */
+.scene--scale .stage { background: var(--st-ground); }
+.st-scale { position: absolute; left: max(var(--page-margin), var(--s-96)); right: max(var(--page-margin), var(--s-96)); top: 58vh; height: 1px; background: var(--st-rule); z-index: 0; }
+.st-scale-tick { position: absolute; top: var(--s-12); translate: -50% 0; font: 500 var(--text-2xs)/var(--lh-figure) var(--font-ui); color: var(--st-ink-3); }
+.st-mark {
+  position: absolute;
+  bottom: 0;
+  left: var(--x);
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: var(--s-8);
+  text-align: center;
+  transition: opacity var(--dur-emphasis) var(--ease-in-out);
+}
+.st-mark::after { content: ""; width: 1px; height: calc(var(--h, 1) * 5vh); background: var(--st-ink-2); }
+.st-mark i { position: absolute; bottom: -4px; width: 9px; height: 9px; border-radius: 50%; background: var(--st-ink); }
+.st-mark b { font: 600 clamp(1rem, 0.7rem + 1vw, 1.5rem)/var(--lh-figure) var(--font-display); color: var(--st-ink); }
+.st-mark small { font: 500 var(--text-2xs)/var(--lh-label) var(--font-ui); color: var(--st-ink-3); white-space: nowrap; }
+.st-mark--range::before { content: ""; position: absolute; bottom: -1px; left: 50%; width: var(--w); height: 3px; translate: -50% 0; background: rgba(238, 240, 242, 0.5); border-radius: 2px; }
+.scene--scale[data-show="counts"] .st-mark:not(.st-mark--count),
+.scene--scale[data-show="surveys"] .st-mark.st-mark--count { opacity: 0.18; }
+.scene--scale .st-card { align-self: start; margin-top: 14vh; }
+@media (max-width: 760px) {
+  .st-scale { top: 70vh; }
+  .st-mark small { display: none; }
+  .st-mark b { font-size: var(--text-note); }
+}
+
+/* ---------- Reduced motion: the story as a sequence of still frames ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .scene { height: auto; }
+  .stage { position: relative; height: auto; min-height: 100svh; padding-block: var(--s-96); gap: var(--s-24); }
+  .st-js .beat { opacity: 1; transform: none; }
+  .stage > .beat { grid-area: auto; }
+  .scene--title .st-plate { opacity: 1; transform: none; }
+  .st-js .st-title span { background: none; color: var(--st-ink); }
+  .st-title { opacity: 1; transform: none; }
+  .st-numeral, .st-year, .st-float, .st-photo img, .st-plate--held img { transform: none; opacity: 1; }
+  .st-note { position: static !important; translate: none; max-width: 34rem; text-align: center; }
+  .st-float { position: relative; inset: auto; width: min(18rem, 60vw); }
+  .st-bars, .st-scale { position: relative; inset: auto; width: calc(100% - 2 * var(--page-margin)); height: 50vh; }
+}

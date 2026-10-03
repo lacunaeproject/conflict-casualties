@@ -1,15 +1,15 @@
 /* =========================================================
-   Conflict Casualties — quiet motion layer
-   - Sections fade up as they enter the viewport
-   - Thin reading-progress rule in the masthead
-   - Charts replay their draw-in when first scrolled into view
-   Everything is skipped for prefers-reduced-motion, and content is
-   never hidden unless this script has run (html.motion gate).
-   Casualty figures are deliberately NOT animated (no count-ups).
+   Conflict Casualties — motion layer
+   - Reading-progress rule in the masthead
+   - Headings set word by word as the reader reaches them
+   - The pull quote lights up word by word across the reader's scroll
+   Photographs developing and figures coming into focus are pure CSS
+   (scroll-driven). Figures never count. Skipped under reduced motion,
+   and nothing is hidden unless this script has run (html.motion).
    ========================================================= */
 (function () {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce || !('IntersectionObserver' in window)) return;
+  if (reduce) return;
 
   const root = document.documentElement;
   root.classList.add('motion');
@@ -33,54 +33,91 @@
     setProgress();
   }
 
-  // --- Reveal on scroll --------------------------------------------------
-  // Only content below the fold at load: anything already on screen stays
-  // put, so nothing blinks out and back in on first paint.
-  const fold = window.innerHeight;
-  const targets = Array.from(document.querySelectorAll([
-    '.panel .card', '.split .card',
-    '.tracker .card', '.context-card .card', '.data-stamp .card', '.foot-meta .card',
-    '.pullquote', '.gallery-head', '.photo', '.note-panel',
-    '.section-head', '.book', '.donate-card', '.jump-nav',
-    '.story', '.part-head', '.century', '.era-fig', '.era-body',
-  ].join(','))).filter(el => el.getBoundingClientRect().top > fold * 0.9);
-
-  // Stagger siblings that share a row (KPI cards, book grid, photo pairs)
-  targets.forEach(el => {
-    el.classList.add('reveal');
-    const sibs = Array.from(el.parentElement ? el.parentElement.children : []).filter(n => n.classList.contains('reveal'));
-    const i = sibs.indexOf(el);
-    if (i > 0) el.style.transitionDelay = `${(i % 4) * 80}ms`;
+  // --- Photographs develop once they have loaded --------------------------
+  document.querySelectorAll('.era-fig img, .photo img').forEach(img => {
+    const done = () => img.classList.add('is-loaded');
+    if (img.complete && img.naturalWidth) done();
+    else img.addEventListener('load', done, { once: true });
   });
 
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('in');
-      io.unobserve(e.target);
-    });
-  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-  targets.forEach(el => io.observe(el));
-
-  // --- Charts draw in when first seen ------------------------------------
-  const canvases = document.querySelectorAll('#ts-chart, #gov-chart, #wb-chart, #wb-attacks-chart, #pace-chart');
-  if (canvases.length && window.Chart) {
-    const replay = (canvas, tries = 0) => {
-      const chart = window.Chart.getChart(canvas);
-      if (!chart) {
-        if (tries < 40) setTimeout(() => replay(canvas, tries + 1), 150);
-        return;
-      }
-      chart.reset();
-      chart.update();
+  // --- Headings set word by word -----------------------------------------
+  // Each word rises inside its own clip box, in reading order. Inline
+  // elements (bound figures, links) move as one word, so their text and ids
+  // stay intact for app.js.
+  const split = el => {
+    let i = 0;
+    const word = node => {
+      const w = document.createElement('span');
+      w.className = 'set-w';
+      const inner = document.createElement('span');
+      inner.className = 'set-wi';
+      inner.style.setProperty('--wi', i++);
+      inner.append(node);
+      w.append(inner);
+      return w;
     };
-    const cio = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        cio.unobserve(e.target);
-        replay(e.target);
-      });
-    }, { threshold: 0.35 });
-    canvases.forEach(c => cio.observe(c));
+    Array.from(el.childNodes).forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (part) frag.append(/^\s+$/.test(part) ? document.createTextNode(part) : word(document.createTextNode(part)));
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1 && n.tagName !== 'BR') {
+        const mark = document.createComment('');
+        n.replaceWith(mark);
+        mark.replaceWith(word(n));
+      }
+    });
+    return el;
+  };
+
+  // Checked on scroll rather than with an IntersectionObserver: a fast flick
+  // or an anchor jump can carry a heading past the trigger line between
+  // frames, and it must never be left unset.
+  const line = () => window.innerHeight * 0.82;
+  let pending = [];
+  document.querySelectorAll('main h2:not(.visually-hidden), .opening--page .opening-title').forEach(h => {
+    if (h.closest('.stats-details, .cw-gate')) return;
+    // Already on screen at load: leave it alone, so nothing blinks.
+    if (h.getBoundingClientRect().top < line()) return;
+    split(h).dataset.set = 'words';
+    pending.push(h);
+  });
+  let setQueued = false;
+  const setHeadings = () => {
+    setQueued = false;
+    const y = line();
+    pending = pending.filter(h => {
+      if (h.getBoundingClientRect().top >= y) return true;
+      h.classList.add('is-set');
+      return false;
+    });
+    if (!pending.length) window.removeEventListener('scroll', queueSet);
+  };
+  const queueSet = () => { if (!setQueued) { setQueued = true; requestAnimationFrame(setHeadings); } };
+  if (pending.length) {
+    window.addEventListener('scroll', queueSet, { passive: true });
+    window.addEventListener('resize', queueSet);
+  }
+
+  // --- The pull quote lights up as it is read ----------------------------
+  const quote = document.querySelector('.pullquote p');
+  if (quote) {
+    split(quote).dataset.set = 'read';
+    const words = Array.from(quote.querySelectorAll('.set-w'));
+    let queued = false;
+    const light = () => {
+      queued = false;
+      const r = quote.getBoundingClientRect();
+      // From the quote's top at 80% of the screen to 40%
+      const p = Math.min(1, Math.max(0, (window.innerHeight * 0.8 - r.top) / (window.innerHeight * 0.4)));
+      const lit = Math.round(p * words.length);
+      words.forEach((w, i) => w.classList.toggle('is-lit', i < lit));
+    };
+    const queue = () => { if (!queued) { queued = true; requestAnimationFrame(light); } };
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    light();
   }
 })();

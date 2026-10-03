@@ -44,7 +44,7 @@
   font-family: var(--font-ui);
   font-variant-numeric: tabular-nums lining-nums;
   fill: var(--text-3);
-  font-size: 0.75rem;
+  font-size: var(--text-micro);
 }
 .viz .t-label { fill: var(--text-2); font-weight: 600; }
 .viz .t-value { fill: var(--text); font-weight: 600; }
@@ -68,17 +68,14 @@
 .viz .dot-estimate { fill: var(--surface); stroke: var(--viz-new); stroke-width: 2px; }
 .viz .stem { stroke: var(--viz-grid); stroke-width: 2px; }
 
-/* Bars dim outside the step in view; annotations step aside for the step's bracket */
-.viz .bars rect, .viz .notes { transition: opacity 0.3s var(--ease); }
+/* Bars dim outside the step in view; annotations step aside for the step's bracket.
+   The data is on screen from the start: no entrance, only the reader's steps move it. */
+.viz .bars rect { transition: opacity var(--dur-emphasis) var(--ease-in-out); }
+.viz .notes { transition: opacity var(--dur-ui) var(--ease-out); }
+.viz.is-stepping .notes { transition-duration: var(--dur-exit-ui); transition-timing-function: var(--ease-in); }
 .viz .bars rect.is-dim { opacity: var(--viz-dim); }
 .viz.is-stepping .notes { opacity: 0; }
 
-/* Entrance: bars grow from the baseline once, the first time the chart is seen */
-@media (prefers-reduced-motion: no-preference) {
-  .viz .bars rect { transform-box: fill-box; transform-origin: 50% 100%; }
-  .viz:not(.is-in) .bars rect { transform: scaleY(0); }
-  .viz.is-in .bars rect { transition: transform 0.7s cubic-bezier(0.28, 0.11, 0.32, 1), opacity 0.3s var(--ease); transition-delay: calc(var(--i, 0) * 4ms), 0s; }
-}
 
 /* Readout: one line above the plot, so values never cover marks */
 .viz-readout {

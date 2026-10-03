@@ -21,10 +21,10 @@ body.locked {
   background: rgba(22, 24, 27, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  animation: cw-fade-in 0.4s ease-out;
+  animation: cw-fade-in var(--dur-emphasis) var(--ease-out);
 }
 .cw-gate.dismissing {
-  animation: cw-fade-out 0.35s ease-in forwards;
+  animation: cw-fade-out var(--dur-exit-emphasis) var(--ease-in) forwards;
 }
 .cw-gate.hidden {
   display: none;
@@ -33,6 +33,8 @@ body.locked {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+.cw-gate.dismissing .cw-card { animation: cw-slide-down var(--dur-exit-emphasis) var(--ease-in) forwards; }
+@keyframes cw-slide-down { to { opacity: 0; transform: translateY(calc(var(--reveal-distance) / 2)); } }
 @keyframes cw-fade-out {
   from { opacity: 1; }
   to { opacity: 0; }
@@ -47,16 +49,16 @@ body.locked {
   padding: var(--s-64) var(--s-48) var(--s-48);
   box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.45);
   position: relative;
-  animation: cw-slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: cw-slide-up var(--dur-emphasis) var(--ease-out) var(--stagger) both;
 }
 @keyframes cw-slide-up {
   from {
     opacity: 0;
-    transform: translateY(16px) scale(0.98);
+    transform: translateY(var(--reveal-distance));
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: none;
   }
 }
 
@@ -78,8 +80,6 @@ body.locked {
 
 .cw-eyebrow {
   font-size: var(--text-xs);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--pal);
   font-weight: 600;
   margin-bottom: var(--stack-related);
@@ -90,7 +90,7 @@ body.locked {
   font-weight: 600;
   font-size: clamp(1.625rem, 3vw, 2rem);
   line-height: var(--lh-title);
-  letter-spacing: -0.015em;
+  letter-spacing: var(--track-title);
   margin: 0 0 var(--stack-block);
   color: var(--ink);
   text-wrap: balance;
@@ -129,12 +129,12 @@ body.locked {
   font-family: inherit;
   font-size: var(--text-sm);
   font-weight: 500;
-  letter-spacing: 0.01em;
+  letter-spacing: var(--track-ui);
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.1s ease;
+  transition: background var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-press);
 }
 .btn-primary:hover { background: var(--ink-2); }
-.btn-primary:active { transform: translateY(1px); }
+.btn-primary:active { transform: scale(var(--press-scale)); }
 .btn-primary:focus-visible {
   outline: 2px solid var(--pal);
   outline-offset: 2px;
@@ -145,7 +145,7 @@ body.locked {
   font-size: var(--text-sm);
   padding: var(--s-12) var(--s-8);
   border-bottom: 1px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
 }
 .btn-ghost:hover {
   color: var(--ink);
@@ -174,10 +174,10 @@ body.locked {
   background: var(--card);
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow: clip; /* clip, not hidden: hidden makes a scroll container, which captures scroll-driven timelines */
   display: flex;
   flex-direction: column;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color var(--dur-ui) var(--ease-out), box-shadow var(--dur-ui) var(--ease-out);
 }
 .photo:hover {
   border-color: var(--rule-2);
@@ -208,13 +208,11 @@ body.locked {
   font-weight: 600;
   font-size: var(--text-lg);
   line-height: var(--lh-title);
-  letter-spacing: -0.005em;
+  letter-spacing: var(--track-snug);
   color: var(--ink);
 }
 .cap-date {
   font-size: var(--text-xs);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--ink-3);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
@@ -229,8 +227,8 @@ body.locked {
   margin-top: var(--s-12);
   padding-top: var(--s-12);
   border-top: 1px dashed var(--rule);
-  font-size: 11px;
-  letter-spacing: 0.02em;
+  font-size: var(--text-2xs);
+  letter-spacing: var(--track-label);
   color: var(--ink-4);
   line-height: var(--lh-caption);
 }
@@ -257,7 +255,7 @@ body.locked {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--text-xl);
-  letter-spacing: -0.01em;
+  letter-spacing: var(--track-snug);
   margin: 0 0 var(--stack-block);
   color: var(--ink);
 }
@@ -312,7 +310,7 @@ body.locked {
   font-family: var(--font-display);
   font-weight: 500;
   font-size: clamp(1.6rem, 3vw, 2.2rem);
-  letter-spacing: -0.015em;
+  letter-spacing: var(--track-title);
   line-height: var(--lh-title);
   margin: 0 0 var(--stack-block);
   color: var(--ink);
@@ -325,9 +323,9 @@ body.locked {
 }
 
 /* Editorial captions: datelines in mono, locations as serif heads */
-.cap-date { font-family: var(--font-mono); letter-spacing: 0.02em; text-transform: none; }
+.cap-date { font-family: var(--font-mono); letter-spacing: var(--track-label); text-transform: none; }
 .cap-credit a { text-decoration-color: var(--pal); }
-.gallery-head h2 { font-weight: 600; letter-spacing: -0.022em; }
+.gallery-head h2 { font-weight: 600; letter-spacing: var(--track-title); }
 .gallery-head { padding-bottom: 0; }
 .gallery-head--isr h2 { color: var(--ink); }
 
@@ -350,13 +348,6 @@ body.locked {
   padding-right: var(--page-margin);
 }
 
-/* Wide photos settle from a slight zoom as they arrive */
-html.motion .photo.wide.reveal img {
-  transform: scale(1.06);
-  transition: transform 2.2s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-html.motion .photo.wide.reveal.in img { transform: none; }
-
 /* Editorial pass */
 /* Content warning fits small screens */
 .cw-gate { overflow-y: auto; align-items: flex-start; }
@@ -373,7 +364,7 @@ html.motion .photo.wide.reveal.in img { transform: none; }
 .photo img { border-radius: 0; }
 .cap-credit { border-top: 0; padding-top: 0; margin-top: var(--s-8); }
 .photo.wide figcaption p, .gallery-head p { max-width: 68ch; }
-.gallery-head p { font-family: var(--font-display); font-size: 1.08rem; }
+.gallery-head p { font-family: var(--font-display); font-size: var(--text-base); }
 .note-panel { border: 0; border-top: 1px solid var(--ink); border-radius: 0; background: transparent; padding: var(--s-32) 0 0; }
 /* The gate moves focus to the headline for screen readers; that programmatic focus needs no ring */
 .opening-title[tabindex="-1"]:focus { outline: none; }

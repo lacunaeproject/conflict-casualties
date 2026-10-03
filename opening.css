@@ -14,12 +14,6 @@
   --opening-dek:     clamp(1.0625rem, 0.96rem + 0.42vw, 1.3125rem);
   --opening-beat:    clamp(var(--s-48), 7vh, var(--s-64));   /* the one vertical interval */
   --opening-radius:  var(--r-xl);
-
-  --opening-ease:   cubic-bezier(0.22, 1, 0.36, 1);
-  /* A soft spring: ~1.7% overshoot, settled by 85% of the duration */
-  --opening-spring: linear(0, 0.006, 0.025 2.8%, 0.101 6.1%, 0.539 18.9%, 0.721 25.3%, 0.849 31.5%,
-                           0.937 38.1%, 0.968 41.8%, 0.991 45.7%, 1.006 50.1%, 1.015 55%, 1.017 63.9%,
-                           1.001 85.6%, 1);
 }
 
 /* ---------- Layout ---------- */
@@ -65,7 +59,7 @@
   font-weight: 400;
   font-size: var(--opening-display);
   line-height: var(--lh-display);
-  letter-spacing: -0.032em;
+  letter-spacing: var(--track-display);
   color: var(--text);
 }
 /* Each line is its own clip box for the entrance; the padding keeps descenders inside it */
@@ -114,7 +108,7 @@
 /* ---------- Colour and surface ---------- */
 .opening-frame {
   aspect-ratio: 2400 / 959;
-  overflow: hidden;
+  overflow: clip; /* clip, not hidden: hidden makes a scroll container, which captures scroll-driven timelines */
   background: var(--surface-3);   /* holds the shape while the image loads */
   clip-path: inset(0 var(--edge) round var(--opening-radius));
 }
@@ -132,32 +126,34 @@
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
   border-radius: 2px;
-  transition: color 0.2s var(--opening-ease), text-decoration-color 0.2s var(--opening-ease);
+  transition: color var(--dur-ui) var(--ease-out), text-decoration-color var(--dur-ui) var(--ease-out);
 }
 .opening-credit a:hover { color: var(--text); text-decoration-color: currentColor; }
 .opening-credit a:active { color: var(--text-3); }
 .opening-credit a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-/* ---------- Motion ----------
-   Load: headline lines rise, then the dek, then the plate. All done by ~1.1s.
-   Scroll: the plate widens from the content edge to full bleed. */
+/* ---------- Motion: the page's one orchestrated moment ----------
+   Load, in reading order one stagger apart: the dateline fades; the headline
+   lines rise inside their own clip boxes and settle without bounce; the dek
+   lifts; the plate fades up last. Scroll: the plate widens from the content
+   edge to full bleed. Reduced motion: everything rests in its final place. */
 @media (prefers-reduced-motion: no-preference) {
-  .opening-dateline        { animation: opening-fade 0.6s var(--opening-ease) both; }
-  .opening-line > span     { animation: opening-rise 0.95s var(--opening-spring) 0.05s both; }
-  .opening-line + .opening-line > span { animation-delay: 0.13s; }
-  .opening-dek             { animation: opening-lift 0.8s var(--opening-ease) 0.25s both; }
-  .opening-plate           { animation: opening-lift 0.9s var(--opening-ease) 0.45s both; }
+  .opening-dateline        { animation: opening-fade var(--dur-ui) var(--ease-out) both; }
+  .opening-line > span     { animation: opening-rise var(--dur-scene) var(--ease-spring-gentle) var(--stagger) both; }
+  .opening-line + .opening-line > span { animation-delay: calc(var(--stagger) * 2); }
+  .opening-dek             { animation: opening-lift var(--dur-reveal) var(--ease-out) calc(var(--stagger) * 4) both; }
+  .opening-plate           { animation: opening-fade var(--dur-reveal) var(--ease-out) calc(var(--stagger) * 6) both; }
 
   @supports (animation-timeline: scroll()) {
     .opening-frame {
-      animation: opening-widen linear both;
+      animation: opening-widen linear both; /* floor-ignore: scroll-driven, progress maps 1:1 to scroll */
       animation-timeline: scroll(root);
       animation-range: 0 55vh;
     }
     .opening-img {
-      animation: opening-settle linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 55vh;
+      animation: opening-settle linear both, develop-tone linear both; /* floor-ignore: scroll-driven, progress maps 1:1 to scroll */
+      animation-timeline: scroll(root), scroll(root);
+      animation-range: 0 55vh, 0 55vh;
     }
   }
 }
@@ -186,15 +182,16 @@
     --opening-radius: var(--r-lg);
     padding-top: var(--s-48);
   }
-  .opening-dateline { font-size: 0.8125rem; }
-  .opening-title { letter-spacing: -0.026em; }
+  .opening-dateline { font-size: var(--text-xs); }
+  .opening-title { letter-spacing: var(--track-display); }
   .opening-frame { aspect-ratio: 4 / 3; }
   .opening-img { object-position: 50% 100%; }
 
   /* The plate sits below the first screen here, so it widens as it comes into view */
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
-      .opening-frame, .opening-img { animation-timeline: view(); animation-range: entry 30% cover 55%; }
+      .opening-frame { animation-timeline: view(); animation-range: entry 30% cover 55%; }
+      .opening-img { animation-timeline: view(), view(); animation-range: entry 30% cover 55%, entry 30% cover 55%; }
     }
   }
 }
@@ -227,7 +224,7 @@
 .opening--page .opening-img { height: auto; }
 .opening--page .opening-credit { padding: var(--s-12) 0 0; }
 /* A document rather than a photograph (the Balfour Declaration): shown in greyscale, as paper, not cream */
-.opening-plate--doc .opening-img { filter: grayscale(1) contrast(1.05); }
+.opening-plate--doc .opening-img { --develop-rest: grayscale(1) contrast(1.05); filter: var(--develop-rest); }
 
 /* Two plates under the copy, at equal size (Destruction: both sides of the fence) */
 .opening--below { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
@@ -238,13 +235,13 @@
 .opening-pair .opening-img { height: 100%; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .opening--page .opening-title { animation: opening-lift 0.9s var(--opening-ease) 0.05s both; }
+  .opening--page .opening-title { animation: opening-lift var(--dur-reveal) var(--ease-out) both; }
   .opening--page .opening-frame { animation: none; }
   @supports (animation-timeline: view()) {
     .opening--page .opening-img {
-      animation: opening-settle linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 45%;
+      animation: opening-settle linear both, develop-tone linear both; /* floor-ignore: scroll-driven, progress maps 1:1 to scroll */
+      animation-timeline: view(), view();
+      animation-range: entry 0% cover 45%, entry 0% cover 45%;
     }
   }
 }

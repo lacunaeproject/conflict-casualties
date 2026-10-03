@@ -210,9 +210,8 @@ function buildDots() {
   const groups = ['children', 'women', 'men', 'since'].map(key => ({ key, n: Math.round(counts[key] / 10) }));
   const asOfLabel = fmtDate(asOf.date);
   const dots = groups.flatMap(gr => Array(gr.n).fill(gr.key));
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let active = 'all';
-  let drawn = reduce ? dots.length : 0;
+  const drawn = dots.length;  // the field is complete on arrival: these are people, never a counter
 
   const draw = () => {
     const w = canvas.parentElement.clientWidth;
@@ -271,23 +270,6 @@ function buildDots() {
     });
   });
 
-  // Dots fill in, row by row, the first time the grid scrolls into view.
-  const grow = () => {
-    const t0 = performance.now(), dur = 2200;
-    const tick = now => {
-      const p = Math.min(1, (now - t0) / dur);
-      drawn = Math.round(dots.length * (1 - Math.pow(1 - p, 2)));
-      draw();
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  };
-  if (!reduce && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); grow(); } }, { threshold: 0.15 });
-    io.observe(canvas);
-  } else {
-    drawn = dots.length;
-  }
   let rt;
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(draw, 120); });
   setReadout();
@@ -336,7 +318,7 @@ function setupCentury() {
     const r = eras[i].getBoundingClientRect();
     const frac = Math.min(1, Math.max(0, (mid - r.top) / Math.max(r.height, 1)));
     setActive(i);
-    if (fill) fill.style.width = `${Math.min(100, ((i + (i < last ? frac : 0)) / last) * 100)}%`;
+    if (fill) fill.style.transform = `scaleX(${Math.min(1, (i + (i < last ? frac : 0)) / last)})`;
     // Dark only while the dark 1948 photograph fills the screen behind it.
     if (feature) {
       const f = feature.getBoundingClientRect();

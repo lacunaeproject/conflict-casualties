@@ -10,7 +10,7 @@
 
 /* ---------- Chapter 1: documented deaths by year ---------- */
 .yr { margin: var(--s-8) 0 0; }
-.yr-readout { margin: 0 0 var(--s-16); min-height: 1.6em; font-size: 0.95rem; color: var(--text-3); }
+.yr-readout { margin: 0 0 var(--s-16); min-height: 1.6em; font-size: var(--text-sm); color: var(--text-3); }
 .yr-readout strong { font: 600 1.35rem/var(--lh-figure) var(--font-ui); color: var(--text); font-variant-numeric: tabular-nums; margin-right: var(--s-4); }
 .yr-readout b { color: var(--text); font-weight: 600; }
 .yr:focus-visible { outline: 2px solid var(--focus); outline-offset: var(--s-8); border-radius: var(--r-xs); }
@@ -21,7 +21,7 @@
   grid-row: 1;
   padding: var(--s-8) var(--s-8) 0;
   border-left: 1px solid var(--rule-2);
-  font-size: 0.74rem;
+  font-size: var(--text-micro);
   font-weight: 600;
   line-height: var(--lh-label);
   color: var(--text-3);
@@ -38,7 +38,7 @@
 }
 .yr-bars li { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; cursor: default; }
 .yr-bar { display: block; height: calc(var(--v) * 100%); min-height: 2px; }
-.yr-bar i { display: block; height: 100%; background: var(--iq); border-radius: 4px 4px 0 0; transition: opacity 0.15s var(--ease); }
+.yr-bar i { display: block; height: 100%; background: var(--iq); border-radius: 4px 4px 0 0; transition: opacity var(--dur-micro) var(--ease-out); }
 .yr-bars li.is-partial .yr-bar i { background: repeating-linear-gradient(135deg, var(--iq) 0 2px, transparent 2px 5px); box-shadow: inset 0 0 0 1px var(--iq); }
 .yr-x { position: absolute; top: calc(100% + var(--s-8)); left: 50%; transform: translateX(-50%); font: 500 0.68rem/var(--lh-figure) var(--font-mono); color: var(--text-4); white-space: nowrap; }
 .yr-bars { margin-bottom: var(--s-24); }
@@ -48,7 +48,7 @@
 .yr-bars li.is-on .yr-x { color: var(--text); font-weight: 600; }
 /* US presence strip under the axis */
 .yr-us { align-items: center; margin-top: var(--s-4); row-gap: var(--s-8); }
-.yr-us-label { grid-column: 1 / -1; grid-row: 1; font-size: 0.74rem; font-weight: 600; color: var(--text-3); }
+.yr-us-label { grid-column: 1 / -1; grid-row: 1; font-size: var(--text-micro); font-weight: 600; color: var(--text-3); }
 .yr-us i { grid-row: 2; grid-column: var(--from) / var(--to); height: 6px; border-radius: var(--pill); background: var(--iq-soft); }
 
 .yr-facts {
@@ -58,14 +58,14 @@
   margin: var(--s-32) 0 0;
 }
 .yr-facts > div { padding: var(--s-16) var(--s-16); border-radius: var(--r-sm); background: var(--surface-2); display: grid; gap: var(--s-8); align-content: start; }
-.yr-facts strong { font: 500 1.7rem/var(--lh-figure) var(--font-display); letter-spacing: -0.02em; color: var(--text); font-variant-numeric: lining-nums tabular-nums; }
-.yr-facts span { font-size: 0.88rem; line-height: var(--lh-caption); color: var(--text-3); }
+.yr-facts strong { font: 500 1.7rem/var(--lh-figure) var(--font-display); letter-spacing: var(--track-title); color: var(--text); font-variant-numeric: lining-nums tabular-nums; }
+.yr-facts span { font-size: var(--text-note); line-height: var(--lh-caption); color: var(--text-3); }
 .yr-facts--band > div { background: var(--fill); }
 .yr-table td:first-child { font-variant-numeric: tabular-nums; }
 
 @media (max-width: 640px) {
   .yr-bands, .yr-bars, .yr-us { column-gap: var(--s-4); }
-  .yr-bands span { font-size: 0.64rem; padding: var(--s-8) var(--s-4) 0; }
+  .yr-bands span { font-size: var(--text-3xs); padding: var(--s-8) var(--s-4) 0; }
   .yr-bands span:nth-child(2) { font-size: 0; }   /* "US drawdown" has no room; the strip below says it */
   .yr-x--minor { display: none; }
   .yr-bar i { border-radius: 2px 2px 0 0; }
@@ -82,16 +82,16 @@
   padding: var(--s-12) 0;
   border-top: 1px solid var(--hair);
 }
-.est-group { padding: var(--s-16) 0 var(--s-8); font-size: 0.8125rem; font-weight: 600; color: var(--text-3); }   /* sentence case, like every kicker */
+.est-group { padding: var(--s-16) 0 var(--s-8); font-size: var(--text-xs); font-weight: 600; color: var(--text-3); }   /* sentence case, like every kicker */
 .est-src { display: grid; gap: var(--s-4); }
-.est-src strong { font-weight: 600; color: var(--text); font-size: 0.95rem; }
-.est-src span { font-size: 0.8rem; line-height: var(--lh-label); color: var(--text-3); }
+.est-src strong { font-weight: 600; color: var(--text); font-size: var(--text-sm); }
+.est-src span { font-size: var(--text-xs); line-height: var(--lh-label); color: var(--text-3); }
 .est-plot { position: relative; height: 18px; background: linear-gradient(90deg, var(--hair) 1px, transparent 1px) 0 0 / 20.8333% 100%; }
 .est-plot i { position: absolute; top: 50%; }
 .est-span { left: var(--a); width: calc(var(--b) - var(--a)); height: 12px; transform: translateY(-50%); min-width: 6px; border-radius: 4px; background: var(--iq); }
 .est-ci { left: var(--a); width: calc(var(--b) - var(--a)); height: 2px; transform: translateY(-50%); background: var(--iq-soft); border-radius: 2px; }
 .est-dot { left: var(--a); width: 12px; height: 12px; transform: translate(-50%, -50%); border-radius: 50%; background: var(--iq); box-shadow: 0 0 0 2px var(--surface); }
-.est-val { text-align: right; font-weight: 600; font-size: 0.92rem; color: var(--text); font-variant-numeric: tabular-nums; }
+.est-val { text-align: right; font-weight: 600; font-size: var(--text-sm); color: var(--text); font-variant-numeric: tabular-nums; }
 .est-axis {
   position: relative;
   height: 18px;
@@ -102,14 +102,14 @@
 }
 .est-axis span { position: absolute; left: var(--a); transform: translateX(-50%); }
 .est-axis span:first-child { transform: none; }
-.est-key { display: flex; flex-wrap: wrap; gap: var(--s-8) var(--s-24); margin-top: var(--s-16); font-size: 0.8rem; color: var(--text-3); }
+.est-key { display: flex; flex-wrap: wrap; gap: var(--s-8) var(--s-24); margin-top: var(--s-16); font-size: var(--text-xs); color: var(--text-3); }
 .est-key span { display: inline-flex; align-items: center; gap: var(--s-8); }
 .est-key i { position: static; display: inline-block; transform: none; }
 .est-key .est-span { width: 18px; height: 10px; }
 .est-key .est-dot { width: 10px; height: 10px; box-shadow: none; }
 .est-key .est-ci { width: 18px; height: 2px; }
 .est-notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s-12) var(--s-32); margin-top: var(--s-32); }
-.est-notes p { margin: 0; font-size: 0.95rem; line-height: var(--lh-ui); color: var(--text-2); }
+.est-notes p { margin: 0; font-size: var(--text-sm); line-height: var(--lh-ui); color: var(--text-2); }
 .est-notes strong { color: var(--text); }
 
 @media (max-width: 900px) {
@@ -142,8 +142,8 @@
 /* ---------- Chapter 4: US toll ---------- */
 .us-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-12); }
 .us-grid .cell { padding: var(--s-16); border-radius: var(--r-sm); background: var(--surface-2); }
-.us-grid .lbl { font-size: 0.82rem; color: var(--text-3); }
-.us-grid .val { margin-top: var(--s-12); font: 500 1.9rem/var(--lh-figure) var(--font-display); letter-spacing: -0.02em; color: var(--text); font-variant-numeric: lining-nums tabular-nums; }
+.us-grid .lbl { font-size: var(--text-xs); color: var(--text-3); }
+.us-grid .val { margin-top: var(--s-12); font: 500 1.9rem/var(--lh-figure) var(--font-display); letter-spacing: var(--track-title); color: var(--text); font-variant-numeric: lining-nums tabular-nums; }
 @media (max-width: 1023px) { .us-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .us-grid { grid-template-columns: 1fr 1fr; } }
 
@@ -170,12 +170,12 @@
 .tl-body { padding-left: var(--s-16); max-width: var(--measure); }
 .tl-body h3 { margin: 0 0 var(--stack-related); font: 600 1.2rem/var(--lh-label) var(--font-display); color: var(--text); }
 .tl-body p { margin: 0; color: var(--text-2); line-height: var(--lh-ui); }
-.tl-stat { margin-top: var(--s-12); display: inline-flex; align-items: baseline; gap: var(--s-8); padding: var(--s-8) var(--s-16); border-radius: var(--pill); background: var(--fill); font-size: 0.86rem; color: var(--text-2); }
+.tl-stat { margin-top: var(--s-12); display: inline-flex; align-items: baseline; gap: var(--s-8); padding: var(--s-8) var(--s-16); border-radius: var(--pill); background: var(--fill); font-size: var(--text-note); color: var(--text-2); }
 .tl-stat strong { font-variant-numeric: tabular-nums; color: var(--text); }
 .tl-fig { grid-template-columns: var(--tl-date) minmax(0, 1fr); }
 .tl-fig figure { grid-column: 2; margin: 0 0 0 var(--s-16); }
 .tl-fig img { display: block; width: 100%; height: auto; border-radius: var(--r-md); }
-.tl-fig figcaption { margin-top: var(--s-12); font-size: 0.82rem; line-height: var(--lh-caption); color: var(--text-3); max-width: 72ch; }
+.tl-fig figcaption { margin-top: var(--s-12); font-size: var(--text-xs); line-height: var(--lh-caption); color: var(--text-3); max-width: 72ch; }
 .tl-fig .credit { color: var(--text-4); }
 .tl > li.is-now .tl-when { color: var(--text); font-weight: 600; }
 @media (max-width: 640px) {

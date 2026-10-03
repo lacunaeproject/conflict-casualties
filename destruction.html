@@ -30,11 +30,11 @@
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="preload" href="fonts/alegreya-roman.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/alegreya-sans-lf-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=202610051000" />
-<link rel="stylesheet" href="resources.css?v=202610041500" />
-<link rel="stylesheet" href="destruction.css?v=202610041500" />
-<link rel="stylesheet" href="ui.css?v=202610041500" />
-<link rel="stylesheet" href="opening.css?v=202610041500" />
+<link rel="stylesheet" href="styles.css?v=202610061200" />
+<link rel="stylesheet" href="resources.css?v=202610061200" />
+<link rel="stylesheet" href="destruction.css?v=202610061200" />
+<link rel="stylesheet" href="ui.css?v=202610061200" />
+<link rel="stylesheet" href="opening.css?v=202610061200" />
 </head>
 <body class="destruction-body locked">
 
@@ -375,7 +375,12 @@
     body.classList.remove('locked');
     // Un-hide the backdrop now that the modal is going away.
     backdropEls.forEach(el => el.removeAttribute('aria-hidden'));
-    setTimeout(() => {
+    // Hide once the exit animation ends (its length comes from the motion tokens);
+    // the timer is a fallback for browsers that never fire animationend.
+    let done = false;
+    const hide = () => {
+      if (done) return;
+      done = true;
       gate.classList.add('hidden');
       // Return focus to the page heading so screen readers and keyboard
       // users land in sensible context, not on a now-hidden Accept button.
@@ -385,7 +390,9 @@
         firstHeading.setAttribute('tabindex', '-1');
         firstHeading.focus({ preventScroll: true });
       }
-    }, 350);
+    };
+    gate.addEventListener('animationend', e => { if (e.target === gate) hide(); });
+    setTimeout(hide, 600);
   });
 
   // Escape key returns to dashboard while the gate is visible
@@ -436,6 +443,6 @@
     <span>A photograph is not the thing itself</span>
   </div>
 </footer>
-<script src="ui.js?v=202610041500" defer></script><script src="motion.js?v=202609271530" defer></script>
+<script src="ui.js?v=202610041500" defer></script><script src="motion.js?v=202610061200" defer></script>
 </body>
 </html>

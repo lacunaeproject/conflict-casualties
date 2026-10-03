@@ -19,7 +19,6 @@ function buildViz(D) {
   const DAY = 864e5;
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const num = n => new Intl.NumberFormat('en-US').format(Math.round(n));
 
   // ---------- Dates as UTC days, so no reader's timezone shifts a bar ----------
@@ -82,12 +81,6 @@ function buildViz(D) {
     const go = () => { queued = false; const w = Math.round(plot.clientWidth); if (w && w !== width) { width = w; render(plot, w); } };
     new ResizeObserver(() => { if (!queued) { queued = true; requestAnimationFrame(go); } }).observe(plot);
     go();
-  };
-  // Bars grow in once, the first time a chart scrolls into view. Never on re-render.
-  const reveal = fig => {
-    if (REDUCE || !('IntersectionObserver' in window)) { fig.classList.add('is-in'); return; }
-    const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { fig.classList.add('is-in'); io.disconnect(); } }, { threshold: 0.2 });
-    io.observe(fig);
   };
   // Pointer and keyboard pick a bar; the readout above the plot names its value.
   const pickable = (fig, count, onPick, idle) => {
@@ -295,7 +288,6 @@ function buildViz(D) {
     }
 
     responsive(fig, render);
-    reveal(fig);
 
     // the same numbers as a table, by month
     const tbody = document.querySelector('#weekly-table tbody');
@@ -393,7 +385,6 @@ function buildViz(D) {
     const hide = () => { if (picker.get() < 0 && view) view.focus.setAttribute('visibility', 'hidden'); };
     fig.addEventListener('keydown', hide); fig.addEventListener('blur', hide); fig.addEventListener('pointerleave', hide);
     responsive(fig, render);
-    reveal(fig);
   })();
 
   // ======================================================================
@@ -510,7 +501,6 @@ function buildViz(D) {
     const hide = () => { if (picker.get() < 0 && view) view.focus.setAttribute('visibility', 'hidden'); };
     fig.addEventListener('keydown', hide); fig.addEventListener('blur', hide); fig.addEventListener('pointerleave', hide);
     responsive(fig, render);
-    reveal(fig);
   })();
 
   // ======================================================================

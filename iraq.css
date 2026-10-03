@@ -11,8 +11,9 @@
 /* ---------- Chapter 1: documented deaths by year ---------- */
 .yr { margin: var(--s-8) 0 0; }
 .yr-readout { margin: 0 0 var(--s-16); min-height: 1.6em; font-size: 0.95rem; color: var(--text-3); }
-.yr-readout strong { font: 600 1.35rem/var(--lh-figure) var(--font-display); color: var(--text); font-variant-numeric: tabular-nums; margin-right: var(--s-4); }
+.yr-readout strong { font: 600 1.35rem/var(--lh-figure) var(--font-ui); color: var(--text); font-variant-numeric: tabular-nums; margin-right: var(--s-4); }
 .yr-readout b { color: var(--text); font-weight: 600; }
+.yr:focus-visible { outline: 2px solid var(--focus); outline-offset: var(--s-8); border-radius: var(--r-xs); }
 .yr-plot { --cols: 24; position: relative; }
 .yr-bands, .yr-bars, .yr-us { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--s-4); }
 .yr-bands span {

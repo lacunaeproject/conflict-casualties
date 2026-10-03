@@ -192,3 +192,53 @@ test('data.json is valid and its shape matches what app.js expects', () => {
     }
   }
 });
+
+// --- Editorial claims ---------------------------------------------------
+// Some sentences on the page are fixed words over live numbers. Each test
+// here checks one of them against data.json, so a rebuild that makes a claim
+// untrue fails with a pointer to the sentence to rewrite (all in index.html).
+test('editorial claims in index.html still match the data', () => {
+  const data = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'data.json'), 'utf8'));
+  const g = data.gaza_daily;
+  const cum = new Map(g.map(r => [r.date, r.killed_cum]));
+  const latest = g.at(-1).killed_cum;
+  const rise = (r, k, arr) => Math.max(0, r - (k ? arr[k - 1] : 0));
+
+  // "Nearly a third of the dead were reported in the first three months"
+  const firstThree = cum.get('2023-12-31') / latest;
+  assert.ok(firstThree >= 0.25 && firstThree < 0.34, `"Nearly a third…" (The pace headline): the first three months are now ${(firstThree * 100).toFixed(1)}% of the total`);
+
+  // Weekly totals, Monday-based, in UTC
+  const weeks = new Map();
+  g.forEach((r, k) => {
+    const d = new Date(`${r.date}T00:00:00Z`);
+    const monday = new Date(d - ((d.getUTCDay() + 6) % 7) * 864e5).toISOString().slice(0, 10);
+    weeks.set(monday, (weeks.get(monday) || 0) + rise(r.killed_cum, k, g.map(x => x.killed_cum)));
+  });
+  const wk = [...weeks];
+  // "Weekly deaths fell to their lowest point of the war to that date" (truce step)
+  const truceMin = Math.min(...wk.filter(([m]) => m >= '2025-01-20' && m <= '2025-03-10').map(([, v]) => v));
+  const earlierMin = Math.min(...wk.filter(([m]) => m < '2025-01-19').map(([, v]) => v));
+  assert.ok(truceMin < earlierMin, `"Eight weeks of truce" step: the truce's lowest week (${truceMin}) is no longer below every earlier week (${earlierMin})`);
+  // "Through 2024 the weekly toll fell but never stopped"
+  assert.ok(wk.filter(([m]) => m.startsWith('2024')).every(([, v]) => v > 0), '"A long, grinding year" step: a week in 2024 now has no reported deaths');
+
+  // "Killings have fallen. Settler attacks have not." (West Bank headline)
+  const months = new Map();
+  const wb = data.west_bank_daily.filter(r => r.date <= '2026-09-14');
+  wb.forEach((r, k) => {
+    const key = r.date.slice(0, 7), m = months.get(key) || [0, 0];
+    m[0] += rise(r.killed_cum, k, wb.map(x => x.killed_cum));
+    m[1] += rise(r.settler_attacks_cum, k, wb.map(x => x.settler_attacks_cum));
+    months.set(key, m);
+  });
+  const full = [...months.values()].slice(1, -1);                    // drop the partial first and last months
+  const avg = (rows, i) => rows.reduce((a, r) => a + r[i], 0) / rows.length;
+  const [first, last] = [full.slice(0, 3), full.slice(-3)];
+  assert.ok(avg(last, 0) < avg(first, 0) / 2, `West Bank headline: killings in the last three full months (${avg(last, 0).toFixed(0)}/mo) are no longer well below the first three (${avg(first, 0).toFixed(0)}/mo)`);
+  assert.ok(avg(last, 1) >= avg(first, 1), `West Bank headline: settler attacks in the last three full months (${avg(last, 1).toFixed(0)}/mo) are now below the first three (${avg(first, 1).toFixed(0)}/mo)`);
+
+  // "Matched to the same date, the estimate is far above the Ministry's count"
+  const lancet = data.trackers.find(t => /lancet/i.test(t.name));
+  assert.ok(lancet.palestinian_killed > 1.3 * cum.get('2025-01-31'), 'Sources headline: the Lancet estimate is no longer far above the Ministry count for January 2025');
+});

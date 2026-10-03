@@ -33,3 +33,9 @@ A third block sanity-checks `data.json` itself — series lengths align,
 cumulative values are non-decreasing, Oct 7 sub-categories sum to the
 headline, the Ministry's daily breakdown never exceeds that day's reported
 rise, and every field the renderer reads is present.
+
+A last block checks the page's fixed wording against the data: sentences
+such as "Nearly a third of the dead were reported in the first three months"
+or "Killings have fallen. Settler attacks have not." are words, not bound
+numbers, so if a data rebuild makes one untrue the test fails and names the
+sentence to rewrite.

@@ -191,12 +191,19 @@ function buildDots() {
   const canvas = document.getElementById('dots');
   if (!canvas) return;
   const g = DATA.summary.gaza.killed;
-  const groups = [
-    { key: 'children', n: Math.round(g.children / 10), label: 'children' },
-    { key: 'women', n: Math.round(g.women / 10), label: 'women' },
-    { key: 'men', n: Math.round((g.total - g.children - g.women) / 10), label: 'men' },
-  ];
-  const counts = { children: g.children, women: g.women, men: g.total - g.children - g.women };
+  // The children and women counts were last updated on one date; split the total as of that
+  // date, and keep everything reported since as its own group rather than counting it as men.
+  const daily = DATA.gaza_daily;
+  let asOf = daily[0];
+  daily.forEach(r => { if (r.children_cum !== asOf.children_cum || r.women_cum !== asOf.women_cum) asOf = r; });
+  const counts = {
+    children: asOf.children_cum,
+    women: asOf.women_cum,
+    men: asOf.killed_cum - asOf.children_cum - asOf.women_cum,
+    since: g.total - asOf.killed_cum,
+  };
+  const groups = ['children', 'women', 'men', 'since'].map(key => ({ key, n: Math.round(counts[key] / 10) }));
+  const asOfLabel = fmtDate(asOf.date);
   const dots = groups.flatMap(gr => Array(gr.n).fill(gr.key));
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let active = 'all';
@@ -223,10 +230,15 @@ function buildDots() {
     const marks = canvas.parentElement.querySelector('.dots-marks');
     if (marks) {
       let html = '';
+      const gapRow = Math.floor((dots.length - groups[3].n) / cols);
       for (let d = 1000; d < dots.length; d += 1000) {
         const row = Math.floor(d / cols);
+        if (Math.abs(row - gapRow) < 3) continue;   // the breakdown boundary's label takes this spot
         html += `<div class="dots-mark" style="top:${row * step - gap / 2}px;--x:${((d % cols) / cols) * 100}%;--step:${step}px"><span>${fmt(d * 10)}</span></div>`;
       }
+      // where the Ministry's breakdown ends: everything after it is not yet broken down
+      const d = dots.length - groups[3].n;
+      html += `<div class="dots-mark dots-mark--gap" style="top:${Math.floor(d / cols) * step - gap / 2}px;--x:${((d % cols) / cols) * 100}%;--step:${step}px"><span>${asOf.date.slice(5, 7) === '10' ? 'Oct' : asOfLabel.split(' ')[0]} ${+asOf.date.slice(8)}, ’${asOf.date.slice(2, 4)}</span></div>`;
       marks.innerHTML = html;
     }
     for (let i = 0; i < drawn; i++) {
@@ -242,7 +254,7 @@ function buildDots() {
   const setReadout = () => {
     readout.innerHTML = active === 'all'
       ? `<strong>${fmt(g.total)}</strong> people killed in Gaza`
-      : `<strong>${fmt(counts[active])}</strong> ${active} · ${pct(counts[active], g.total)} of the dead`;
+      : `<strong>${fmt(counts[active])}</strong> ${active} to ${asOfLabel} · ${pct(counts[active], asOf.killed_cum)} of the dead then`;
   };
 
   document.querySelectorAll('#dots-toggle button').forEach(btn => {

@@ -2382,6 +2382,9 @@ main:has(.coda) + .site-foot { margin-top: 0; }
 .dots-box { margin-right: var(--s-64); }
 .dots-mark::before, .dots-mark::after { border-top-color: var(--ink-3); }
 .dots-mark span { right: auto; left: 100%; margin-left: var(--s-8); top: calc(-1 * var(--s-8)); padding: 0; background: none; color: var(--ink-3); }
+/* The end of the Ministry's age-and-sex breakdown: dashed, so it reads as a data boundary, not a count */
+.dots-mark--gap::before, .dots-mark--gap::after { border-top-style: dashed; border-top-color: var(--ink); }
+.dots-mark--gap span { color: var(--ink); white-space: nowrap; }
 .names-wall span:not(:last-child)::after { margin: 0; margin-inline: 0.7em 0.1em; }
 .names-wall.is-open + .names-more {
   position: sticky;

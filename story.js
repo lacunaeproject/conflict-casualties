@@ -34,6 +34,7 @@
         oct7: fmt(D.oct7.total), hostages: fmt(D.oct7.hostages_taken),
         childShare: `${Math.round(((named.male.child + named.female.child) / namedTotal) * 100)}%`,
       };
+      if (window.StoryViz) Object.assign(values, window.StoryViz.init(D));
       document.querySelectorAll('[data-k]').forEach(el => { const v = values[el.dataset.k]; if (v != null) el.textContent = v; });
       counts = { killed: g.killed.total, children: g.killed.children, women: g.killed.women };
       drawDots();
@@ -103,6 +104,7 @@
     return { el, a, b };
   }));
   scenes.forEach((sc, i) => { sc.style.zIndex = i + 1; });
+  scenes.forEach(sc => { const first = sc.querySelector('.beat[data-state]'); if (first) sc.dataset.state = first.dataset.state; });
   const bar = document.querySelector('.st-progress');
   let dissolve = innerHeight * 0.7;
   let queued = false;
@@ -130,6 +132,10 @@
         if (held > 0.5) {
           if (el.dataset.group && group !== el.dataset.group) { group = el.dataset.group; drawDots(); }
           if (el.dataset.era) setEra(el.dataset.era, el.dataset.peak);
+          if (el.dataset.state && sc.dataset.state !== el.dataset.state) {
+            sc.dataset.state = el.dataset.state;
+            if (window.StoryViz) window.StoryViz.state(sc, el.dataset.state);
+          }
           if (el.dataset.show) sc.dataset.show = el.dataset.show;
         }
       });
@@ -199,6 +205,14 @@
     pager.querySelector('[data-step="-1"]').disabled = i === 0;
     pager.querySelector('[data-step="1"]').disabled = i === chapters.length - 1;
   }
+
+  const fromHash = () => {
+    const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    const i = target ? chapters.findIndex(c => c.el === target) : -1;
+    if (i > 0) scrollTo({ top: startOf(chapters[i]), behavior: 'auto' });
+  };
+  addEventListener('hashchange', fromHash);
+  addEventListener('load', () => requestAnimationFrame(fromHash));
 
   if (!reduce) {
     addEventListener('scroll', queue, { passive: true });

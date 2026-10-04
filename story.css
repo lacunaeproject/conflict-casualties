@@ -7,6 +7,8 @@
    reader sets the pace. Reduced motion: scenes stack, static.
    ========================================================= */
 .storymode {
+  /* The interface face (defined for the main site in ui.css, which story mode does not load) */
+  --font-ui: "Alegreya Sans LF", "Alegreya Sans Fallback", Arial, sans-serif;
   --st-ground: #0b0c0e;
   --st-ink: #eef0f2;
   --st-ink-2: #c3c8cf;
@@ -548,3 +550,159 @@
   .st-float { position: relative; inset: auto; width: min(18rem, 60vw); }
   .st-bars, .st-scale { position: relative; inset: auto; width: calc(100% - 2 * var(--page-margin)); height: 50vh; }
 }
+
+/* =========================================================
+   Charts while scrolling (story-viz.js)
+   The chart fills the lower part of the screen; the beat's words sit
+   above it. Every mark is present; the scene's data-state lights some.
+   ========================================================= */
+.storymode {
+  --sv-ink: rgba(238, 240, 242, 0.62);
+  --sv-hl: #c9d3ae;            /* Palestinian marks lit */
+  --sv-isr: #93b3d3;           /* Israeli marks, at equal weight */
+  --sv-rec: #8e949c;           /* bodies recovered */
+  --sv-rev: #5d6269;           /* added after review */
+  --sv-dim: 0.16;
+}
+.scene--viz .stage { background: var(--st-ground); place-items: start stretch; }
+.st-viz {
+  position: absolute;
+  inset: 40vh max(var(--page-margin), var(--s-96)) 9vh;
+  z-index: 0;
+}
+.st-viz svg { display: block; overflow: visible; }
+.st-vcard {
+  grid-area: 1 / 1;
+  align-self: start;
+  max-width: 40rem;
+  margin: 13vh max(var(--page-margin), var(--s-96)) 0;
+}
+.st-vcard--wide { max-width: 58rem; }
+.st-vtitle {
+  margin: 0;
+  font: 500 clamp(1.5rem, 1rem + 1.9vw, 2.5rem)/var(--lh-title) var(--font-display);
+  letter-spacing: var(--track-title);
+  color: var(--st-ink);
+  text-wrap: balance;
+}
+.st-vcard .st-small { margin-top: var(--s-12); max-width: 36rem; font-size: var(--text-ui); }
+.st-vcard .st-kicker { margin: 0 0 var(--s-12); }
+.st-stat { margin-top: var(--s-12) !important; padding-top: var(--s-12); border-top: 1px solid var(--st-rule); font: 400 var(--text-note)/var(--lh-caption) var(--font-ui); color: var(--st-ink-2); }
+.st-stat b { font: 600 var(--text-ui)/var(--lh-figure) var(--font-ui); color: var(--st-ink); }
+
+/* Keys written into the sentences */
+.st-key { white-space: nowrap; }
+.st-key::before { content: ""; display: inline-block; width: 0.62em; height: 0.62em; margin-right: var(--s-8); border-radius: 2px; vertical-align: 0.04em; background: var(--k); } /* floor-ignore: key swatch scales with the sentence */
+.st-key--new { --k: var(--sv-hl); }
+.st-key--rec { --k: var(--sv-rec); }
+.st-key--rev { --k: var(--sv-rev); }
+.st-key--a { --k: var(--sv-hl); }
+.st-key--b { --k: #8f977f; }
+
+/* Rates: two figures side by side */
+.st-rates { display: flex; flex-wrap: wrap; gap: var(--s-24) var(--s-64); margin-top: var(--s-32); }
+.st-rates p { margin: 0; display: grid; gap: var(--s-8); max-width: 15rem; }
+.st-rates b { font: 500 clamp(3rem, 1.5rem + 5vw, 6.5rem)/var(--lh-figure) var(--font-display); letter-spacing: var(--track-display); color: var(--st-ink); }
+.st-rates p + p b { color: var(--st-ink-2); }
+.st-rates span { font: 400 var(--text-note)/var(--lh-caption) var(--font-ui); color: var(--st-ink-3); }
+
+/* Text inside charts */
+.sv-t { font: 500 12px var(--font-ui); fill: var(--st-ink-3); font-variant-numeric: tabular-nums lining-nums; }
+.sv-l { font: 600 13px var(--font-ui); fill: var(--st-ink-2); }
+.sv-v { font: 600 13px var(--font-ui); fill: var(--st-ink); font-variant-numeric: tabular-nums lining-nums; paint-order: stroke; stroke: var(--st-ground); stroke-width: 4px; stroke-linejoin: round; }
+.sv-grid { stroke: rgba(255, 255, 255, 0.08); stroke-width: 1px; shape-rendering: crispEdges; }
+.sv-base { stroke: rgba(255, 255, 255, 0.3); stroke-width: 1px; shape-rendering: crispEdges; }
+.sv-brk { fill: none; stroke: var(--st-ink); stroke-width: 1px; }
+
+/* Marks; every change of state is a short colour or opacity move */
+.sv-sq, .sv-bar, .sv-stack, .sv-hbar, .sv-dot, .sv-stem, .sv-group, .sv-panel, .sv-row, .sv-src {
+  transition: opacity var(--dur-emphasis) var(--ease-in-out), fill var(--dur-emphasis) var(--ease-in-out);
+}
+.sv-bar { fill: var(--sv-ink); }
+.sv-bar.is-on { fill: var(--sv-hl); }
+.sv-bar.is-dim { opacity: var(--sv-dim); }
+.sv-isr { fill: var(--sv-isr); }
+.scene--oct7[data-state="civ"] .sv-sq:not(.g-civ),
+.scene--oct7[data-state="sec"] .sv-sq:not(.g-sec),
+.scene--oct7[data-state="for"] .sv-sq:not(.g-for) { opacity: var(--sv-dim); }
+
+.sv-new { fill: var(--sv-hl); }
+.sv-rec { fill: var(--sv-rec); }
+.sv-rev { fill: var(--sv-rev); }
+.sv-uns { fill: rgba(255, 255, 255, 0.25); }
+.scene[data-viz="ceasefire"][data-state="new"] .sv-stack:not(.sv-new),
+.scene[data-viz="ceasefire"][data-state="old"] .sv-stack.sv-new { opacity: var(--sv-dim); }
+
+.sv-sq.sv-a { fill: var(--sv-hl); }
+.sv-sq.sv-b { fill: #8f977f; }
+.scene[data-viz="named"][data-state="child"] .sv-group:not(.g-child),
+.scene[data-viz="named"][data-state="adult"] .sv-group:not(.g-adult),
+.scene[data-viz="named"][data-state="senior"] .sv-group:not(.g-senior) { opacity: var(--sv-dim); }
+
+.sv-wbk { fill: var(--sv-hl); }
+.sv-wba { fill: var(--sv-rec); }
+.sv-partial { opacity: 0.45; }
+.scene[data-viz="westbank"][data-state="killed"] .p-attacks,
+.scene[data-viz="westbank"][data-state="attacks"] .p-killed { opacity: 0.22; }
+
+.sv-hbar { fill: var(--sv-ink); }
+.sv-now .sv-hbar { fill: var(--sv-hl); }
+.sv-now .sv-v { font-size: 16px; }
+.scene[data-viz="century"][data-state="now"] .sv-row:not(.sv-now) { opacity: 0.4; }
+
+.sv-stem { stroke: rgba(255, 255, 255, 0.18); stroke-width: 2px; }
+.sv-dot { fill: var(--sv-hl); }
+.sv-dot--est { fill: var(--st-ground); stroke: var(--sv-hl); stroke-width: 2px; }
+.scene[data-viz="sources"][data-state="lancet"] .s-moh2 { opacity: 0.3; }
+
+/* The toll opens on the bridge line, then the number arrives */
+.st-bridge { align-self: center; }
+.st-numeral--after { opacity: calc(clamp(0, (var(--p, 1) - 0.18) * 4, 1) * var(--clear, 1)) !important; }
+
+/* Header: the site's other sections */
+.st-links { display: flex; align-items: center; gap: var(--s-24); }
+.st-give { padding: var(--s-8) var(--s-16); border-radius: 999px; background: var(--st-ink); color: var(--st-ground) !important; font-weight: 600; }
+.st-give:hover { background: #fff; }
+
+/* Film grain over every scene: the photographs and the dark ground share one surface */
+.storymode::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 900px) {
+  .st-viz { inset: 46vh var(--page-margin) calc(var(--s-96) + 8px); }
+  .st-vcard { margin: 11vh var(--page-margin) 0; }
+  .st-links a:not(.st-give) { display: none; }
+  .st-rates { gap: var(--s-16) var(--s-32); margin-top: var(--s-16); }
+  .scene[data-viz="ceasefire"] .st-viz { top: 56vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene--viz .stage { min-height: 100svh; }
+  .st-viz { position: relative; inset: auto; height: 50vh; margin: var(--s-24) var(--page-margin) 0; }
+  .st-numeral--after { opacity: 1 !important; }
+}
+/* Long beats: their charts sit lower */
+.scene[data-viz="sources"] .st-viz, .scene[data-viz="century"] .st-viz { top: 50vh; }
+@media (max-width: 900px) { .scene[data-viz="sources"] .st-viz, .scene[data-viz="century"] .st-viz { top: 58vh; } }
+@media (max-width: 900px) {
+  /* Charts end above the credit and the chapter bar */
+  .st-viz { bottom: var(--s-160); }
+  .scene--viz .st-credit { bottom: calc(var(--s-16) + 60px); }
+  /* The number sits clear of its notes */
+  .scene--number .st-numeral { translate: 0 -27vh; }
+}
+@media (max-width: 900px) {
+  .st-viz { bottom: 196px; }
+  .scene[data-viz="ceasefire"] .st-viz { top: 52vh; }
+  .scene--number .st-numeral { translate: 0 -24vh; }
+  .scene--number .st-note--a { top: 42vh; bottom: auto; }
+  .scene--number .st-note--b { top: 56vh; bottom: auto; }
+  .scene--number .st-note--c { top: 69vh; bottom: auto; }
+}
+.scene--number .st-numeral { grid-area: 1 / 1; }

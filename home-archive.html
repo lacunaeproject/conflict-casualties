@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en" class="rd">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q8TT7PJHYR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Q8TT7PJHYR');
+</script>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
+<title>Gaza Death Toll &amp; Israel–Palestine Casualties Since October 7 · Conflict Casualties</title>
+<meta name="description" content="Updated tracker of people killed in Gaza, the West Bank and Israel since October 7, 2023, with daily charts, children and women killed, and a comparison of Gaza Ministry of Health, UN OCHA, B’Tselem and Lancet figures." />
+<meta name="robots" content="noindex" />
+<!-- Archived homepage (data-dashboard design, to October 2026). Not linked from the site. -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Conflict Casualties" />
+<meta property="og:title" content="Conflict Casualties · Israel–Palestine since October 7, 2023" />
+<meta property="og:description" content="Updated tracker of people killed in Gaza, the West Bank and Israel since October 7, 2023, with daily charts, children and women killed, and a comparison of Gaza Ministry of Health, UN OCHA, B’Tselem and Lancet figures." />
+<meta property="og:url" content="https://conflictcasualties.org/" />
+<meta property="og:image" content="https://conflictcasualties.org/img/og-cover.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Satellite view of the Gaza Strip and southern Israel on October 7, 2023, with fires visible" />
+<meta name="twitter:card" content="summary_large_image" />
+<script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Conflict Casualties",
+  "url": "https://conflictcasualties.org/"
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Israel–Palestine conflict fatalities since October 7, 2023",
+  "description": "Daily cumulative counts of Palestinians killed and injured in Gaza and the West Bank, and Israelis killed, since October 7, 2023, compiled from the Gaza Ministry of Health, UN OCHA, B’Tselem, The Lancet and IDF releases.",
+  "url": "https://conflictcasualties.org/",
+  "keywords": [
+   "Gaza death toll",
+   "Gaza casualties",
+   "West Bank",
+   "October 7",
+   "Israel",
+   "Palestine",
+   "fatalities"
+  ],
+  "temporalCoverage": "2023-10-07/..",
+  "dateModified": "2026-09-24",
+  "spatialCoverage": {
+   "@type": "Place",
+   "name": "Gaza Strip, West Bank, Israel"
+  },
+  "isAccessibleForFree": true,
+  "creator": {
+   "@type": "Organization",
+   "name": "Conflict Casualties",
+   "url": "https://conflictcasualties.org/"
+  },
+  "distribution": [
+   {
+    "@type": "DataDownload",
+    "encodingFormat": "application/json",
+    "contentUrl": "https://conflictcasualties.org/data.json"
+   }
+  ]
+ }
+]
+</script>
+<link rel="preload" href="fonts/alegreya-roman.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/alegreya-sans-lf-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css?v=202610061200" />
+<link rel="stylesheet" href="resources.css?v=202610061200" />
+<link rel="stylesheet" href="ui.css?v=202610061200" />
+<link rel="stylesheet" href="opening.css?v=202610061200" />
+<link rel="stylesheet" href="viz.css?v=202610061200" />
+<link rel="stylesheet" href="stats.css?v=202610061200" />
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="head-id">
+      <a class="brand" href="index.html" aria-label="Conflict Casualties, home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.25" />
+          <circle cx="16" cy="16" r="3.4" fill="currentColor" />
+        </svg>
+        <span class="brand-text"><span class="brand-title">Conflict Casualties</span></span>
+      </a>
+      <div class="conflict-switch" data-current="israel-palestine">
+        <button type="button" class="cs-btn" aria-expanded="false" aria-controls="cs-menu">
+          <span class="cs-label">Conflict</span>
+          <span class="cs-name">Israel · Palestine</span>
+          <svg class="cs-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="cs-menu" id="cs-menu" hidden></div>
+      </div>
+    </div>
+    <nav class="site-nav" aria-label="Site">
+      <a href="index.html" class="active" aria-current="page">The toll</a>
+      <a href="index.html#part-two">History</a>
+      <a href="resources.html">Reading list</a>
+      <a href="destruction.html">Destruction</a>
+      <a href="donate.html">Donate</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main-content">
+
+<!-- OPENING: headline and totals on the page ground, then the October 7 satellite plate,
+     which widens to full bleed as it scrolls in. Styles in opening.css. -->
+<section class="opening" aria-labelledby="opening-title">
+  <p class="opening-dateline"><span class="opening-live" aria-hidden="true"></span>Updated <time data-bind="meta.data_as_of">Sep 24, 2026</time><span class="opening-sep" aria-hidden="true">·</span>Day <span data-bind="meta.days_of_data">1,084</span> of the war</p>
+  <h1 class="opening-title" id="opening-title"><span class="opening-line"><span>Every Life Is</span></span> <span class="opening-line"><span>a Universe</span></span></h1>
+  <p class="opening-dek">A running count of reported fatalities in Gaza, the West Bank, and Israel&nbsp;— drawn from the Gaza Ministry of Health, UN&nbsp;OCHA, B’Tselem, and <em>The&nbsp;Lancet</em>. Totals differ by source; all figures are reported as <em>killed</em>, not injured.</p>
+  <figure class="opening-plate">
+    <div class="opening-frame">
+      <picture>
+        <source media="(max-width: 640px)" type="image/avif" srcset="img/oct7-plate-crop-640.avif 640w, img/oct7-plate-crop-1280.avif 1279w" sizes="100vw" width="1279" height="959">
+        <source media="(max-width: 640px)" type="image/webp" srcset="img/oct7-plate-crop-640.webp 640w, img/oct7-plate-crop-1280.webp 1279w" sizes="100vw" width="1279" height="959">
+        <source type="image/avif" srcset="img/oct7-plate-960.avif 960w, img/oct7-plate-1600.avif 1600w, img/oct7-plate-2400.avif 2400w" sizes="100vw">
+        <img class="opening-img" src="img/oct7-plate-1600.webp" srcset="img/oct7-plate-960.webp 960w, img/oct7-plate-1600.webp 1600w, img/oct7-plate-2400.webp 2400w" sizes="100vw"
+             width="2400" height="959" fetchpriority="high" decoding="async"
+             alt="Satellite view of the Gaza Strip and southern Israel on October 7, 2023. Smoke rises along the border fence, and fires detected in infrared are marked in yellow on both sides of it.">
+      </picture>
+    </div>
+    <figcaption class="opening-credit"><span class="opening-firekey"><i aria-hidden="true"></i>Fires detected in infrared</span> Satellite view of the Gaza Strip and southern Israel, October 7, 2023. Contains modified Copernicus Sentinel data (2023), processed by Pierre Markuse · via <a href="https://commons.wikimedia.org/wiki/File:Fires_in_Israel_and_the_Gaza_strip_-_7_October_2023_(53245908850).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 2.0</figcaption>
+  </figure>
+</section>
+
+<!-- KEY FIGURES: four counts as bento tiles. Each tile: label, figure, breakdown, source,
+     and a detail layer (a native disclosure). Styles in stats.css. -->
+<section class="stats" aria-labelledby="stats-title">
+  <h2 class="stats-title" id="stats-title">Killed since October&nbsp;7, 2023</h2>
+  <dl class="stats-grid" id="headline-totals">
+    <div class="stats-tile stats-tile--lead stats-tile--pal">
+      <dt class="stats-label">Palestinians killed in Gaza</dt>
+      <dd class="stats-num" id="kpi-gaza"><span class="visually-hidden">73,928</span><span aria-hidden="true">73<span class="stats-comma">,</span>928</span></dd>
+      <dd class="stats-break"><span><b id="kpi-gaza-children">20,179</b> children</span><span><b id="kpi-gaza-women">12,500</b> women, to <time class="breakdown-date" datetime="2025-10-07">Oct 7, 2025</time></span></dd>
+      <dd class="stats-src"><span>Gaza Ministry of Health</span><span>Oct 7, 2023 – <time datetime="2026-09-24" data-bind="meta.data_as_of">Sep 24, 2026</time></span></dd>
+      <dd class="stats-more">
+        <details class="stats-details">
+          <summary class="stats-info"><span class="stats-info-open">About this figure</span><span class="stats-info-close">Close</span></summary>
+          <div class="stats-detail" id="stats-detail-gaza">
+            <p>Palestinians killed in the Gaza Strip by direct violence, as recorded by the Gaza Ministry of Health and republished by Tech for Palestine.</p>
+            <p>The children and women counts were last updated in October 2025 and July 2025.</p>
+            <p><a href="https://data.techforpalestine.org/" target="_blank" rel="noopener">Tech for Palestine dataset</a></p>
+          </div>
+        </details>
+      </dd>
+    </div>
+    <div class="stats-tile stats-tile--wide stats-tile--pal">
+      <dt class="stats-label">Palestinians killed in the West&nbsp;Bank</dt>
+      <dd class="stats-num" id="kpi-wb"><span class="visually-hidden">1,123</span><span aria-hidden="true">1<span class="stats-comma">,</span>123</span></dd>
+      <dd class="stats-break"><span><b id="kpi-wb-children">240</b> children</span></dd>
+      <dd class="stats-src"><span>UN OCHA</span><span>Oct 7, 2023 – <time datetime="2026-09-14">Sep 14, 2026</time></span></dd>
+      <dd class="stats-more">
+        <details class="stats-details">
+          <summary class="stats-info"><span class="stats-info-open">About this figure</span><span class="stats-info-close">Close</span></summary>
+          <div class="stats-detail" id="stats-detail-wb">
+            <p>Palestinians killed in the occupied West Bank, including East Jerusalem, by Israeli forces and settlers.</p>
+            <p>OCHA’s most recent report in this data is from September 14, 2026.</p>
+            <p><a href="https://www.ochaopt.org/" target="_blank" rel="noopener">UN OCHA, occupied Palestinian territory</a></p>
+          </div>
+        </details>
+      </dd>
+    </div>
+    <div class="stats-tile stats-tile--isr">
+      <dt class="stats-label">Israelis killed on October&nbsp;7</dt>
+      <dd class="stats-num" id="kpi-oct7"><span class="visually-hidden">1,195</span><span aria-hidden="true">1<span class="stats-comma">,</span>195</span></dd>
+      <dd class="stats-break"><span><b>724</b> civilians</span><span><b>373</b> security forces</span><span><b>98</b> foreign &amp; other</span></dd>
+      <dd class="stats-src"><span>Israeli MFA, INSS, B’Tselem</span><span><time datetime="2023-10-07">Oct 7, 2023</time></span></dd>
+      <dd class="stats-more">
+        <details class="stats-details">
+          <summary class="stats-info"><span class="stats-info-open">About this figure</span><span class="stats-info-close">Close</span></summary>
+          <div class="stats-detail" id="stats-detail-oct7">
+            <p>People killed in the October 7 attack on southern Israel.</p>
+            <p>Of the 98, 71 were foreign nationals; the other 27 are recorded as “other and revised.”</p>
+          </div>
+        </details>
+      </dd>
+    </div>
+    <div class="stats-tile stats-tile--isr">
+      <dt class="stats-label">Israeli soldiers killed in&nbsp;Gaza</dt>
+      <dd class="stats-num" id="kpi-idf"><span class="visually-hidden">477</span><span aria-hidden="true">477</span></dd>
+      <dd class="stats-break"><span>Ground operation, from Oct&nbsp;27,&nbsp;2023</span></dd>
+      <dd class="stats-src"><span>IDF, The Times of Israel</span><span>to <time datetime="2026-09-24" data-bind="meta.data_as_of">Sep 24, 2026</time></span></dd>
+      <dd class="stats-more">
+        <details class="stats-details">
+          <summary class="stats-info"><span class="stats-info-open">About this figure</span><span class="stats-info-close">Close</span></summary>
+          <div class="stats-detail" id="stats-detail-idf">
+            <p>Israeli soldiers killed in the Gaza ground operation, which began on October 27, 2023. Soldiers killed on October 7 are counted in the October 7 figure.</p>
+          </div>
+        </details>
+      </dd>
+    </div>
+  </dl>
+  <div class="stats-foot">
+    <p class="stats-key"><span class="stats-key-item stats-key-item--pal">Palestinian</span><span class="stats-key-item stats-key-item--isr">Israeli</span></p>
+    <p class="stats-asof">Latest figures as of <time datetime="2026-09-24" data-bind="meta.data_as_of">Sep 24, 2026</time>; West Bank as of Sep 14. Also recorded in the West Bank: <b id="kpi-wb-settler">4,655</b> settler attacks (incidents, not deaths). Each figure is its source’s own count over the period shown; they aren’t added together. <a href="#sources">How these figures are sourced</a></p>
+  </div>
+</section>
+
+<!-- IN BRIEF: the story so far, numbers bound to data.json -->
+<section class="story story--lede" aria-labelledby="in-brief" data-chapter="In brief" data-part="Part one">
+  <div class="eyebrow" id="in-brief">In brief</div>
+  <p>On October 7, 2023, Hamas-led fighters broke through the fence around Gaza and attacked towns, kibbutzim, army posts and a music festival in southern Israel. They killed <strong data-bind="oct7.total">1,195</strong> people, most of them civilians, and took <strong data-bind="oct7.hostages_taken">251</strong> hostages.</p>
+  <p>Israel’s war on Gaza began the same day. In the <span data-bind="meta.days_of_data">1,084</span> days since, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed and <span data-bind="summary.gaza.injured.total">175,030</span> injured. Of the dead identified by name, <strong data-bind="calc.namedChildShare">30%</strong> were children. In the occupied West Bank, Israeli forces and settlers have killed <strong data-bind="summary.west_bank.killed.total">1,123</strong> more Palestinians. <strong data-bind="calc.idfGaza">477</strong> Israeli soldiers have been killed in the Gaza ground operation.</p>
+  <p>A ceasefire took hold on October 10, 2025. The killing slowed. It has not stopped.</p>
+  <p class="story-map">This page tracks those numbers as sources publish them. Part one charts the toll: when, where, and who. Part two steps back a century, following the historian Rashid Khalidi’s account of how Palestine came to this.</p>
+  <nav class="contents" aria-labelledby="contents-title">
+    <div class="eyebrow" id="contents-title">In this article</div>
+    <div class="contents-groups" id="contents-groups"></div>
+  </nav>
+</section>
+
+<header class="part-head" id="part-one">
+  <div class="part-num">Part one</div>
+  <h2>The toll</h2>
+</header>
+
+<!-- SCALE: one dot per ten people -->
+<section class="panel" data-chapter="The scale">
+  <div class="card">
+    <div class="panel-head">
+      <div class="eyebrow">Chapter 1 · The scale</div>
+      <h2>What <span data-bind="summary.gaza.killed.total">73,928</span> looks like</h2>
+      <p class="dek">Each dot is ten people killed in Gaza. A rule marks every 10,000. Choose a group to see who they were.</p>
+    </div>
+    <div class="dots-controls">
+      <div class="segmented" id="dots-toggle" role="radiogroup" aria-label="Highlight a group">
+        <button class="active" role="radio" aria-checked="true"  data-group="all">Everyone</button>
+        <button            role="radio" aria-checked="false" data-group="children">Children</button>
+        <button            role="radio" aria-checked="false" data-group="women">Women</button>
+        <button            role="radio" aria-checked="false" data-group="men">Men</button>
+      </div>
+      <p class="dots-readout" id="dots-readout" aria-live="polite"></p>
+    </div>
+    <div class="dots-box">
+      <div class="dots-marks" aria-hidden="true"></div>
+      <canvas id="dots" role="img" aria-label="A grid of dots, one for every ten Palestinians killed in Gaza"></canvas>
+    </div>
+    <p class="chart-foot">Gaza Ministry of Health totals. The Ministry last broke its count down by age and sex on <time datetime="2025-10-07">October 7, 2025</time>, so children, women and men are shown as of that date; “men” is the remainder after children and women. The dashed line marks that date: dots after it are deaths reported since, not yet broken down.</p>
+  </div>
+</section>
+
+<!-- MAIN TIME-SERIES CHART CARD (controls live inside, above the chart) -->
+<section class="panel panel--scrolly" data-chapter="The pace">
+  <div class="card">
+    <div class="panel-head">
+      <div class="eyebrow">Chapter 2 · The pace</div>
+      <h2>Nearly a third of the dead were reported in the first three months</h2>
+      <p class="dek">Deaths reported in Gaza each week since October 7, 2023. Scroll to walk through the war.</p>
+    </div>
+    <div class="scrolly">
+      <div class="scrolly-graphic">
+        <figure class="viz viz--weekly" id="weekly-chart" aria-labelledby="weekly-title">
+          <figcaption class="visually-hidden" id="weekly-title">Bar chart of deaths reported in Gaza each week since October 7, 2023</figcaption>
+          <p class="viz-readout" aria-live="polite"></p>
+          <div class="viz-plot"></div>
+        </figure>
+      </div>
+      <div class="scrolly-steps">
+        <div class="step" data-from="2023-10-07" data-to="2023-12-31">
+          <div class="step-card">
+            <div class="step-when">Oct – Dec 2023</div>
+            <h3>The first three months</h3>
+            <p><strong data-step="total"></strong> people were reported killed in the war’s first three months, about <strong data-step="perday"></strong> a day.</p>
+          </div>
+        </div>
+        <div class="step" data-from="2024-01-01" data-to="2024-12-31">
+          <div class="step-card">
+            <div class="step-when">2024</div>
+            <h3>A long, grinding year</h3>
+            <p>Through 2024 the weekly toll fell but never stopped: <strong data-step="total"></strong> deaths, about <strong data-step="perday"></strong> a day. In May, Israel launched its offensive on Rafah, where more than a million displaced people had sheltered.</p>
+          </div>
+        </div>
+        <div class="step" data-from="2025-01-19" data-to="2025-03-17">
+          <div class="step-card">
+            <div class="step-when">Jan – Mar 2025</div>
+            <h3>Eight weeks of truce</h3>
+            <p>A truce took hold on January 19, 2025, with an exchange of hostages and prisoners. Weekly deaths fell to their lowest point of the war to that date.</p>
+          </div>
+        </div>
+        <div class="step" data-from="2025-03-18" data-to="2025-10-09">
+          <div class="step-card">
+            <div class="step-when">Mar – Oct 2025</div>
+            <h3>The war resumes</h3>
+            <p>Israel resumed its offensive on March 18. Over the next seven months <strong data-step="total"></strong> more deaths were reported. In August, UN-backed experts confirmed famine in Gaza City; by mid-2026, <strong data-bind="summary.gaza.aid_seeker.killed">2,615</strong> people had been killed seeking food aid.</p>
+          </div>
+        </div>
+        <div class="step" data-from="2025-10-10" data-to="9999-12-31">
+          <div class="step-card">
+            <div class="step-when">Oct 2025 – now</div>
+            <h3>Ceasefire</h3>
+            <p>Since the October 10 ceasefire, about <strong data-step="permonth"></strong> deaths a month have been added. Most are not new killings but the dead being recovered from rubble or confirmed after review.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="chart-foot">Deaths <em>reported</em> each week, which is not always the week they happened. Weeks start on Monday; the current week appears once it ends. From January 2025 the Ministry separates <span class="k k--new">new killings</span> from <span class="k k--recovered">bodies recovered</span> and <span class="k k--review">earlier deaths added after review</span>; before that, all three are inside the totals. Source: Gaza Ministry of Health, via <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine</a>, to <time datetime="2026-09-24" data-bind="meta.data_as_of">Sep 24, 2026</time>. <a href="#notes">How these figures are sourced</a></p>
+    <details class="more">
+      <summary>The data as a table</summary>
+      <div class="table-scroll"><table class="viz-table" id="weekly-table"><caption class="visually-hidden">Deaths reported in Gaza each month</caption><thead><tr><th scope="col">Month</th><th scope="col" class="num">Deaths reported</th></tr></thead><tbody></tbody></table></div>
+    </details>
+  </div>
+</section>
+
+<!-- CEASEFIRE CONTEXT -->
+<section class="context-card context-card--band" data-chapter="The ceasefire">
+  <div class="card card--pal">
+    <div class="context-inner">
+      <div class="context-lede">
+        <div class="eyebrow">Since the ceasefire · October 10, 2025</div>
+        <h2>The killing has slowed. It has not stopped.</h2>
+        <p class="context-dek">The ceasefire is still nominally in force, but Israeli strikes continue. Far fewer people are killed each day than during the war.</p>
+      </div>
+
+      <div class="rate-moment" role="img" id="rate-moment">
+        <div class="rm-col">
+          <div class="rm-num" id="rate-war">—</div>
+          <div class="rm-lbl">killed a day in new attacks during the resumed war<span>Mar 18 – Oct 9, 2025</span></div>
+        </div>
+        <div class="rm-rule" aria-hidden="true"></div>
+        <div class="rm-col rm-col--now">
+          <div class="rm-num" id="rate-now">—</div>
+          <div class="rm-lbl">killed a day in new attacks since the ceasefire<span>Oct 10, 2025 – <time datetime="2026-09-24" data-bind="meta.data_as_of">Sep 24, 2026</time></span></div>
+        </div>
+      </div>
+
+      <div class="viz-block">
+        <h3 class="viz-title">Where the <span id="cf-total">—</span> added to the toll since the ceasefire come from</h3>
+        <p class="viz-sub">About <span id="cf-new-share">—</span> in <span id="cf-new-share-of">—</span> is a <span class="k k--new">new killing</span>. The rest are people killed earlier, now being counted: <span class="k k--recovered">bodies recovered from rubble</span> and <span class="k k--review">deaths added after review</span>.</p>
+        <figure class="viz viz--ceasefire" id="ceasefire-chart" aria-labelledby="ceasefire-title">
+          <figcaption class="visually-hidden" id="ceasefire-title">Stacked bar chart of deaths added to the Gaza toll each month since the October 10, 2025 ceasefire, by type</figcaption>
+          <p class="viz-readout" aria-live="polite"></p>
+          <div class="viz-plot"></div>
+        </figure>
+        <p class="chart-foot">October counts reports from the 11th, the first after the ceasefire; September runs to the 24th. “New killings” include <span id="cf-succumbed">—</span> people who died later of their wounds. Source: Gaza Ministry of Health daily breakdowns, via Tech for Palestine. <a href="#notes">How these figures are sourced</a></p>
+      </div>
+
+      <details class="more">
+        <summary>Read more</summary>
+        <div class="context-body">
+          <p>The official Gaza toll has risen by <span id="cf-total-2">—</span> since the ceasefire. Only about a fifth of that is new killing. The rest are people killed before the ceasefire who are only now being counted: bodies pulled from the rubble, and deaths added to the record after the Ministry of Health’s committee verified them. Those additions arrive in weekly batches, so the steps they create in the cumulative chart above are not new surges in violence.</p>
+          <p>Under the ceasefire, Israeli forces were to hold 53% of the Strip behind the so-called “Yellow Line.” By March 2026 they held about 64%, and on May 28, 2026, Prime Minister Netanyahu ordered the army to take 70%. The last Israeli hostage held in Gaza, the body of Ran Gvili, was returned on January 26, 2026. None remain in Gaza.</p>
+          <p class="context-footnote">Sources: <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine daily reports (Gaza MoH)</a> · <a href="https://www.ochaopt.org/content/humanitarian-situation-report-18-september-2026" target="_blank" rel="noopener">OCHA situation report, Sep 18, 2026</a> · <a href="https://www.aljazeera.com/news/2026/5/28/israels-netanyahu-directs-army-to-seize-70-percent-of-gaza-strip" target="_blank" rel="noopener">Al Jazeera</a> · <a href="https://www.timesofisrael.com/all-of-them-home-now-body-of-last-hostage-ran-gvili-found-in-gaza-returned-to-israel/" target="_blank" rel="noopener">Times of Israel</a></p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WAS KILLED IN GAZA -->
+<section class="panel" data-chapter="The people">
+  <div class="card">
+    <div class="panel-head">
+      <div class="eyebrow">Chapter 3 · The people</div>
+      <h2>Who was killed in Gaza</h2>
+      <p class="dek">Of the <span id="named-total">—</span> dead identified by name, <strong id="named-child-share">—</strong> were children.</p>
+    </div>
+    <div class="people">
+      <div class="people-viz">
+        <h3 class="viz-title">Identified dead, by age and sex</h3>
+        <figure class="viz viz--waffle" id="who-waffle" aria-labelledby="who-title">
+          <figcaption class="visually-hidden" id="who-title">Waffle chart: one square for every 100 people identified by name, grouped by age and sex</figcaption>
+          <div class="viz-plot"></div>
+        </figure>
+        <p class="chart-foot" id="who-foot"></p>
+      </div>
+      <div class="people-facts">
+        <h3 class="viz-title">Also among the dead</h3>
+        <div class="who-grid">
+          <div class="cell"><div class="lbl">Journalists</div><div class="val" id="who-press">—</div></div>
+          <div class="cell"><div class="lbl">Medical personnel</div><div class="val" id="who-medical">—</div></div>
+          <div class="cell"><div class="lbl">Civil defense</div><div class="val" id="who-civdef">—</div></div>
+          <div class="cell"><div class="lbl">Died of starvation</div><div class="val" id="who-famine">—</div></div>
+          <div class="cell"><div class="lbl">Aid-seekers killed</div><div class="val" id="who-aid">—</div></div>
+        </div>
+        <p class="chart-foot">Ministry of Health totals: <span id="who-children">—</span> children and <span id="who-women">—</span> women killed to <time class="breakdown-date" datetime="2025-10-07">Oct 7, 2025</time>, when the Ministry last broke its count down; <span id="who-injured">—</span> people injured. Also tracked by OCHA, CPJ, Healthcare Workers Watch, and UNRWA.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OCTOBER 7 -->
+<section class="panel" data-chapter="October 7">
+  <div class="card">
+    <div class="eyebrow eyebrow--isr">Israel</div>
+    <h2>October 7</h2>
+    <p class="dek">The deadliest day for Israelis since the state’s founding.</p>
+    <div class="viz-block">
+      <div class="stackbar stackbar--isr" role="img" aria-label="Of 1,195 killed: 724 Israeli civilians, 373 security forces, 98 foreign nationals and other">
+        <div class="seg seg--1" style="--w:60.6%"></div>
+        <div class="seg seg--2" style="--w:31.2%"></div>
+        <div class="seg seg--3" style="--w:8.2%"></div>
+      </div>
+      <ul class="stack-key">
+        <li><i class="sw seg--1"></i><strong>724</strong> Israeli civilians</li>
+        <li><i class="sw seg--2"></i><strong>373</strong> security forces</li>
+        <li><i class="sw seg--3"></i><strong>98</strong> foreign nationals &amp; other</li>
+      </ul>
+    </div>
+    <div class="oct7-grid">
+      <div class="cell"><div class="lbl">Taken hostage</div><div class="val">251</div></div>
+      <div class="cell"><div class="lbl">Killed at Nova festival</div><div class="val">364</div></div>
+      <div class="cell"><div class="lbl">Children killed</div><div class="val">36</div></div>
+      <div class="cell"><div class="lbl">Injured</div><div class="val">8,730</div></div>
+    </div>
+    <p class="chart-foot">1,195 killed in total. Figures consolidated from the Israeli MFA, INSS, and B’Tselem.</p>
+  </div>
+</section>
+
+<!-- WEST BANK -->
+<section class="panel" data-chapter="The West Bank">
+  <div class="card">
+    <div class="panel-head">
+      <div class="eyebrow">Chapter 4 · The West Bank</div>
+      <h2>Killings have fallen. Settler attacks have not.</h2>
+      <p class="dek">Palestinians killed and settler attacks in the West Bank and East Jerusalem each month, as reported by UN OCHA. They are different units, so they get separate charts on their own scales.</p>
+    </div>
+    <figure class="viz viz--wb" id="wb-chart" aria-labelledby="wb-title">
+      <figcaption class="visually-hidden" id="wb-title">Two bar charts sharing a time axis: Palestinians killed per month, and settler attacks per month, in the West Bank since October 2023</figcaption>
+      <p class="viz-readout" aria-live="polite"></p>
+      <div class="viz-plot"></div>
+    </figure>
+    <p class="chart-foot">October 2023 counts from the 7th. OCHA’s latest report in this data is from <time datetime="2026-09-14">September 14, 2026</time>, so September is partial. Source: <a href="https://www.ochaopt.org/" target="_blank" rel="noopener">UN OCHA</a>. <a href="#notes">How these figures are sourced</a></p>
+  </div>
+</section>
+
+<!-- PART TWO: THE HUNDRED YEARS' WAR (after Rashid Khalidi) -->
+<header class="part-head" id="part-two">
+  <div class="part-num">Part two</div>
+  <h2>The hundred years’ war</h2>
+</header>
+
+<section class="history-intro">
+  <div class="story">
+    <p class="story-dek">The numbers above begin in 2023. The Palestinian American historian Rashid Khalidi argues that the story begins in 1917, and that it is best understood not as an ancient feud between two peoples but as a colonial war waged against the Palestinians, backed at every stage by the great power of the day.</p>
+    <p>In <em>The Hundred Years’ War on Palestine</em> (2020), Khalidi divides that century into six “declarations of war.” What follows summarizes his account in our own words, with the numbers from each period. For the full argument, <a href="resources.html">read the book</a>.</p>
+  </div>
+
+</section>
+
+<div class="history" data-chapter="The hundred years’ war">
+<div class="century-wrap">
+  <div class="century-bar">
+    <div class="century-label" aria-live="polite">
+      <span class="century-kicker" id="century-kicker">Prologue · 1899</span>
+      <span class="century-title" id="century-title">A letter to Herzl</span>
+    </div>
+    <nav class="century" id="century" aria-label="Timeline of the hundred years’ war">
+      <div class="century-line" aria-hidden="true"></div>
+      <div class="century-fill" aria-hidden="true"></div>
+      <a class="century-mark" href="#era-1899" style="--x:0.0000%"><i aria-hidden="true"></i><span>1899</span></a>
+      <a class="century-mark" href="#era-1917" style="--x:14.2857%"><i aria-hidden="true"></i><span>1917</span></a>
+      <a class="century-mark" href="#era-1947" style="--x:28.5714%"><i aria-hidden="true"></i><span>1947</span></a>
+      <a class="century-mark" href="#era-1967" style="--x:42.8571%"><i aria-hidden="true"></i><span>1967</span></a>
+      <a class="century-mark" href="#era-1982" style="--x:57.1429%"><i aria-hidden="true"></i><span>1982</span></a>
+      <a class="century-mark" href="#era-1987" style="--x:71.4286%"><i aria-hidden="true"></i><span>1987</span></a>
+      <a class="century-mark" href="#era-2000" style="--x:85.7143%"><i aria-hidden="true"></i><span>2000</span></a>
+      <a class="century-mark is-now" href="#era-2023" style="--x:100.0000%"><i aria-hidden="true"></i><span>2023</span></a>
+    </nav>
+    <div class="century-step">
+      <span class="century-count" id="century-count">1 of 8</span>
+      <button type="button" class="century-btn" id="century-prev" aria-label="Previous era"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button type="button" class="century-btn" id="century-next" aria-label="Next era"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<!-- Prologue -->
+<article class="era era--text" id="era-1899" data-era="Prologue · A letter to Herzl">
+  <div class="era-body">
+    <div class="era-years">Prologue · 1899</div>
+    <h3>A letter to Herzl</h3>
+    <blockquote class="era-quote">
+      <p>In the name of God, let Palestine be left alone.</p>
+      <cite>Yusuf Diya al-Din al-Khalidi, letter to Theodor Herzl, 1899</cite>
+    </blockquote>
+    <p>Khalidi opens with his own family. In 1899 his great-great-great-uncle, Yusuf Diya al-Din al-Khalidi, a former mayor of Jerusalem, wrote to Theodor Herzl, the founder of political Zionism. He wrote that he sympathized with the plight of the Jews of Europe, but that Palestine was already inhabited, and he urged Herzl, in the name of God, to leave it alone.</p>
+    <p>Herzl replied that Jewish immigration would bring prosperity to the country’s non-Jewish inhabitants. He did not address the people living there as a nation with rights of its own. For Khalidi, that exchange holds the century to come in miniature.</p>
+  </div>
+</article>
+
+<!-- I -->
+<article class="era" id="era-1917" data-era="1917 – 1939 · The first declaration">
+  <figure class="era-fig era-fig--doc">
+    <img src="img/balfour-declaration-1917.webp" alt="The typed Balfour Declaration letter, signed by Arthur Balfour" width="1215" height="1600" loading="lazy" />
+    <figcaption>The Balfour Declaration, November 2, 1917: a letter from Foreign Secretary Arthur Balfour to Lord Rothschild. <span class="credit">UK Government · via <a href="https://commons.wikimedia.org/wiki/File:Balfour_declaration_unmarked.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</span></figcaption>
+  </figure>
+  <div class="era-body">
+    <div class="era-years">1917 – 1939 · The first declaration</div>
+    <h3>A national home, promised by a great power</h3>
+    <p>In November 1917, Britain promised the Zionist movement “a national home for the Jewish people” in Palestine, a country its armies had not yet finished conquering, where Arabs were roughly nine in ten of the population. The letter called that majority “the existing non-Jewish communities,” with civil and religious rights but no national ones.</p>
+    <div class="era-stats">
+      <div><strong>~90%</strong><span>of Palestine’s population was Arab in 1917</span></div>
+      <div><strong>~5,000</strong><span>Palestinians killed as Britain crushed the 1936–39 revolt</span></div>
+    </div>
+    <details class="more">
+      <summary>Read more</summary>
+      <p>Britain wrote the promise into its League of Nations Mandate for Palestine in 1922 and opened the country to Jewish immigration. The Jewish share of the population rose from about a tenth to nearly a third by 1939.</p>
+      <p>In 1936 Palestinians launched a six-month general strike and then an armed revolt. Britain put it down over three years with mass arrests, collective punishment, house demolitions and executions. Khalidi estimates that about one in ten adult Palestinian men were killed, wounded, imprisoned or exiled. The Palestinians entered the 1940s with their leadership broken and their fighters disarmed.</p>
+      <figure class="era-fig era-fig--inline">
+        <img src="img/british-troops-jerusalem-1936.webp" alt="Columns of British soldiers marching through a Jerusalem street beside the Old City wall" width="1600" height="1184" loading="lazy" />
+        <figcaption>British troops march through Jerusalem inside the Jaffa Gate, 1936. <span class="credit">Matson Collection, Library of Congress · via <a href="https://commons.wikimedia.org/wiki/File:Palestine_disturbances_1936._British_troops_parading_Jerusalem_street,_taken_inside_Jaffa_Gate_LOC_matpc.18167.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</span></figcaption>
+      </figure>
+      <p class="more-links">Further reading: <a href="https://en.wikipedia.org/wiki/Balfour_Declaration" target="_blank" rel="noopener">Balfour Declaration</a> · <a href="https://en.wikipedia.org/wiki/1936%E2%80%931939_Arab_revolt_in_Palestine" target="_blank" rel="noopener">1936–39 Arab revolt</a></p>
+    </details>
+  </div>
+</article>
+
+<!-- II: full-bleed feature -->
+<article class="era era--feature" id="era-1947" data-era="1947 – 1948 · The second declaration">
+  <div class="era-feature-inner">
+    <div class="era-body">
+      <div class="era-years">1947 – 1948 · The second declaration</div>
+      <h3>Partition, and al-Nakba</h3>
+      <p>In November 1947 the United Nations voted to partition Palestine, allotting more than half the land to a Jewish state when Jews were about a third of the population. Khalidi counts the vote, driven by the United States and the Soviet Union, as the second declaration of war. What followed Palestinians call <em>al-Nakba</em>, “the catastrophe.”</p>
+      <div class="era-stats era-stats--four">
+        <div><strong>750,000+</strong><span>Palestinians expelled or fled</span></div>
+        <div><strong>530+</strong><span>villages depopulated or destroyed</span></div>
+        <div><strong>15,000</strong><span>Palestinians killed in 1947–49</span></div>
+        <div><strong>6M+</strong><span>registered refugees today</span></div>
+      </div>
+      <details class="more more--night">
+        <summary>Read more</summary>
+        <p>Between the partition vote and the armistice of 1949, Zionist militias and then the new Israeli army carried out a campaign, documented as <a href="https://en.wikipedia.org/wiki/Plan_Dalet" target="_blank" rel="noopener">Plan Dalet</a>, that emptied more than half of Mandatory Palestine’s Arab population from their homes. At Deir Yassin, in April 1948, more than a hundred villagers were killed. Villages were razed. Survivors were barred from returning, and their land, homes and bank accounts were absorbed by the new state.</p>
+        <p>Palestinian scholars and UN experts increasingly describe the events since October 2023 as a second Nakba.</p>
+        <p class="more-links">Further reading: <a href="https://www.palestineremembered.com/" target="_blank" rel="noopener">Palestine Remembered</a> · <a href="https://www.decolonizepalestine.com/the-nakba/" target="_blank" rel="noopener">Decolonize Palestine</a> · <a href="https://www.unrwa.org/palestine-refugees" target="_blank" rel="noopener">UNRWA · Palestine refugees</a></p>
+      </details>
+      <p class="feature-credit">Photo: Palestinian refugees leaving Galilee for Lebanon, October–November 1948. Fred Csasznik · via <a href="https://commons.wikimedia.org/wiki/File:Refugees_in_Galilee.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</p>
+    </div>
+  </div>
+</article>
+
+<!-- III -->
+<article class="era era--flip" id="era-1967" data-era="1967 · The third declaration">
+  <figure class="era-fig">
+    <img src="img/allenby-bridge-refugees-1967.webp" alt="Palestinian refugees carrying bundles climb across the twisted wreckage of the Allenby Bridge" width="1523" height="1600" loading="lazy" />
+    <figcaption>Palestinian refugees cross the wrecked Allenby Bridge into Jordan, 1967. <span class="credit">UNRWA Archive · via <a href="https://commons.wikimedia.org/wiki/File:Palestinian_refugees_crossing_the_destroyed_Allenby_Bridge_in_1967.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</span></figcaption>
+  </figure>
+  <div class="era-body">
+    <div class="era-years">1967 · The third declaration</div>
+    <h3>Occupation</h3>
+    <p>In six days in June 1967, Israel took the West Bank, East Jerusalem and Gaza, along with Egypt’s Sinai and Syria’s Golan Heights. Hundreds of thousands of Palestinians were displaced, many of them refugees for the second time. The occupation that began that week has never ended.</p>
+    <p>For Khalidi, the third declaration was UN Security Council Resolution 242. It became the basis of every later peace plan, yet it never named the Palestinians, referring only to “a just settlement of the refugee problem.”</p>
+    <div class="era-stats">
+      <div><strong>300,000+</strong><span>Palestinians displaced in 1967</span></div>
+      <div><strong>700,000+</strong><span>Israeli settlers in the occupied West Bank and East Jerusalem today</span></div>
+    </div>
+    <details class="more">
+      <summary>Read more</summary>
+      <p>Israeli settlement of the occupied territories began within months of the war. Under the Fourth Geneva Convention an occupying power may not transfer its own population into occupied territory, and the International Court of Justice has found the settlements unlawful. They have grown under every Israeli government since.</p>
+      <p class="more-links">Further reading: <a href="https://en.wikipedia.org/wiki/United_Nations_Security_Council_Resolution_242" target="_blank" rel="noopener">Resolution 242</a> · <a href="https://en.wikipedia.org/wiki/Israeli_occupation_of_the_West_Bank" target="_blank" rel="noopener">Occupation of the West Bank</a></p>
+    </details>
+  </div>
+</article>
+
+<!-- IV -->
+<article class="era" id="era-1982" data-era="1982 · The fourth declaration">
+  <figure class="era-fig">
+    <img src="img/beirut-outskirts-1982.webp" alt="A column of Israeli tanks loaded with gear parked along a dusty road" width="1600" height="1067" loading="lazy" />
+    <figcaption>Israeli tanks on the outskirts of Beirut, June 21, 1982. <span class="credit">Israel Press and Photo Agency (I.P.P.A.) · via <a href="https://commons.wikimedia.org/wiki/File:Israeli_Magach_Tanks_On_the_Outskirts_of_Beirut,_1982.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 4.0</span></figcaption>
+  </figure>
+  <div class="era-body">
+    <div class="era-years">1982 · The fourth declaration</div>
+    <h3>The siege of Beirut</h3>
+    <p>In June 1982 Israel invaded Lebanon to destroy the Palestine Liberation Organization, and laid siege to West Beirut for ten weeks with American support. Khalidi, then teaching in Beirut, lived through it. After the PLO’s fighters were evacuated under a US-brokered deal, a Lebanese militia allied with Israel entered the Sabra and Shatila refugee camps, which Israeli forces had surrounded, and killed hundreds of civilians over three days.</p>
+    <div class="era-stats">
+      <div><strong>~18,000</strong><span>killed in Lebanon by September 1982, most of them civilians (Lebanese estimates)</span></div>
+      <div><strong>460 – 3,500</strong><span>killed at Sabra and Shatila; estimates vary widely</span></div>
+    </div>
+    <details class="more">
+      <summary>Read more</summary>
+      <p>An Israeli commission of inquiry, the Kahan Commission, found that defense minister Ariel Sharon bore personal responsibility for failing to prevent the massacre. He resigned as defense minister and became prime minister in 2001.</p>
+      <p class="more-links">Further reading: <a href="https://en.wikipedia.org/wiki/1982_Lebanon_War" target="_blank" rel="noopener">1982 Lebanon War</a> · <a href="https://en.wikipedia.org/wiki/Sabra_and_Shatila_massacre" target="_blank" rel="noopener">Sabra and Shatila massacre</a></p>
+    </details>
+  </div>
+</article>
+
+<!-- V -->
+<article class="era era--flip" id="era-1987" data-era="1987 – 1995 · The fifth declaration">
+  <figure class="era-fig">
+    <img src="img/intifada-gaza-1987.webp" alt="Israeli soldiers in helmets face a crowd of Palestinians raising a Palestinian flag on a Gaza street" width="1600" height="1043" loading="lazy" />
+    <figcaption>Israeli soldiers face Palestinian protesters in the Gaza Strip, December 21, 1987, two weeks into the first intifada. <span class="credit">Efi Sharir · via <a href="https://commons.wikimedia.org/wiki/File:Intifada_in_Gaza_Strip_(FL45956268).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 4.0</span></figcaption>
+  </figure>
+  <div class="era-body">
+    <div class="era-years">1987 – 1995 · The fifth declaration</div>
+    <h3>Uprising, then Oslo</h3>
+    <p>In December 1987 a mass uprising, the first intifada, spread from Gaza’s refugee camps across the occupied territories: strikes, boycotts, stone-throwing, and committees that ran daily life. It put the Palestinians back on the world’s agenda. Khalidi advised the Palestinian delegation at the peace talks that followed in Madrid and Washington.</p>
+    <p>He argues the 1993 Oslo Accords were the fifth declaration: a Palestinian Authority with limited self-rule, while Israel kept control of land, borders, water and Jerusalem, and settlement kept growing.</p>
+    <div class="era-stats">
+      <div><strong>1,100+</strong><span>Palestinians killed in the first intifada, 1987–93 (B’Tselem)</span></div>
+      <div><strong>~160</strong><span>Israelis killed in the same period (B’Tselem)</span></div>
+    </div>
+    <details class="more">
+      <summary>Read more</summary>
+      <figure class="era-fig era-fig--inline">
+        <img src="img/oslo-white-house-1993.webp" alt="Yitzhak Rabin and Yasser Arafat shake hands as Bill Clinton stands between them on the White House lawn" width="1600" height="1066" loading="lazy" />
+        <figcaption>Yitzhak Rabin, Bill Clinton and Yasser Arafat at the signing of the Oslo Accords, September 13, 1993. <span class="credit">Vince Musi / The White House · via <a href="https://commons.wikimedia.org/wiki/File:Bill_Clinton,_Yitzhak_Rabin,_Yasser_Arafat_at_the_White_House_1993-09-13.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · public domain</span></figcaption>
+      </figure>
+      <p>The accords deferred every core question (borders, refugees, Jerusalem, settlements) to talks that never concluded. In the seven years after the handshake, the number of Israeli settlers in the West Bank nearly doubled.</p>
+      <p class="more-links">Further reading: <a href="https://en.wikipedia.org/wiki/First_Intifada" target="_blank" rel="noopener">First intifada</a> · <a href="https://en.wikipedia.org/wiki/Oslo_Accords" target="_blank" rel="noopener">Oslo Accords</a></p>
+    </details>
+  </div>
+</article>
+
+<!-- VI -->
+<article class="era" id="era-2000" data-era="2000 – 2014 · The sixth declaration">
+  <figure class="era-fig">
+    <img src="img/west-bank-barrier-2004.webp" alt="A tall concrete wall of the separation barrier curving across rocky ground under a blue sky" width="1600" height="1064" loading="lazy" />
+    <figcaption>The separation barrier in the occupied West Bank, August 2004. <span class="credit">Justin McIntosh · via <a href="https://commons.wikimedia.org/wiki/File:Israeli_West_Bank_Barrier.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY 2.0</span></figcaption>
+  </figure>
+  <div class="era-body">
+    <div class="era-years">2000 – 2014 · The sixth declaration</div>
+    <h3>Walls and a blockade</h3>
+    <p>When talks collapsed in 2000, a second, far deadlier intifada followed. Israel began building a separation barrier, mostly inside the West Bank, which the International Court of Justice found unlawful in 2004. It withdrew its settlers from Gaza in 2005, and after Hamas won Palestinian elections in 2006, imposed a land, sea and air blockade on the Strip that has held since 2007.</p>
+    <p>Khalidi counts the wars on Gaza that followed, in 2008–09, 2012 and 2014, as the sixth declaration.</p>
+    <div class="era-stats">
+      <div><strong>~3,000 / ~1,000</strong><span>Palestinians / Israelis killed in the second intifada, 2000–05</span></div>
+      <div><strong>2,251 / 73</strong><span>Palestinians / Israelis killed in 51 days in 2014 (UN)</span></div>
+    </div>
+    <details class="more">
+      <summary>Read more</summary>
+      <p>Of the Palestinians killed in 2014, the UN counted 551 children. Before October 2023, the 2014 war was the deadliest of the Gaza wars.</p>
+      <p class="more-links">Further reading: <a href="https://en.wikipedia.org/wiki/Second_Intifada" target="_blank" rel="noopener">Second intifada</a> · <a href="https://en.wikipedia.org/wiki/Blockade_of_the_Gaza_Strip" target="_blank" rel="noopener">Blockade of Gaza</a> · <a href="https://en.wikipedia.org/wiki/2014_Gaza_War" target="_blank" rel="noopener">2014 Gaza war</a></p>
+    </details>
+  </div>
+</article>
+
+<!-- Epilogue: back to the numbers -->
+<article class="era era--text era--now" id="era-2023" data-era="2017 – now · After the book">
+  <div class="era-body">
+    <div class="era-years">2017 – now · After the book</div>
+    <h3>The chapter still being written</h3>
+    <p>Khalidi’s book closes in 2017. Since October 7, 2023, the Gaza Ministry of Health has recorded <strong data-bind="summary.gaza.killed.total">73,928</strong> Palestinians killed in Gaza, more than all the death tolls above combined. That count is <a href="#part-one">where this page begins</a>, and it is updated as sources publish.</p>
+    <figure class="century-chart" aria-labelledby="cc-title">
+      <figcaption>
+        <h4 id="cc-title">A century of killing, on one scale</h4>
+        <p>Palestinians killed in each period, as given in the sections above</p>
+      </figcaption>
+      <ol class="cc-rows">
+        <li data-value="5000"><span class="cc-when">1936–39</span><span class="cc-what">Revolt against British rule</span><span class="cc-bar"><i></i></span><span class="cc-val">~5,000</span></li>
+        <li data-value="15000"><span class="cc-when">1947–49</span><span class="cc-what">Partition and al-Nakba</span><span class="cc-bar"><i></i></span><span class="cc-val">15,000</span></li>
+        <li data-value="18000"><span class="cc-when">1982</span><span class="cc-what">Invasion of Lebanon (all killed)</span><span class="cc-bar"><i></i></span><span class="cc-val">~18,000</span></li>
+        <li data-value="1100"><span class="cc-when">1987–93</span><span class="cc-what">First intifada</span><span class="cc-bar"><i></i></span><span class="cc-val">1,100+</span></li>
+        <li data-value="3000"><span class="cc-when">2000–05</span><span class="cc-what">Second intifada</span><span class="cc-bar"><i></i></span><span class="cc-val">~3,000</span></li>
+        <li data-value="2251"><span class="cc-when">2014</span><span class="cc-what">War on Gaza, 51 days</span><span class="cc-bar"><i></i></span><span class="cc-val">2,251</span></li>
+        <li class="is-now" data-bind-value="summary.gaza.killed.total" data-value="73928"><span class="cc-when">2023–</span><span class="cc-what">War on Gaza</span><span class="cc-bar"><i></i></span><span class="cc-val" data-bind="summary.gaza.killed.total">73,928</span></li>
+      </ol>
+    </figure>
+  </div>
+</article>
+
+</div><!-- /.history -->
+
+<!-- PULL QUOTE (repeats the closing line of the notes below) -->
+<aside class="pullquote" aria-hidden="true">
+  <p>Numbers differ, but the scale is not in doubt.</p>
+</aside>
+
+<!-- SOURCE COMPARISON TABLE CARD -->
+<section class="tracker" id="sources" data-chapter="Sources" data-part="Method">
+  <div class="card">
+    <div class="panel-head">
+      <div class="eyebrow">Method · The sources</div>
+      <h2>Source comparison</h2>
+      <p class="dek">Different authorities count differently — by scope, verification standard, and methodology. Independent estimates run higher than official tolls.</p>
+    </div>
+    <div class="viz-block">
+      <h3 class="viz-title">Matched to the same date, the estimate is far above the Ministry’s count</h3>
+      <p class="viz-sub">Palestinians killed in Gaza. Filled dots are counts; the hollow dot is an estimate.</p>
+      <figure class="viz viz--sources" id="sources-chart" aria-labelledby="sources-title">
+        <figcaption class="visually-hidden" id="sources-title">Dot plot comparing the Gaza Ministry of Health count with the Lancet estimate for the same period, and the Ministry’s latest count</figcaption>
+        <div class="viz-plot"></div>
+      </figure>
+      <p class="chart-foot">The Lancet figure is as recorded in this site’s data: violent deaths to January 2025. Its exact window, its uncertainty interval and a link to the study are still to be confirmed, so no interval is drawn.</p>
+    </div>
+    <div class="table-scroll">
+      <table class="tracker-table">
+        <thead>
+          <tr><th>Source</th><th style="text-align:right">Palestinians killed</th><th style="text-align:right">Injured</th><th>Scope &amp; methodology</th><th>As of</th></tr>
+        </thead>
+        <tbody id="tracker-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY CARD -->
+<section class="foot-meta" id="notes" data-chapter="Notes" data-part="Method">
+  <div class="card">
+    <h3>Notes &amp; caveats</h3>
+    <ul>
+      <li><strong>No figure is complete.</strong> Gaza MoH itself states thousands of dead remain under rubble. Peer-reviewed research published in <em>The Lancet Global Health</em> estimated <strong>75,200 violent deaths</strong> through January 2025 — roughly 35% higher than the MoH count for the same period — and did not capture deaths from starvation, disease, or collapsed healthcare. As of September 24, 2026, Gaza MoH reports <strong>73,928 killed</strong> — including 1,400+ since the October 2025 ceasefire — and Wikipedia’s conflict tracker cites <strong>75,131+ Palestinians killed</strong> across Gaza and the West Bank; excess non-violent deaths likely push the true toll substantially higher.</li>
+    </ul>
+    <details class="more">
+      <summary>All notes and sources</summary>
+      <ul>
+        <li><strong>Some category counts are no longer updated.</strong> MoH’s children (20,179) and women (12,500) breakdowns, medical personnel (1,701), and journalists (262) have not changed in months; starvation deaths (463) and aid-seekers killed (2,615) were last reported in mid-2026. The Committee to Protect Journalists, after a September 2026 review, counts 191 journalists killed, using a narrower definition.</li>
+        <li><strong>The age and sex breakdown</strong> comes from the Ministry of Health’s list of dead identified by name, which trails the overall total.</li>
+        <li><strong>OCHA relies on MoH for Gaza</strong> but independently verifies West Bank incidents. Its counts include fatalities from both Israeli military and settler attacks.</li>
+        <li><strong>B’Tselem publishes a conservative, named-only database</strong> of verified individuals. Its totals trail MoH but document each death in detail.</li>
+        <li><strong>Israeli soldier deaths</strong> are taken from IDF press releases and reporting by The Times of Israel. The count shown is soldiers killed in Gaza ground operations since October 27, 2023.</li>
+        <li><strong>The governorate breakdown shown is a model</strong>, not a reported statistic. It distributes the overall Gaza total by pre-war population weighted for reported damage — directional only.</li>
+        <li><strong>The dashboard is rebuilt from the Tech for Palestine API</strong> (which ingests OCHA flash updates and MoH briefings). Re-running the build pulls the latest daily data.</li>
+      </ul>
+      <p class="foot-sources">
+        <strong>Sources:</strong>
+        <a href="https://data.techforpalestine.org/docs/casualties-daily/" target="_blank" rel="noopener">Tech for Palestine (Gaza MoH / OCHA)</a> ·
+        <a href="https://www.ochaopt.org/" target="_blank" rel="noopener">UN OCHA oPt</a> ·
+        <a href="https://statistics.btselem.org/" target="_blank" rel="noopener">B’Tselem</a> ·
+        <a href="https://en.wikipedia.org/wiki/Casualties_of_the_Gaza_war" target="_blank" rel="noopener">Wikipedia</a> ·
+        <a href="https://costsofwar.watson.brown.edu/paper/HumanTollGaza" target="_blank" rel="noopener">Costs of War (Brown)</a> ·
+        <a href="https://www.aljazeera.com/features/2026/2/18/gaza-death-toll-exceeds-75000-as-independent-data-verify-loss" target="_blank" rel="noopener">The Lancet via Al Jazeera</a>
+      </p>
+    </details>
+  </div>
+</section>
+
+
+<!-- CODA: in memory -->
+<section class="coda" data-chapter="In memory" data-part="Closing" aria-labelledby="coda-title">
+  <div class="coda-inner">
+    <div class="eyebrow">In memory</div>
+    <p class="coda-num" id="coda-title"><span data-bind="summary.gaza.killed.total">73,928</span></p>
+    <p class="coda-line">people killed in Gaza since October&nbsp;7, 2023, according to the Gaza Ministry of Health, as of <time data-bind="meta.data_as_of">Sep 24, 2026</time>.</p>
+    <p class="coda-lede">Of the dead identified by name, <span id="names-count">1,072</span> had not reached their first birthday. These are their names.</p>
+    <div class="names-controls">
+      <div class="segmented segmented--night" id="names-lang" role="radiogroup" aria-label="Language">
+        <button class="active" role="radio" aria-checked="true" data-lang="en">English</button>
+        <button role="radio" aria-checked="false" data-lang="ar" lang="ar">العربية</button>
+      </div>
+    </div>
+    <div class="names-wall" id="names-wall" lang="en" aria-label="Names of infants killed in Gaza"></div>
+    <button type="button" class="names-more" id="names-more" aria-expanded="false" aria-controls="names-wall">Show all names</button>
+    <p class="names-source">Names from the Gaza Ministry of Health’s list of identified dead, released through <time data-bind="summary.known_killed_in_gaza.includes_until">May 7, 2026</time>, via Tech for Palestine.</p>
+    <nav class="coda-links" aria-label="Continue">
+      <a href="resources.html">Read the history</a>
+      <a href="donate.html">Where to give</a>
+      <a href="#sources">How we count</a>
+    </nav>
+    <p class="coda-close">Built to honor the dead with accurate counts. Data is reported as published — every source has limitations. Numbers differ, but the scale is not in doubt.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.25" />
+        <circle cx="16" cy="16" r="3.4" fill="currentColor" />
+      </svg>
+      <div>
+        <div class="foot-title">Conflict Casualties</div>
+        <p>A running record of the dead in the wars of our time, and the history behind them. Beginning with Israel and Palestine since October 7, 2023.</p>
+      </div>
+    </div>
+    <nav class="foot-col" aria-label="Israel and Palestine">
+      <div class="foot-h">Israel · Palestine</div>
+      <a href="index.html">The toll</a>
+      <a href="index.html#part-two">History</a>
+      <a href="resources.html">Reading list</a>
+      <a href="destruction.html">Destruction</a>
+      <a href="donate.html">Donate</a>
+    </nav>
+    <div class="foot-col">
+      <div class="foot-h">Data</div>
+      <span>As of <span id="meta-date">Sep 24, 2026</span> · Day <span id="meta-days">1,084</span></span>
+      <span>Tech for Palestine · UN OCHA · B’Tselem</span>
+      <span>Updated monthly</span>
+    </div>
+    <nav class="foot-col" aria-label="Conflicts">
+      <div class="foot-h">Conflicts</div>
+      <a href="index.html">Israel · Palestine, 2023 –</a>
+      <a href="iraq.html">Iraq, 2003 – 2026</a>
+      <div class="foot-h foot-h--sub">Corrections</div>
+      <a href="mailto:lacunae.us@gmail.com">lacunae.us@gmail.com</a>
+    </nav>
+  </div>
+  <div class="wrap foot-base">
+    <span>Created with <a href="https://www.perplexity.ai/" target="_blank" rel="noopener">Perplexity</a> and <a href="https://www.claude.com/" target="_blank" rel="noopener">Claude</a>. Designed by Cody Heart.</span>
+    <span>Set in Alegreya, Alegreya Sans and Markazi Text</span>
+  </div>
+</footer>
+
+<script src="viz.js?v=202610061200"></script><script src="app.js?v=202610061200"></script><script src="ui.js?v=202610041500" defer></script><script src="motion.js?v=202610061200" defer></script>
+</body>
+</html>

@@ -43,6 +43,11 @@ function init() {
   buildNames();
   setupCentury();
   buildViz(DATA);   // viz.js: the weekly, ceasefire, who, West Bank and sources charts
+  // The charts above an anchor change the page's height, so a deep link (e.g. #part-two)
+  // lands short. Once they exist, land on it again, without animation.
+  const land = () => { const t = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1))); if (t) t.scrollIntoView({ behavior: 'instant', block: 'start' }); };
+  requestAnimationFrame(() => requestAnimationFrame(land));
+  if (document.readyState !== 'complete') addEventListener('load', () => requestAnimationFrame(land), { once: true });
   document.getElementById('meta-date').textContent = fmtDate(DATA.meta.data_as_of);
   document.getElementById('meta-days').textContent = fmt(DATA.meta.days_of_data);
 }

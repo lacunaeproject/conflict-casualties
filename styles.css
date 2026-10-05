@@ -199,7 +199,7 @@
   /* Fluid display sizes, one per role (each grows with the viewport between its bounds) */
   --fs-cw-card-h2: clamp(1.625rem, 3vw, 2rem);
   --fs-gallery-head-h2: clamp(1.6rem, 3vw, 2.2rem);
-  --fs-context-card-rm-num: clamp(2.2rem, 3.6vw, 3.2rem);
+  --fs-context-card-rm-num: clamp(2rem, 3vw, 2.75rem);
   --fs-section-head-h2: clamp(1.75rem, 3vw, 2.25rem);
   --fs-book-featured-title-cover: clamp(1.5rem, 2.5vw, 1.9rem);
   --fs-stats-num-range: clamp(2rem, 1.2rem + 1.6vw, 3rem);
@@ -2207,6 +2207,7 @@ body { overflow-x: clip; }
    ========================================================= */
 html { scrollbar-gutter: stable; }
 @view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
 /* Page turns: the old page leaves faster than the new one arrives */
 ::view-transition-old(root) { animation-duration: var(--dur-exit-ui); animation-timing-function: var(--ease-in); }
 ::view-transition-new(root) { animation-duration: var(--dur-ui); animation-timing-function: var(--ease-out); }

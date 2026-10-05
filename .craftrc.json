@@ -1,0 +1,3 @@
+{
+  "ignore": ["redesign/", "tools/", "docs/", "tests/", "data/", "data.json", "package", ".stylelintrc.json"]
+}

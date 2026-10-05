@@ -483,7 +483,7 @@
 .st-bar span { position: absolute; top: 100%; left: 50%; translate: -50% 0; margin-top: var(--s-8); font: 500 var(--text-2xs)/var(--lh-figure) var(--font-ui); color: var(--st-ink-3); }
 .st-bar b { position: absolute; bottom: calc(var(--v) * 100% + var(--s-8)); left: 50%; translate: -50% 0; font: 600 var(--text-2xs)/var(--lh-figure) var(--font-ui); color: var(--st-ink); opacity: 0; transition: opacity var(--dur-ui) var(--ease-out); white-space: nowrap; }
 .st-bar.is-dim i { opacity: 0.22; }
-.st-bar.is-on i { background: #c9d3ae; }
+.st-bar.is-on i { background: var(--sv-hl); }
 .st-bar.is-peak b { opacity: 1; }
 .scene--years .st-card { justify-self: start; align-self: start; margin: 13vh 0 0 max(var(--page-margin), var(--s-96)); max-width: 30rem; padding: 0; background: none; }
 @media (max-width: 760px) {
@@ -794,7 +794,7 @@ html.story-root { scroll-behavior: auto; }   /* the engine smooths its own jumps
   .st-scale-tick { display: none; }
   .st-mark { position: relative; left: auto; bottom: auto; translate: none; display: block; text-align: left; }
   .st-mark::after { content: ""; display: block; width: var(--x); height: 3px; margin-top: var(--s-4); border-radius: 2px; background: var(--st-ink-2); }
-  .st-mark--count::after { background: #c9d3ae; }
+  .st-mark--count::after { background: var(--sv-hl); }
   .st-mark i, .st-mark--range::before { display: none; }
   .st-mark small { display: inline; margin-left: var(--s-8); white-space: normal; }
   .st-mark b { font-size: var(--text-ui); }
@@ -1020,29 +1020,29 @@ html.story-root { scroll-behavior: auto; }   /* the engine smooths its own jumps
   .storymode .scene .st-vcard,
   .storymode .scene--years .st-card {
     max-width: 38vw;
-    margin: calc(var(--s-64) + var(--s-8)) 0 0 var(--page-margin);
+    margin: calc(var(--rd-head, var(--s-64)) + var(--s-8)) 0 0 var(--page-margin);
   }
   .storymode .scene .st-viz,
   .storymode .scene .st-bars,
   .storymode .scene .st-dots {
-    inset: calc(var(--s-64) + var(--s-8)) var(--page-margin) calc(var(--s-64) + var(--s-16)) calc(38vw + var(--page-margin) + var(--s-24));
+    inset: calc(var(--rd-head, var(--s-64)) + var(--s-8)) var(--page-margin) calc(var(--s-64) + var(--s-16)) calc(38vw + var(--page-margin) + var(--s-24));
     width: auto;
     height: auto;
   }
   .scene--dots .st-card--center { justify-self: start; text-align: left; max-width: 34vw; margin-left: var(--page-margin); }
   /* Iraq estimates: one row per source, in the right column */
   .storymode .scene .st-scale {
-    top: calc(var(--s-64) + var(--s-8)); bottom: auto; left: calc(38vw + var(--page-margin) + var(--s-24)); right: var(--page-margin);
+    top: calc(var(--rd-head, var(--s-64)) + var(--s-8)); bottom: auto; left: calc(38vw + var(--page-margin) + var(--s-24)); right: var(--page-margin);
     height: auto; background: none; display: grid; gap: var(--s-4);
   }
   .st-scale-tick { display: none; }
   .st-mark { position: relative; left: auto; bottom: auto; translate: none; display: block; text-align: left; }
   .st-mark::after { content: ""; display: block; width: var(--x); height: 3px; margin-top: var(--s-4); border-radius: 2px; background: var(--st-ink-2); }
-  .st-mark--count::after { background: #c9d3ae; }
+  .st-mark--count::after { background: var(--sv-hl); }
   .st-mark i, .st-mark--range::before { display: none; }
   .st-mark b { font-size: var(--text-note); }
   .st-mark small { margin-left: var(--s-8); }
-  .scene--scale .st-card { max-width: 38vw; margin: calc(var(--s-64) + var(--s-8)) 0 0 var(--page-margin); justify-self: start; text-align: left; }
+  .scene--scale .st-card { max-width: 38vw; margin: calc(var(--rd-head, var(--s-64)) + var(--s-8)) 0 0 var(--page-margin); justify-self: start; text-align: left; }
   .scene--scale .st-big-line { font-size: var(--text-xl); }
   /* The toll: a smaller numeral, notes in three columns under it */
   .scene--number .st-numeral { font-size: min(34vh, 16vw); translate: 0 -14vh !important; }
@@ -1051,9 +1051,9 @@ html.story-root { scroll-behavior: auto; }   /* the engine smooths its own jumps
   .scene--number .st-note--b { left: 35vw; right: auto; }
   .scene--number .st-note--c { left: auto; right: var(--page-margin); }
   /* Title: the date sits above the title, clear of it */
-  .storymode .st-dateline { top: calc(var(--s-64) + var(--s-8)); bottom: auto; }
+  .storymode .st-dateline { top: calc(var(--rd-head, var(--s-64)) + var(--s-8)); bottom: auto; }
   /* Era cards pin to the top, under the header */
-  .storymode .st-card--left { align-self: start; margin-top: calc(var(--s-64) + var(--s-8)); margin-bottom: 0; }
+  .storymode .st-card--left { align-self: start; margin-top: calc(var(--rd-head, var(--s-64)) + var(--s-8)); margin-bottom: 0; }
   /* Century photographs stay behind the words */
   .storymode .st-float--2, .storymode .st-float--4 { display: none; }
   .st-js .st-float { opacity: calc(0.3 * clamp(0, 1 - var(--out, 0) * 3.4, 1) * clamp(0, (var(--in, 1) - 0.3) * 3, 1)); }
@@ -1081,7 +1081,7 @@ html.story-root { scroll-behavior: auto; }   /* the engine smooths its own jumps
     width: calc(62vw - 2 * var(--page-margin) - var(--s-24));
     height: calc(100svh - var(--s-64) - var(--s-8) - var(--s-64) - var(--s-16));
   }
-  .scene--dots .st-card--center { align-self: start; margin-top: calc(var(--s-64) + var(--s-8)); }
+  .scene--dots .st-card--center { align-self: start; margin-top: calc(var(--rd-head, var(--s-64)) + var(--s-8)); }
   .storymode .scene .st-bars { inset: calc(var(--s-64) + var(--s-8) + var(--s-24)) var(--page-margin) calc(var(--s-64) + var(--s-24)) calc(38vw + var(--page-margin) + var(--s-24)); }
 }
 .st-names.is-open + .st-names-more { box-shadow: 0 0 var(--s-24) var(--s-16) var(--st-ground); }
@@ -1107,7 +1107,7 @@ html.story-root { scroll-behavior: auto; }   /* the engine smooths its own jumps
 @media (orientation: landscape) and (max-height: 500px) {
   .storymode .st-credit {
     display: block;
-    top: calc(var(--s-64) - var(--s-4));
+    top: calc(var(--rd-head, var(--s-64)) + var(--s-4));
     bottom: auto;
     left: calc(38vw + var(--page-margin) + var(--s-24));
     right: var(--page-margin);
@@ -1116,9 +1116,9 @@ html.story-root { scroll-behavior: auto; }   /* the engine smooths its own jumps
     line-height: var(--lh-label);
   }
   .storymode .scene .st-viz,
-  .storymode .scene .st-dots { top: calc(var(--s-64) + var(--s-48)); }
-  .storymode .scene .st-dots { height: calc(100svh - var(--s-64) - var(--s-48) - var(--s-64) - var(--s-16)); }
-  .storymode .scene .st-bars { top: calc(var(--s-64) + var(--s-48) + var(--s-24)); }
+  .storymode .scene .st-dots { top: calc(var(--rd-head, var(--s-64)) + var(--s-48)); }
+  .storymode .scene .st-dots { height: calc(100svh - var(--rd-head, var(--s-64)) - var(--s-48) - var(--s-64) - var(--s-16)); }
+  .storymode .scene .st-bars { top: calc(var(--rd-head, var(--s-64)) + var(--s-48) + var(--s-24)); }
 }
 @media (min-width: 761px) { .st-mark b { position: relative; z-index: 1; background: var(--st-ground); padding-inline: var(--s-4); } }
 @media (orientation: landscape) and (max-height: 500px) {
@@ -1168,3 +1168,50 @@ html.story-root { scroll-behavior: auto; }   /* the engine smooths its own jumps
 @media (orientation: landscape) and (max-height: 500px) {
   .st-float--1 { top: calc(var(--s-96) + var(--s-48)); transform: translateY(calc((0.5 - var(--p, 0.5)) * 30vh)); }
 }
+
+/* =========================================================
+   One site: the stories use the shared header and footer (ui.css, forced dark)
+   ========================================================= */
+.storymode .site-head { position: fixed; inset: 0 0 auto; }
+.storymode .site-foot { position: relative; z-index: 30; background: var(--st-ground); }
+.storymode .st-progress { position: absolute; inset: 0 0 auto; height: 2px; background: var(--st-ground); z-index: 1; }
+@media (max-width: 900px) and (orientation: portrait) {
+  /* Story text starts below the shared header, whatever its measured height */
+  .storymode .scene--years .st-card { margin-top: calc(var(--rd-head, var(--s-96)) + var(--s-16)); }
+  .storymode .st-vcard { margin-top: max(calc(var(--s-96) + var(--s-16)), calc(var(--rd-head, var(--s-96)) + var(--s-16))); }
+}
+/* The shared header and footer are set in the interface face, as on every other page */
+.storymode :is(.site-head, .site-foot) { font-family: var(--font-ui); }
+/* The record theme's leading trim stays on the record pages; story text keeps the leading it was designed with */
+@supports (text-box: trim-both cap alphabetic) {
+  .storymode main :is(p, h1, h2, h3, li, figcaption, blockquote) { text-box: normal; }
+}
+
+/* =========================================================
+   One site, review round 1
+   ========================================================= */
+@media (orientation: landscape) and (max-height: 500px) {
+  .scene--title .st-title { font-size: min(21vh, 10vw); margin-top: calc(var(--rd-head, var(--s-64)) - var(--s-8)); }
+}
+/* The reading line: the same 2px rule under the header as on the record pages */
+.storymode .st-progress { inset: auto 0 -1px; background: transparent; } /* floor-ignore: hairline offset, same as the record pages' reading line */
+.storymode .st-progress i { background: var(--text); opacity: 0.5; }
+/* Data marks use the site's own colours */
+.storymode { --sv-hl: var(--pal); --sv-isr: var(--isr); }
+/* Buttons: the record's coda pills */
+.st-next a { min-height: 48px; font-size: var(--text-note); }
+.st-next a + a { background: rgba(255, 255, 255, 0.08); box-shadow: none; color: var(--text); }
+@media (hover: hover) and (pointer: fine) { .st-next a + a:hover { background: rgba(255, 255, 255, 0.16); } }
+/* The chapter rail steps aside when the footer arrives */
+.st-nav { transition: opacity var(--dur-exit-ui) var(--ease-in); }
+html.at-foot .st-nav { opacity: 0; pointer-events: none; }
+/* The footer meets the story on a rule, as on the record pages */
+.storymode .site-foot { border-top: 1px solid var(--hair); margin-top: 0; }
+
+/* One site, review round 2 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .storymode .scene--era .st-card { padding-block: var(--s-12); }
+  .scene--era .st-card p { font-size: var(--text-xs); }
+  .scene--era .st-stat { margin-top: var(--s-8) !important; padding-top: var(--s-8); } /* floor-ignore: overrides the base stat spacing set with !important */
+}
+.storymode .site-foot { border-top-color: var(--rule-2); }

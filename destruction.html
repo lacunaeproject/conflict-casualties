@@ -30,11 +30,11 @@
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="preload" href="fonts/alegreya-roman.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/alegreya-sans-lf-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=202610091200" />
-<link rel="stylesheet" href="resources.css?v=202610091200" />
-<link rel="stylesheet" href="destruction.css?v=202610091200" />
-<link rel="stylesheet" href="ui.css?v=202610091200" />
-<link rel="stylesheet" href="opening.css?v=202610091200" />
+<link rel="stylesheet" href="styles.css?v=202610131200" />
+<link rel="stylesheet" href="resources.css?v=202610131200" />
+<link rel="stylesheet" href="destruction.css?v=202610131200" />
+<link rel="stylesheet" href="ui.css?v=202610131200" />
+<link rel="stylesheet" href="opening.css?v=202610131200" />
 </head>
 <body class="destruction-body locked">
 
@@ -51,7 +51,7 @@
       </svg>
     </div>
     <div class="cw-eyebrow">Content warning</div>
-    <h2 id="cw-title">The images on this page are distressing.</h2>
+    <h2 id="cw-title">The images on this page are distressing</h2>
     <p id="cw-body">
       This page contains photographs documenting physical destruction on both sides: burned and bullet-marked homes in Israeli communities attacked on October 7, 2023, and bombed neighborhoods, collapsed apartment blocks, destroyed schools and hospitals, and flattened camps in Gaza between October 2023 and 2025. The photographs are published here because they are part of the public record; they are also difficult to look at.
     </p>
@@ -78,18 +78,19 @@
         </svg>
         <span class="brand-text"><span class="brand-title">Conflict Casualties</span></span>
       </a>
-      <div class="conflict-switch" data-current="israel-palestine">
+      <div class="conflict-switch" data-current="israel-palestine" data-mode="record">
         <button type="button" class="cs-btn" aria-expanded="false" aria-controls="cs-menu">
           <span class="cs-label">Conflict</span>
-          <span class="cs-name">Israel · Palestine</span>
+          <span class="cs-name">Israel and Palestine</span>
           <svg class="cs-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="cs-menu" id="cs-menu" hidden></div>
       </div>
     </div>
-    <nav class="site-nav" aria-label="Site">
-      <a href="index.html">The toll</a>
-      <a href="index.html#part-two">History</a>
+    <nav class="site-nav" aria-label="Israel and Palestine">
+      <a href="index.html">Story</a>
+      <a href="record.html">Full record</a>
+      <a href="record.html#part-two">History</a>
       <a href="resources.html">Reading list</a>
       <a href="destruction.html" class="active" aria-current="page">Destruction</a>
       <a href="donate.html">Donate</a>
@@ -97,13 +98,13 @@
   </div>
 </header>
 
-<main class="wrap" id="main-content">
+<main class="wrap" id="main-content" tabindex="-1">
 
 <!-- OPENING: headline and dek on the page ground; Be’eri and Al-Rimal as two equal plates beneath -->
 <section class="opening opening--page opening--below" aria-labelledby="opening-title">
   <p class="opening-dateline">Visual record</p>
   <h1 class="opening-title" id="opening-title">Homes on both sides of the fence</h1>
-  <p class="opening-dek">Numbers hold death at a distance. These photographs do not. They show what was destroyed: first in the Israeli communities along the Gaza border on October 7, 2023, then across the Gaza Strip in the war that followed. The people who lived in these homes, on either side, were not the ones who chose this violence. Again and again, decisions made by armed groups and governments have fallen hardest on civilians.</p>
+  <p class="opening-dek">These photographs show what was destroyed: first in the Israeli communities along the Gaza border on October 7, 2023, then across the Gaza Strip in the war that followed. The people who lived in these homes, on either side, did not choose this violence. Again and again, decisions made by armed groups and governments have fallen hardest on civilians.</p>
   <figure class="opening-plate">
     <div class="opening-pair">
       <div class="opening-frame">
@@ -129,7 +130,7 @@
 
 <section class="gallery-head gallery-head--isr">
   <div class="eyebrow">Israel · October 7, 2023</div>
-  <h2>The attack on the border communities.</h2>
+  <h2>The attack on the border communities</h2>
   <p>On October 7, 2023, gunmen led by Hamas broke through the Gaza border fence and attacked kibbutzim, towns, army posts, and a music festival in southern Israel. About 1,200 people were killed, most of them civilians, and 251 were taken hostage into Gaza. In Be’eri, 101 civilians and 31 security personnel were killed and 125 homes damaged or destroyed. In Kfar Aza, at least 62 residents were killed. In Nir Oz, 47 people were killed and 76 taken hostage, about a quarter of the community. Many homes were set on fire with families sheltering inside.</p>
 </section>
 
@@ -188,12 +189,12 @@
 </section>
 
 <aside class="pullquote" aria-hidden="true">
-  <p>The people who lived in these homes, on either side, were not the ones who chose this violence.</p>
+  <p>The people who lived in these homes, on either side, did not choose this violence.</p>
 </aside>
 
 <section class="gallery-head">
   <div class="eyebrow">Gaza · October 2023 – 2025</div>
-  <h2>The destruction of Gaza.</h2>
+  <h2>The destruction of Gaza</h2>
   <p>Israel’s military campaign after October 7 damaged or destroyed between <em>60% and 70%</em> of all structures in the Gaza Strip, according to satellite analysis by the UN and Yale’s Conflict Observatory. Entire neighborhoods of Gaza City, Khan Younis, Jabalia, and Rafah were reduced to rubble. Hospitals, schools, bakeries, universities, and refugee camps were among the structures hit. The final UN–EU–World Bank damage assessment, published in April 2026, counted <em>371,888</em> housing units destroyed or damaged and put the cost of reconstruction at <em>$71.4 billion</em> over the next decade.</p>
 </section>
 
@@ -408,41 +409,44 @@
   <div class="wrap foot-grid">
     <div class="foot-brand">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.25" />
-        <circle cx="16" cy="16" r="3.4" fill="currentColor" />
-      </svg>
+          <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.25" />
+          <circle cx="16" cy="16" r="3.4" fill="currentColor" />
+        </svg>
       <div>
         <div class="foot-title">Conflict Casualties</div>
         <p>A running record of the dead in the wars of our time, and the history behind them. Beginning with Israel and Palestine since October 7, 2023.</p>
       </div>
     </div>
-    <nav class="foot-col" aria-label="Israel and Palestine">
-      <div class="foot-h">Israel · Palestine</div>
-      <a href="index.html">The toll</a>
-      <a href="index.html#part-two">History</a>
+    <nav class="foot-col" aria-label="Footer, Israel and Palestine">
+      <div class="foot-h">Israel and Palestine <span class="foot-when">Since 2023</span></div>
+      <a href="index.html">Story</a>
+      <a href="record.html">Full record</a>
+      <a href="record.html#part-two">History</a>
       <a href="resources.html">Reading list</a>
       <a href="destruction.html">Destruction</a>
       <a href="donate.html">Donate</a>
     </nav>
+    <nav class="foot-col" aria-label="Footer, Iraq">
+      <div class="foot-h">Iraq <span class="foot-when">2003–2026</span></div>
+      <a href="story-iraq.html">Story</a>
+      <a href="iraq.html">Full record</a>
+      <a href="iraq.html#part-two">Timeline</a>
+      <a href="iraq.html#sources">Sources</a>
+    </nav>
     <div class="foot-col">
-      <div class="foot-h">Data</div>
-      <a href="index.html#sources">Latest figures and sources</a>
-      <span>Tech for Palestine · UN OCHA · B’Tselem</span>
-      <span>Updated monthly</span>
-    </div>
-    <nav class="foot-col" aria-label="Conflicts">
-      <div class="foot-h">Conflicts</div>
-      <a href="index.html">Israel · Palestine, 2023 –</a>
-      <a href="iraq.html">Iraq, 2003 – 2026</a>
+      <div class="foot-h">Data <span class="foot-when">Israel and Palestine</span></div>
+      <a href="record.html#sources">Latest figures and sources</a>
+      <span>Gaza Ministry of Health via Tech for Palestine, UN OCHA, B’Tselem</span>
+      <span>Updated as sources publish</span>
       <div class="foot-h foot-h--sub">Corrections</div>
       <a href="mailto:lacunae.us@gmail.com">lacunae.us@gmail.com</a>
-    </nav>
+    </div>
   </div>
   <div class="wrap foot-base">
     <span>Created with <a href="https://www.perplexity.ai/" target="_blank" rel="noopener">Perplexity</a> and <a href="https://www.claude.com/" target="_blank" rel="noopener">Claude</a>. Designed by Cody Heart.</span>
-    <span>A photograph is not the thing itself</span>
+    <span>Photographs from public archives, credited with each image</span>
   </div>
 </footer>
-<script src="ui.js?v=202610041500" defer></script><script src="motion.js?v=202610061200" defer></script>
+<script src="ui.js?v=202610131200" defer></script><script src="motion.js?v=202610131200" defer></script>
 </body>
 </html>

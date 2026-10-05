@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="story-root">
+<html lang="en" class="rd story-root" data-theme="dark">
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q8TT7PJHYR"></script>
@@ -14,13 +14,13 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="dark" />
-<title>Gaza Death Toll &amp; Israel–Palestine Casualties Since October 7 · Conflict Casualties</title><!-- floor-ignore: page title separator -->
+<title>Gaza death toll and Israel–Palestine casualties since October 7 · Conflict Casualties</title><!-- floor-ignore: page title separator -->
 <meta name="description" content="Updated tracker of people killed in Gaza, the West Bank and Israel since October 7, 2023, with daily charts, children and women killed, and a comparison of Gaza Ministry of Health, UN OCHA, B’Tselem and Lancet figures." />
 <link rel="canonical" href="https://conflictcasualties.org/" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Conflict Casualties" />
-<meta property="og:title" content="Conflict Casualties · Israel–Palestine since October 7, 2023" />
+<meta property="og:title" content="Gaza death toll and Israel–Palestine casualties since October 7 · Conflict Casualties" />
 <meta property="og:description" content="Updated tracker of people killed in Gaza, the West Bank and Israel since October 7, 2023, with daily charts, children and women killed, and a comparison of Gaza Ministry of Health, UN OCHA, B’Tselem and Lancet figures." />
 <meta property="og:url" content="https://conflictcasualties.org/" />
 <meta property="og:image" content="https://conflictcasualties.org/img/og-cover.jpg" />
@@ -75,25 +75,43 @@
 </script>
 <link rel="preload" href="fonts/alegreya-roman.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/alegreya-sans-lf-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=202610091200">
-<link rel="stylesheet" href="story.css?v=202610091200">
+<link rel="stylesheet" href="styles.css?v=202610131200">
+<link rel="stylesheet" href="ui.css?v=202610131200">
+<link rel="stylesheet" href="story.css?v=202610131200">
 </head>
 <body class="storymode" data-story="gaza">
 
 <a class="skip-link" href="#prologue">Skip to the story</a>
 
-<header class="st-head">
-  <a class="st-brand" href="index.html">Conflict Casualties</a>
-  <nav class="st-switch" aria-label="Story">
-    <a href="index.html" aria-current="page">Gaza</a>
-    <a href="story-iraq.html">Iraq</a>
-  </nav>
-  <nav class="st-links" aria-label="More">
-    <a href="resources.html">Reading list</a>
-    <a href="destruction.html">Destruction</a>
-    <a href="donate.html" class="st-give">Donate</a>
-  </nav>
+<header class="site-head">
   <div class="st-progress" aria-hidden="true"><i></i></div>
+  <div class="wrap">
+    <div class="head-id">
+      <a class="brand" href="index.html" aria-label="Conflict Casualties, home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.25" />
+          <circle cx="16" cy="16" r="3.4" fill="currentColor" />
+        </svg>
+        <span class="brand-text"><span class="brand-title">Conflict Casualties</span></span>
+      </a>
+      <div class="conflict-switch" data-current="israel-palestine" data-mode="story">
+        <button type="button" class="cs-btn" aria-expanded="false" aria-controls="cs-menu">
+          <span class="cs-label">Conflict</span>
+          <span class="cs-name">Israel and Palestine</span>
+          <svg class="cs-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="cs-menu" id="cs-menu" hidden></div>
+      </div>
+    </div>
+    <nav class="site-nav" aria-label="Israel and Palestine">
+      <a href="index.html" class="active" aria-current="page">Story</a>
+      <a href="record.html">Full record</a>
+      <a href="record.html#part-two">History</a>
+      <a href="resources.html">Reading list</a>
+      <a href="destruction.html">Destruction</a>
+      <a href="donate.html">Donate</a>
+    </nav>
+  </div>
 </header>
 
 <main>
@@ -221,7 +239,7 @@
     </div>
     <div class="beat st-vcard" data-beat="0.8,1.01" data-state="2025-03-18|2025-10-09">
       <p class="st-vtitle">After the war resumed on March 18, 2025, <b data-p="3:total">18,617</b> more deaths were reported by October 9.</p>
-      <p class="st-small">In August 2025, UN-backed experts confirmed famine in Gaza City. By <time data-k="asofLong">September 24, 2026</time>, <b data-k="aid">2,615</b> people had been killed seeking food aid.</p>
+      <p class="st-small">In August 2025, UN-backed experts confirmed famine in Gaza City. By mid-2026, <b data-k="aid">2,615</b> people had been killed seeking food aid.</p>
     </div>
     <p class="st-credit">Deaths reported each week, which is not always the week they happened. Source: Gaza Ministry of Health, via Tech for Palestine.</p>
   </div>
@@ -304,7 +322,7 @@
 </section>
 
 <!-- 6. A hundred years: archival photographs drift around Khalidi's framing -->
-<section class="scene scene--century" id="part-two" data-chapter="A hundred years" style="--len: 3">
+<section class="scene scene--century" id="part-two" data-chapter="The hundred years’ war" style="--len: 3">
   <div class="stage">
     <figure class="st-float st-float--1"><img src="img/british-troops-jerusalem-1936-640.webp" srcset="img/british-troops-jerusalem-1936-640.webp 640w, img/british-troops-jerusalem-1936.webp 1600w" sizes="(max-width: 760px) 40vw, 22vw" alt="" loading="lazy" width="1600" height="1184"></figure>
     <figure class="st-float st-float--2"><img src="img/allenby-bridge-refugees-1967-640.webp" srcset="img/allenby-bridge-refugees-1967-640.webp 640w, img/allenby-bridge-refugees-1967.webp 1600w" sizes="(max-width: 760px) 40vw, 22vw" alt="" loading="lazy" width="1523" height="1600"></figure>
@@ -397,7 +415,7 @@
 <!-- 8. A century of killing, on one scale -->
 <section class="scene scene--viz" data-viz="century" data-chapter="Then and now" style="--len: 3">
   <div class="stage">
-    <div class="st-viz" role="img" aria-label="Palestinians killed in each period, on one scale: <span class="nw">1936–39</span> about 5,000; <span class="nw">1947–49</span> 15,000; 1982 about 18,000 (all killed, Lebanon); <span class="nw">1987–93</span> 1,100 or more; <span class="nw">2000–05</span> about 3,000; 2014 2,251; since 2023, 73,928."></div>
+    <div class="st-viz" role="img" aria-label="Palestinians killed in each period, on one scale: 1936–39 about 5,000; 1947–49 15,000; 1982 about 18,000 (all killed, Lebanon); 1987–93 1,100 or more; 2000–05 about 3,000; 2014 2,251; since 2023, 73,928."></div>
     <div class="beat st-vcard" data-beat="-0.2,0.4" data-state="past">
       <p class="st-vtitle">A century of killing, on one scale.</p>
       <p class="st-small">The dead of each period, from the chapters before. The 1982 bar counts everyone killed in Lebanon.</p>
@@ -417,14 +435,59 @@
   <div class="st-names" id="st-names" lang="en"></div>
   <button type="button" class="st-names-more" id="st-names-more" aria-controls="st-names" aria-expanded="false" hidden>Show all <span id="st-infants-2">1,072</span> names</button>
   <nav class="st-next" aria-label="Continue">
-    <a href="#sources">How we count</a>
+    <a href="record.html">Read the full record</a>
+    <a href="#sources">How the sources compare</a>
     <a href="donate.html">Where to give</a>
   </nav>
 </section>
 
 </main>
 
-<script src="story-viz.js?v=202610091200" defer></script>
-<script src="story.js?v=202610091200" defer></script>
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.25" />
+          <circle cx="16" cy="16" r="3.4" fill="currentColor" />
+        </svg>
+      <div>
+        <div class="foot-title">Conflict Casualties</div>
+        <p>A running record of the dead in the wars of our time, and the history behind them. Beginning with Israel and Palestine since October 7, 2023.</p>
+      </div>
+    </div>
+    <nav class="foot-col" aria-label="Footer, Israel and Palestine">
+      <div class="foot-h">Israel and Palestine <span class="foot-when">Since 2023</span></div>
+      <a href="index.html">Story</a>
+      <a href="record.html">Full record</a>
+      <a href="record.html#part-two">History</a>
+      <a href="resources.html">Reading list</a>
+      <a href="destruction.html">Destruction</a>
+      <a href="donate.html">Donate</a>
+    </nav>
+    <nav class="foot-col" aria-label="Footer, Iraq">
+      <div class="foot-h">Iraq <span class="foot-when">2003–2026</span></div>
+      <a href="story-iraq.html">Story</a>
+      <a href="iraq.html">Full record</a>
+      <a href="iraq.html#part-two">Timeline</a>
+      <a href="iraq.html#sources">Sources</a>
+    </nav>
+    <div class="foot-col">
+      <div class="foot-h">Data <span class="foot-when">Israel and Palestine</span></div>
+      <span>As of <time data-k="asof">Sep 24, 2026</time>, day <span data-k="days">1,084</span></span>
+      <span>Gaza Ministry of Health via Tech for Palestine, UN OCHA, B’Tselem</span>
+      <span>Updated as sources publish</span>
+      <div class="foot-h foot-h--sub">Corrections</div>
+      <a href="mailto:lacunae.us@gmail.com">lacunae.us@gmail.com</a>
+    </div>
+  </div>
+  <div class="wrap foot-base">
+    <span>Created with <a href="https://www.perplexity.ai/" target="_blank" rel="noopener">Perplexity</a> and <a href="https://www.claude.com/" target="_blank" rel="noopener">Claude</a>. Designed by Cody Heart.</span>
+    <span>Set in Alegreya, Alegreya Sans and Markazi Text</span>
+  </div>
+</footer>
+
+<script src="story-viz.js?v=202610131200" defer></script>
+<script src="story.js?v=202610131200" defer></script>
+<script src="ui.js?v=202610131200" defer></script>
 </body>
 </html>

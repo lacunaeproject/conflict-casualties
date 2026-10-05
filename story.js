@@ -72,6 +72,7 @@
   // ---------- Dot field (Gaza) ----------
   const canvas = document.querySelector('.st-dots');
   let group = 'all';
+  if (canvas && 'ResizeObserver' in window && document.querySelector('.site-head')) new ResizeObserver(() => drawDots()).observe(document.querySelector('.site-head'));
   if (canvas && 'ResizeObserver' in window) { let cw = 0, ch = 0; new ResizeObserver(() => { if (canvas.clientWidth !== cw || canvas.clientHeight !== ch) { cw = canvas.clientWidth; ch = canvas.clientHeight; drawDots(); } }).observe(canvas); }
   function drawDots() {
     if (!canvas) return;
@@ -86,12 +87,14 @@
     const kids = Math.round(counts.children / 10), women = Math.round(counts.women / 10);
     const foot = innerWidth <= 900 && innerHeight > 500 ? 150 : 0;   // phones: the field ends above the credit and the chapter bar
     const land = innerHeight <= 500 && innerWidth > innerHeight;
-    const pad = land ? 8 : Math.max(16, w * 0.04), aw = w - pad * 2, ah = h - pad * 2 - (land ? 0 : 40) - foot;
+    const head = (document.querySelector('.site-head') || {}).offsetHeight || 0;
+    const topRes = land ? 0 : Math.max(40, head + 24 - Math.max(16, w * 0.04));   // clear of the header
+    const pad = land ? 8 : Math.max(16, w * 0.04), aw = w - pad * 2, ah = h - pad * 2 - topRes - foot;
     const step = Math.sqrt((aw * ah) / n);
     const cols = Math.floor(aw / step), rows = Math.ceil(n / cols);
     const s = Math.min(step, ah / rows), r = Math.max(0.6, s * 0.3);
-    const x0 = (w - cols * s) / 2 + s / 2, y0 = pad + (land ? 0 : 40) + (ah - rows * s) / 2 + s / 2;
-    const on = '#c9d3ae', dim = 'rgba(238, 240, 242, 0.16)', base = 'rgba(238, 240, 242, 0.62)';
+    const x0 = (w - cols * s) / 2 + s / 2, y0 = pad + topRes + (ah - rows * s) / 2 + s / 2;
+    const on = getComputedStyle(document.documentElement).getPropertyValue('--pal').trim() || '#aebd86', dim = 'rgba(238, 240, 242, 0.16)', base = 'rgba(238, 240, 242, 0.62)';
     for (let i = 0; i < n; i++) {
       let c = base;
       if (group === 'children') c = i < kids ? on : dim;
@@ -203,10 +206,13 @@
     <button type="button" class="st-pager-name" aria-expanded="false" aria-controls="st-sheet"><span class="st-pager-label"></span><span class="st-pager-count"></span></button>
     <div class="st-sheet" id="st-sheet" hidden><ol>${chapters.map((c, i) => `<li><a href="#" data-i="${i}">${c.name}</a></li>`).join('')}</ol></div>
     <button type="button" class="st-pager-btn" data-step="1" aria-label="Next chapter"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
+  // The rail steps aside once the footer is on screen
+  const foot = document.querySelector('.site-foot');
+  if (foot && 'IntersectionObserver' in window) new IntersectionObserver(([e]) => root.classList.toggle('at-foot', e.isIntersecting), { threshold: 0 }).observe(foot);
   const live = Object.assign(document.createElement('p'), { className: 'visually-hidden' });
   live.setAttribute('aria-live', 'polite');
   // Chapter navigation comes right after the header in tab order
-  (document.querySelector('.st-head') || document.body.firstElementChild).after(rail, pager, live);
+  (document.querySelector('.site-head') || document.body.firstElementChild).after(rail, pager, live);
   const sheet = pager.querySelector('.st-sheet'), sheetBtn = pager.querySelector('.st-pager-name');
   const sheetLinks = () => Array.from(sheet.querySelectorAll('a'));
 
@@ -254,7 +260,7 @@
   });
   pager.addEventListener('focusout', e => { if (!sheet.hidden && !pager.contains(e.relatedTarget)) setSheet(false); });
   addEventListener('keydown', e => {
-    if (e.target.closest && e.target.closest('input, textarea, select, [contenteditable]')) return;
+    if (e.target.closest && e.target.closest('input, textarea, select, [contenteditable], .conflict-switch')) return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (!sheet.hidden) {
       if (e.key === 'Escape') { setSheet(false); sheetBtn.focus(); return; }

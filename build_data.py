@@ -223,6 +223,7 @@ as_of = bundle['meta']['data_as_of']
 for path, pattern, repl in [
     ('sitemap.xml', r'(<loc>https://conflictcasualties\.org/</loc><lastmod>)[^<]*', rf'\g<1>{as_of}'),
     ('index.html', r'("dateModified": ")[^"]*', rf'\g<1>{as_of}'),
+    ('record.html', r'("dateModified": ")[^"]*', rf'\g<1>{as_of}'),
     # The conflict switcher's Gaza toll, shown on every page.
     ('ui.js', r"(id: 'israel-palestine',[\s\S]*?toll: ')[^']*", rf"\g<1>{summary['gaza']['killed']['total']:,}"),
 ]:

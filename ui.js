@@ -5,14 +5,16 @@
    - Conflict switcher in the header, built from CONFLICTS below
    - "In this article" contents, built from [data-chapter] */
 
-// Every conflict the site covers. To add one: give it a page, add an entry
+// Every conflict the site covers: href is its story, record its full record.
+// To add one: give it a page, add an entry
 // here, and add it to the footer's Conflicts column. Order = menu order.
 const CONFLICTS = [
   {
     id: 'israel-palestine',
-    name: 'Israel · Palestine',
+    name: 'Israel and Palestine',
     period: 'Since October 7, 2023',
     href: 'index.html',
+    record: 'record.html',
     toll: '73,928',
     tollNote: 'Palestinians killed in Gaza',
     badge: 'Featured',
@@ -21,7 +23,8 @@ const CONFLICTS = [
     id: 'iraq',
     name: 'Iraq',
     period: '2003 – 2026',
-    href: 'iraq.html',
+    href: 'story-iraq.html',
+    record: 'iraq.html',
     toll: '280,771 – 315,190',
     tollNote: 'killed by direct violence',
     badge: 'New',
@@ -43,17 +46,36 @@ const CONFLICTS = [
     setH();
   }
 
+  // Phones: the nav row scrolls sideways; start it at the current page.
+  const cur = document.querySelector('.site-nav [aria-current="page"]');
+  if (cur && cur.parentElement.scrollWidth > cur.parentElement.clientWidth) {
+    const row = cur.parentElement, max = row.scrollWidth - row.clientWidth;
+    row.scrollLeft = Math.min(max, Math.max(0, cur.offsetLeft - 16));
+    if (max - row.scrollLeft <= 24) row.scrollLeft = max;
+  }
+  // The row's edge fade lifts once it is scrolled to its end, so the last item is never faded
+  const navRow = document.querySelector('.site-nav');
+  if (navRow) {
+    const edge = () => navRow.classList.toggle('at-end', navRow.scrollLeft + navRow.clientWidth >= navRow.scrollWidth - 1);
+    navRow.addEventListener('scroll', edge, { passive: true }); edge();
+  }
+
   // Conflict switcher: the button is static HTML; the menu is built here.
   const sw = document.querySelector('.conflict-switch');
   if (sw) {
     const swBtn = sw.querySelector('.cs-btn');
     const menu = sw.querySelector('.cs-menu');
     const current = sw.dataset.current;
+    // The switcher keeps the reader in the same view: story to story, record to record.
+    const view = sw.dataset.mode === 'record' ? 'record' : 'href';
     menu.innerHTML =
       '<div class="cs-head">Conflicts we track</div>' +
       CONFLICTS.map(c => {
         const here = c.id === current;
-        return `<a class="cs-item${here ? ' is-current' : ''}" href="${c.href}"${here ? ' aria-current="page"' : ''}>` +
+        const target = c[view] || c.href;
+        const norm = x => ('/' + x.replace(/^\//, '')).replace(/\.html$/, '').replace(/\/index$/, '/');
+        const onPage = here && norm(location.pathname) === norm(target);
+        return `<a class="cs-item${here ? ' is-current' : ''}" href="${c[view] || c.href}"${onPage ? ' aria-current="page"' : ''}>` +
           `<span class="cs-row"><span class="cs-item-name">${c.name}</span>` +
           (c.badge ? `<span class="cs-badge cs-badge--${c.badge.toLowerCase()}">${c.badge}</span>` : '') +
           `</span><span class="cs-period">${c.period}</span>` +
@@ -75,6 +97,7 @@ const CONFLICTS = [
     sw.addEventListener('keydown', e => {
       if (menu.hidden) return;
       if (e.key === 'Escape') { setOpen(false); swBtn.focus(); return; }
+      if (e.key === 'Home' || e.key === 'End') { e.preventDefault(); const l = items(); l[e.key === 'Home' ? 0 : l.length - 1].focus(); return; }
       if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
       e.preventDefault();
       const list = items();

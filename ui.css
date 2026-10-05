@@ -117,6 +117,41 @@
   }
 }
 
+/* Forced dark (the story pages) */
+.rd[data-theme="dark"] {
+    --bg:        #0a0b0d;
+    --surface:   #141619;
+    --surface-2: #1b1d21;
+    --surface-3: #22252a;
+    --fill:      rgba(160, 166, 178, 0.14);
+    --fill-2:    rgba(160, 166, 178, 0.22);
+    --hair:      rgba(255, 255, 255, 0.07);
+    --text:      #f1f3f5;
+    --text-2:    #cfd3d9;
+    --text-3:    #a0a6af;
+    --text-4:    #7d838c;
+    --brand:     #f1f3f5;
+    --on-brand:  #0a0b0d;
+    --thumb:     #3a3d44;
+    --glass:     rgba(20, 22, 25, 0.66);
+    --glass-edge: rgba(255, 255, 255, 0.08);
+    --focus:     #7aa7ff;
+    --sheet-scrim: rgba(0, 0, 0, 0.55);
+    --e1: 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --e2: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 16px 32px -16px rgba(0, 0, 0, 0.6);
+    --e3: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 30px 60px -20px rgba(0, 0, 0, 0.8);
+    --e-thumb: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --ink-5: #5b6068;
+    --rule-2: rgba(255, 255, 255, 0.12);
+    --rule-3: rgba(255, 255, 255, 0.2);
+    --pal: #aebd86; --pal-soft: #6b7650; --pal-deep: #c4d19e;
+    --isr: #93b3d3; --isr-soft: #5a7690;
+    --pal-bg: rgba(174, 189, 134, 0.1); --isr-bg: rgba(147, 179, 211, 0.1);
+    --accent-children: #d9a45c; --accent-women: #c2a980; --accent-press: #86b58f;
+    --accent-medical: #b69ad0; --accent-civdef: #7fbcc7;
+    color-scheme: dark;
+}
+
 /* ---------- Base ---------- */
 .rd body { background: var(--bg); color: var(--text); }
 .rd ::selection { background: rgba(47, 111, 223, 0.18); }
@@ -423,6 +458,7 @@
   margin-inline: 0;
 }
 .rd .names-more {
+  min-height: 44px;
   border: 0;
   border-radius: var(--pill);
   background: rgba(255, 255, 255, 0.95);
@@ -455,7 +491,7 @@
 }
 .rd .site-foot a { color: var(--text-2); }
 .rd .site-foot .foot-title { color: var(--text); }
-.rd .site-foot .foot-h { color: var(--text-4); text-transform: none; letter-spacing: var(--track-ui); }
+.rd .site-foot .foot-h { color: var(--text-3); text-transform: none; letter-spacing: var(--track-ui); }
 .rd .foot-brand .brand-mark { color: var(--text); }
 .rd .foot-base { border-top: 1px solid var(--hair); color: var(--text-4); }
 
@@ -1010,7 +1046,7 @@
 .rd .cs-toll { font-size: var(--text-note); color: var(--text-2); }
 .rd .cs-toll strong { font-variant-numeric: tabular-nums; color: var(--text); }
 .rd .cs-here { position: absolute; top: var(--s-16); right: var(--s-12); font-size: var(--text-micro); font-weight: 600; color: var(--text-3); }
-.rd .cs-foot { margin: var(--s-8) var(--s-12) var(--s-8); font-size: var(--text-xs); color: var(--text-4); }
+.rd .cs-foot { margin: var(--s-8) var(--s-12) var(--s-8); font-size: var(--text-xs); color: var(--text-3); }
 
 /* Jumps land below the header */
 .rd [data-chapter], .rd .part-head { scroll-margin-top: calc(var(--rd-head) + var(--s-16)); }
@@ -1113,3 +1149,20 @@
   pointer-events: none;
   background: repeating-linear-gradient(to right, rgba(255, 0, 80, 0.07) 0 calc((100% - 11 * var(--s-24)) / 12), transparent 0 calc((100% - 11 * var(--s-24)) / 12 + var(--s-24)));
 }
+
+/* Touch: header and footer links reach 44px */
+@media (max-width: 640px) { .rd .site-nav a { min-height: 44px; } }
+@media (pointer: coarse) { .rd .site-foot .foot-col a { display: inline-flex; align-items: center; min-height: 44px; } }
+
+/* Phones: the rate figures stack, so a range never clips */
+@media (max-width: 600px) {
+  .rd .rate-moment { grid-template-columns: 1fr; }
+  .rd .rate-moment .rm-rule { display: none; }
+}
+/* Footer conflict headings: the name, then the years on their own line */
+.rd .site-foot .foot-h .foot-when { display: block; color: var(--text-3); font-weight: 400; }
+
+.rd .site-nav.at-end { -webkit-mask-image: none; mask-image: none; }
+@media (pointer: coarse) { .rd .site-foot .foot-base a { position: relative; } .rd .site-foot .foot-base a::before { content: ""; position: absolute; inset: calc(var(--s-12) * -1) calc(var(--s-4) * -1); } }
+#main-content { scroll-margin-top: var(--rd-head); }
+#main-content:focus { outline: none; }

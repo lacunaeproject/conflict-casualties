@@ -7,6 +7,8 @@
    reader sets the pace. Reduced motion: scenes stack, static.
    ========================================================= */
 .storymode {
+  --fs-st-year: clamp(4rem, 16vw, 15rem);
+  --fs-st-year-phone: clamp(3rem, 14vw, 3.5rem);   /* outline year numerals in the era scenes */
   /* The interface face (defined for the main site in ui.css, which story mode does not load) */
   --font-ui: "Alegreya Sans LF", "Alegreya Sans Fallback", Arial, sans-serif;
   --st-ground: #0b0c0e;
@@ -15,7 +17,6 @@
   --st-ink-3: #8e949c;
   --st-glass: rgba(11, 12, 14, 0.74);
   --st-rule: rgba(255, 255, 255, 0.16);
-  --st-accent: var(--pal-on-night, #b9c79a);
   margin: 0;
   background: var(--st-ground);
   color: var(--st-ink);
@@ -39,7 +40,6 @@
   background: linear-gradient(180deg, rgba(11, 12, 14, 0.7), transparent);
 }
 .st-head a { color: var(--st-ink-2); text-decoration: none; transition: color var(--dur-micro) var(--ease-out); }
-.st-head a:hover { color: var(--st-ink); }
 .st-head a:focus-visible { outline: 2px solid var(--st-ink); outline-offset: 4px; border-radius: 2px; }
 .st-brand { font: 600 var(--text-ui)/var(--lh-figure) var(--font-display); color: var(--st-ink) !important; }
 /* Which story: a two-way switch */
@@ -50,8 +50,6 @@
   padding: var(--s-4);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 .st-switch a {
   display: inline-flex;
@@ -118,10 +116,8 @@
 .st-nav:hover a:not(.is-current) .st-nav-name,
 .st-nav:focus-within a:not(.is-current) .st-nav-name { opacity: 0.75; }
 /* The rail opens over a soft shade so names stay readable over any scene */
-.st-nav::before { content: ""; position: absolute; inset: -40px -200px -40px -60px; background: radial-gradient(closest-side, rgba(11, 12, 14, 0.75), transparent); opacity: 0; pointer-events: none; transition: opacity var(--dur-ui) var(--ease-out); }
+.st-nav::before { content: ""; position: absolute; inset: calc(var(--s-48) * -1) calc(var(--s-160) * -1 - var(--s-48)) calc(var(--s-48) * -1) calc(var(--s-64) * -1); background: radial-gradient(closest-side, rgba(11, 12, 14, 0.75), transparent); opacity: 0; pointer-events: none; transition: opacity var(--dur-ui) var(--ease-out); }
 .st-nav:hover::before, .st-nav:focus-within::before { opacity: 1; }
-.st-nav a:hover { color: var(--st-ink); }
-.st-nav a:hover .st-nav-tick { width: 20px; opacity: 1; }
 .st-nav a:focus-visible { outline: 2px solid var(--st-ink); outline-offset: 3px; border-radius: 3px; }
 
 /* ---------- Chapter pager (phones) ---------- */
@@ -137,8 +133,6 @@
   padding: var(--s-4);
   border-radius: 999px;
   background: rgba(20, 22, 25, 0.82);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
   max-width: calc(100vw - 2 * var(--s-16));
 }
@@ -167,8 +161,6 @@
   padding: var(--s-8);
   border-radius: var(--r-lg, 14px);
   background: rgba(20, 22, 25, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.7);
   animation: st-sheet var(--dur-ui) var(--ease-out);
 }
@@ -189,7 +181,7 @@
 @media (max-width: 900px) {
   .st-nav { display: none; }
   .st-pager { display: flex; }
-  .st-credit { bottom: calc(var(--s-16) + 64px); }
+  .st-credit { bottom: calc(var(--s-16) + var(--s-64)); }
   .st-card--left { margin-bottom: calc(var(--s-96) * 2); }
 }
 
@@ -248,7 +240,7 @@
   color: var(--st-ink);
   text-wrap: balance;
 }
-.st-line--small { font-size: clamp(1.125rem, 0.9rem + 1vw, 1.5rem); color: var(--st-ink-2); }
+.st-line--small { font-size: var(--fs-st-line-small); color: var(--st-ink-2); }
 
 /* ---------- 2. Title ---------- */
 .st-plate { position: absolute; inset: 0; z-index: 0; }
@@ -281,7 +273,7 @@
 /* Before the plate arrives, the satellite view shows through the letters */
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   .st-js .st-title span {
-    background: linear-gradient(rgba(255, 255, 255, var(--ink-mix, 0)), rgba(255, 255, 255, var(--ink-mix, 0))), var(--title-img, url("img/oct7-plate-1600.webp")) center / 220% auto;
+    background: linear-gradient(rgba(255, 255, 255, var(--ink-mix, 0)), rgba(255, 255, 255, var(--ink-mix, 0))), var(--title-img, image-set(url("img/oct7-plate-1600.avif") type("image/avif"), url("img/oct7-plate-1600.webp") type("image/webp"))) center / 220% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -311,8 +303,6 @@
   padding: var(--s-24) var(--s-32);
   border-radius: var(--r-md, 10px);
   background: var(--st-glass);
-  backdrop-filter: blur(14px) saturate(1.1);
-  -webkit-backdrop-filter: blur(14px) saturate(1.1);
   font: 400 clamp(1.0625rem, 0.95rem + 0.45vw, 1.25rem)/var(--lh-caption) var(--font-display);
   color: var(--st-ink-2);
   justify-self: start;
@@ -326,10 +316,9 @@
   .st-card:not(.st-card--center):not(.st-card--right) { margin-left: max(var(--page-margin), var(--s-96)); }
   .st-credit { left: max(var(--page-margin), var(--s-96)); }
 }
-.st-card--plain { background: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
-.st-big-line { font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem); line-height: var(--lh-title); color: var(--st-ink); text-wrap: balance; }
+.st-card--plain { background: none; }
+.st-big-line { font-size: var(--fs-st-big-line); line-height: var(--lh-title); color: var(--st-ink); text-wrap: balance; }
 .st-small { font: 400 var(--text-note)/var(--lh-caption) var(--font-ui); color: var(--st-ink-3); }
-.st-kicker { font: 600 var(--text-note)/var(--lh-label) var(--font-ui); color: var(--st-accent); margin-bottom: var(--s-12) !important; }
 .st-card h2 {
   margin: 0 0 var(--s-12);
   font: 500 clamp(1.75rem, 1.2rem + 2vw, 2.75rem)/var(--lh-display) var(--font-display);
@@ -343,7 +332,7 @@
 .st-numeral {
   margin: 0;
   font: 500 clamp(6rem, 27vw, 30rem)/var(--lh-figure) var(--font-display);
-  letter-spacing: -0.04em;
+  letter-spacing: var(--track-figure);
   font-variant-numeric: lining-nums;
   color: var(--st-ink);
   transform: scale(calc(1.14 - 0.14 * var(--p, 1))) translateY(calc((0.4 - var(--p, 0.4)) * 6vh));
@@ -389,8 +378,7 @@
   .st-float--1, .st-float--3 { left: -6vw; }
   .st-float--2, .st-float--4 { right: -6vw; }
 }
-.scene--century .st-card p { font-size: clamp(1.25rem, 0.95rem + 1.2vw, 1.75rem); line-height: var(--lh-label); color: var(--st-ink); text-shadow: 0 0 24px var(--st-ground), 0 0 4px var(--st-ground); }
-.scene--century .st-kicker { font-size: var(--text-note) !important; text-shadow: none !important; }
+.scene--century .st-card p { font-size: var(--fs-scene-century-st-card-p); line-height: var(--lh-label); color: var(--st-ink); text-shadow: 0 0 24px var(--st-ground), 0 0 4px var(--st-ground); }
 
 /* ---------- 7. The declarations ---------- */
 .st-photo { position: absolute; inset: 0; z-index: 0; background: #16181b; }
@@ -417,7 +405,7 @@
   z-index: 1;
   margin: 0;
   font: 500 clamp(5rem, 22vw, 22rem)/var(--lh-figure) var(--font-display);
-  letter-spacing: -0.04em;
+  letter-spacing: var(--track-figure);
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.55);
   transform: translateX(calc((0.5 - var(--p, 0.5)) * 18vw));
@@ -435,7 +423,6 @@
   text-align: center;
   background: var(--st-ground);
 }
-.st-memory .st-kicker { margin: 0 0 var(--s-16); }
 .st-memory-num {
   margin: 0;
   font: 400 clamp(4rem, 1rem + 12vw, 10rem)/var(--lh-figure) var(--font-display);
@@ -454,7 +441,6 @@
   -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent);
   mask-image: linear-gradient(180deg, #000 70%, transparent);
 }
-.st-names span + span::before { content: "·"; margin-inline: 0.6em; color: var(--st-ink-3); } /* floor-ignore: em gap scales with the names */
 .st-next { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--s-12); margin-top: var(--s-48); }
 .st-next a {
   min-height: 44px;
@@ -473,9 +459,9 @@
 .st-next a:focus-visible { outline: 2px solid var(--st-ink); outline-offset: 3px; }
 
 /* ---------- Iraq ---------- */
-.st-title--iraq { --title-img: url("img/plate-baghdad-1400.webp"); }
-.st-numeral--range { display: grid; justify-items: center; font-size: clamp(4.5rem, 19vw, 21rem); }
-.st-numeral--range span { font-size: 0.32em; letter-spacing: var(--track-title); color: var(--st-ink-2); margin-top: 0.12em; }
+.st-title--iraq { --title-img: image-set(url("img/plate-baghdad-1400.avif") type("image/avif"), url("img/plate-baghdad-1400.webp") type("image/webp")); }
+.st-numeral--range { display: grid; justify-items: center; font-size: var(--fs-st-numeral-range); }
+.st-numeral--range span { font-size: 0.32em; letter-spacing: var(--track-title); color: var(--st-ink-2); margin-top: 0.12em; } /* floor-ignore: optical offset in em, scales with the type it adjusts */
 /* Eras without a photograph of their own: Baghdad from orbit, dark and soft */
 .st-photo--plate img { filter: grayscale(0.6) blur(3px) brightness(calc(0.35 + 0.15 * var(--p, 1))); transform: scale(calc(1.2 - 0.08 * var(--p, 1))); }
 .st-photo--close img { transform: scale(calc(1.5 - 0.2 * var(--p, 1))); transform-origin: 30% 60%; }
@@ -499,7 +485,7 @@
 .st-bar.is-dim i { opacity: 0.22; }
 .st-bar.is-on i { background: #c9d3ae; }
 .st-bar.is-peak b { opacity: 1; }
-.scene--years .st-card { justify-self: start; align-self: start; margin: 13vh 0 0 max(var(--page-margin), var(--s-96)); max-width: 30rem; padding: 0; background: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.scene--years .st-card { justify-self: start; align-self: start; margin: 13vh 0 0 max(var(--page-margin), var(--s-96)); max-width: 30rem; padding: 0; background: none; }
 @media (max-width: 760px) {
   .st-bars { inset: 46vh var(--page-margin) 12vh; }
   .st-bar span { display: none; }
@@ -523,10 +509,10 @@
   transition: opacity var(--dur-emphasis) var(--ease-in-out);
 }
 .st-mark::after { content: ""; width: 1px; height: calc(var(--h, 1) * 5vh); background: var(--st-ink-2); }
-.st-mark i { position: absolute; bottom: -4px; width: 9px; height: 9px; border-radius: 50%; background: var(--st-ink); }
+.st-mark i { position: absolute; bottom: calc(var(--s-4) * -1); width: 9px; height: 9px; border-radius: 50%; background: var(--st-ink); }
 .st-mark b { font: 600 clamp(1rem, 0.7rem + 1vw, 1.5rem)/var(--lh-figure) var(--font-display); color: var(--st-ink); }
 .st-mark small { font: 500 var(--text-2xs)/var(--lh-label) var(--font-ui); color: var(--st-ink-3); white-space: nowrap; }
-.st-mark--range::before { content: ""; position: absolute; bottom: -1px; left: 50%; width: var(--w); height: 3px; translate: -50% 0; background: rgba(238, 240, 242, 0.5); border-radius: 2px; }
+.st-mark--range::before { content: ""; position: absolute; bottom: -1px; left: 50%; width: var(--w); height: 3px; translate: -50% 0; background: rgba(238, 240, 242, 0.5); border-radius: 2px; } /* floor-ignore: hairline offset */
 .scene--scale[data-show="counts"] .st-mark:not(.st-mark--count),
 .scene--scale[data-show="surveys"] .st-mark.st-mark--count { opacity: 0.18; }
 .scene--scale .st-card { align-self: start; margin-top: 14vh; }
@@ -586,7 +572,6 @@
   text-wrap: balance;
 }
 .st-vcard .st-small { margin-top: var(--s-12); max-width: 36rem; font-size: var(--text-ui); }
-.st-vcard .st-kicker { margin: 0 0 var(--s-12); }
 .st-stat { margin-top: var(--s-12) !important; padding-top: var(--s-12); border-top: 1px solid var(--st-rule); font: 400 var(--text-note)/var(--lh-caption) var(--font-ui); color: var(--st-ink-2); }
 .st-stat b { font: 600 var(--text-ui)/var(--lh-figure) var(--font-ui); color: var(--st-ink); }
 
@@ -647,7 +632,7 @@
 
 .sv-hbar { fill: var(--sv-ink); }
 .sv-now .sv-hbar { fill: var(--sv-hl); }
-.sv-now .sv-v { font-size: 16px; }
+.sv-now .sv-v { font-size: var(--text-ui); }
 .scene[data-viz="century"][data-state="now"] .sv-row:not(.sv-now) { opacity: 0.4; }
 
 .sv-stem { stroke: rgba(255, 255, 255, 0.18); stroke-width: 2px; }
@@ -662,7 +647,6 @@
 /* Header: the site's other sections */
 .st-links { display: flex; align-items: center; gap: var(--s-24); }
 .st-give { padding: var(--s-8) var(--s-16); border-radius: 999px; background: var(--st-ink); color: var(--st-ground) !important; font-weight: 600; }
-.st-give:hover { background: #fff; }
 
 /* Film grain over every scene: the photographs and the dark ground share one surface */
 .storymode::after {
@@ -676,7 +660,7 @@
 }
 
 @media (max-width: 900px) {
-  .st-viz { inset: 46vh var(--page-margin) calc(var(--s-96) + 8px); }
+  .st-viz { inset: 46vh var(--page-margin) calc(var(--s-96) + var(--s-8)); }
   .st-vcard { margin: 11vh var(--page-margin) 0; }
   .st-links a:not(.st-give) { display: none; }
   .st-rates { gap: var(--s-16) var(--s-32); margin-top: var(--s-16); }
@@ -693,12 +677,12 @@
 @media (max-width: 900px) {
   /* Charts end above the credit and the chapter bar */
   .st-viz { bottom: var(--s-160); }
-  .scene--viz .st-credit { bottom: calc(var(--s-16) + 60px); }
+  .scene--viz .st-credit { bottom: calc(var(--s-16) + var(--s-64)); }
   /* The number sits clear of its notes */
   .scene--number .st-numeral { translate: 0 -27vh; }
 }
 @media (max-width: 900px) {
-  .st-viz { bottom: 196px; }
+  .st-viz { bottom: calc(var(--s-160) + var(--s-32)); }
   .scene[data-viz="ceasefire"] .st-viz { top: 52vh; }
   .scene--number .st-numeral { translate: 0 -24vh; }
   .scene--number .st-note--a { top: 42vh; bottom: auto; }
@@ -706,3 +690,481 @@
   .scene--number .st-note--c { top: 69vh; bottom: auto; }
 }
 .scene--number .st-numeral { grid-area: 1 / 1; }
+
+/* =========================================================
+   Review round 1 (visual, interaction)
+   ========================================================= */
+html.story-root { scroll-behavior: auto; }   /* the engine smooths its own jumps; deep links land at once */
+
+/* Solid surfaces: no frosted glass */
+.st-card { background: rgba(11, 12, 14, 0.84); }
+.st-card--plain { background: none; }
+.st-switch { background: rgba(22, 24, 27, 0.92); }
+.st-pager, .st-sheet { background: rgba(22, 24, 27, 0.96); }
+
+/* Dissolves: the incoming scene's words wait until the outgoing words have cleared,
+   and the outgoing chart clears with its words, so a frame shows one scene's words and one chart */
+.st-js .beat {
+  opacity: calc(var(--o, 0) * clamp(0, 1 - var(--out, 0) * 3, 1) * clamp(0, (var(--in, 1) - 0.34) * 1.6, 1));
+  transform: translate3d(0, calc((0.5 - var(--t, 0.5)) * var(--reveal-distance)), 0);
+}
+.st-js :is(.st-numeral, .st-year, .st-credit, .st-title, .st-note) {
+  --clear: calc(clamp(0, 1 - var(--out, 0) * 3, 1) * clamp(0, (var(--in, 1) - 0.34) * 1.6, 1));
+}
+.st-js :is(.st-viz, .st-dots, .st-bars, .st-scale) { opacity: clamp(0, 1 - var(--out, 0) * 2, 1); }
+/* The scroll variables stop at the chart: nothing inside reads them, and 1,000+ marks need not restyle every frame */
+.st-viz > *, .st-bars > *, .st-scale > * { --p: 0; --in: 0; --out: 0; --t: 0; --o: 0; --clear: 1; }
+/* An outgoing photograph dims as the next scene arrives, so the two never cross at equal weight */
+.st-js .scene--era .st-photo, .st-js .scene--strip .st-plate { opacity: calc(1 - var(--out, 0) * 0.6); }
+
+/* Credits over photographs: brighter, with a dark halo (AA at 11px) */
+:is(.scene--strip, .scene--era, .scene--title, .scene--century) .st-credit {
+  color: var(--st-ink-2);
+  text-shadow: 0 0 2px rgba(11, 12, 14, 0.9), 0 0 10px rgba(11, 12, 14, 0.85);
+}
+
+/* Header: a deeper shade so links read over any photograph */
+.st-head {
+  padding-bottom: var(--s-32);
+  background: linear-gradient(180deg, rgba(11, 12, 14, 0.94), rgba(11, 12, 14, 0.72) 55%, transparent);
+}
+
+/* Year numerals stay inside the frame and below the header */
+.st-year {
+  top: max(var(--s-96), 10vh);
+  font-size: var(--fs-st-year);
+  transform: translateX(calc((0.5 - var(--p, 0.5)) * 6vw));
+}
+
+/* Iraq toll: notes on the text column, tops aligned */
+@media (min-width: 761px) {
+  .scene--number .st-note--a { left: max(var(--page-margin), var(--s-96)); }
+  .scene--number .st-note--c { right: max(var(--page-margin), var(--s-96)); }
+  .scene--number :is(.st-note--a, .st-note--b, .st-note--c) { top: 72vh; bottom: auto; }
+}
+
+/* The names open to show all of them */
+.st-names.is-open { max-height: none; -webkit-mask-image: none; mask-image: none; }
+.st-names-more {
+  display: block;
+  margin: var(--s-24) auto 0;
+  min-height: 44px;
+  padding: 0 var(--s-24);
+  border: 1px solid var(--st-rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--st-ink);
+  font: 600 var(--text-note)/var(--lh-figure) var(--font-ui);
+  cursor: pointer;
+  transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-press);
+}
+.st-names-more:active { transform: scale(var(--press-scale)); }
+.st-names-more:focus-visible { outline: 2px solid var(--st-ink); outline-offset: 3px; }
+
+/* Touch targets and touch devices */
+.st-switch a { min-height: 44px; }
+.st-give, .st-full { display: inline-flex; align-items: center; min-height: 44px; padding-block: 0; }
+.st-sheet { max-height: calc(100svh - var(--s-96)); overflow-y: auto; overscroll-behavior: contain; }
+@media (prefers-reduced-motion: reduce) { .st-sheet { animation: none; } }
+@media (hover: none) {
+  .st-nav { display: none; }
+  .st-pager { display: flex; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .st-give:hover { background: #fff; }
+  .st-names-more:hover { background: rgba(255, 255, 255, 0.08); }
+}
+/* Wide screens: text clears the chapter rail's names */
+@media (min-width: 1280px) and (hover: hover) {
+  .st-card:not(.st-card--center):not(.st-card--right), .st-vcard,
+  .scene--years .st-card { margin-left: calc(var(--s-160) + var(--s-32)); }
+  .st-viz, .st-bars, .st-scale { left: calc(var(--s-160) + var(--s-32)); }
+  .storymode .st-credit { left: calc(var(--s-160) + var(--s-32)); }
+}
+
+/* Phones */
+@media (max-width: 900px) {
+  .storymode .st-credit { bottom: calc(var(--s-96) - var(--s-8) + env(safe-area-inset-bottom)); }
+  .storymode .st-vcard { margin-top: calc(var(--s-96) + var(--s-16)); }
+  .scene[data-viz="sources"] .st-viz { top: 50vh; }
+}
+/* Iraq estimates on phones: one row per source, measured from zero */
+@media (max-width: 760px) {
+  .st-scale { top: 46vh; bottom: auto; height: auto; background: none; display: grid; gap: var(--s-12); }
+  .st-scale-tick { display: none; }
+  .st-mark { position: relative; left: auto; bottom: auto; translate: none; display: block; text-align: left; }
+  .st-mark::after { content: ""; display: block; width: var(--x); height: 3px; margin-top: var(--s-4); border-radius: 2px; background: var(--st-ink-2); }
+  .st-mark--count::after { background: #c9d3ae; }
+  .st-mark i, .st-mark--range::before { display: none; }
+  .st-mark small { display: inline; margin-left: var(--s-8); white-space: normal; }
+  .st-mark b { font-size: var(--text-ui); }
+}
+
+/* Reduced motion: each scene is a finished still. Words, then the chart, then the credit;
+   photographs fade into the ground at their edges so stills don't butt together. */
+@media (prefers-reduced-motion: reduce) {
+  .storymode .stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--s-24);
+    min-height: 100svh;
+    height: auto;
+    padding: var(--s-128) max(var(--page-margin), var(--s-96)) var(--s-96);
+  }
+  .storymode .stage > .beat,
+  .storymode .stage > .st-note,
+  .storymode .stage > .st-numeral,
+  .storymode .stage > .st-dateline,
+  .storymode .stage > .st-year { position: relative !important; inset: auto; translate: none; margin: 0; }
+  .storymode .stage > .st-card--center, .storymode .stage > .st-line, .storymode .stage > .st-title { align-self: center; }
+  .storymode .stage > :is(.st-viz, .st-bars, .st-scale) { position: relative; inset: auto; width: 100%; height: 46vh; margin-top: var(--s-16); }
+  .storymode .stage > .st-credit { position: relative; inset: auto; margin-top: auto; }
+  .storymode :is(.st-photo, .st-plate) {
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
+  }
+  .storymode .st-year { align-self: flex-end; }
+  .scene--number .st-numeral { translate: none !important; }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 760px) {
+  .storymode .stage { padding-inline: var(--page-margin); padding-bottom: calc(var(--s-96) + var(--s-32)); }
+  .storymode .stage > .st-scale { height: auto; }
+}
+
+/* =========================================================
+   Review round 2
+   ========================================================= */
+/* One handoff for words and charts: the outgoing scene is gone by in ≈ 0.29, the incoming starts at 0.30 */
+.st-js .beat {
+  opacity: calc(var(--o, 0) * clamp(0, 1 - var(--out, 0) * 3.4, 1) * clamp(0, (var(--in, 1) - 0.3) * 3, 1));
+}
+.st-js :is(.st-numeral, .st-year, .st-credit, .st-title, .st-note) {
+  --clear: calc(clamp(0, 1 - var(--out, 0) * 3.4, 1) * clamp(0, (var(--in, 1) - 0.3) * 3, 1));
+}
+.st-js :is(.st-viz, .st-dots, .st-bars, .st-scale, .st-float) {
+  opacity: calc(clamp(0, 1 - var(--out, 0) * 3.4, 1) * clamp(0, (var(--in, 1) - 0.3) * 3, 1));
+}
+.st-js .scene--era .st-photo, .st-js .scene--strip .st-plate { opacity: calc(1 - var(--out, 0) * 0.9); }
+
+/* Century photographs drift less, and fade out under the header */
+.st-float--2 { transform: translateY(calc((0.5 - var(--p, 0.5)) * 55vh)); }
+.st-float--3 { transform: translateY(calc((0.5 - var(--p, 0.5)) * 45vh)); }
+.scene--century .stage {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 var(--s-128));
+  mask-image: linear-gradient(180deg, transparent 0, #000 var(--s-128));
+}
+
+/* Year numerals drift left only, inside the frame */
+.st-year { right: max(var(--page-margin), var(--s-48)); transform: translateX(calc(var(--p, 0.5) * -6vw)); }
+
+/* Iraq estimates on wide screens: the scale sits low, headline clear above */
+@media (min-width: 761px) {
+  .st-scale { top: 84vh; }
+  .st-mark::after { height: calc(var(--h, 1) * 4vh); }
+  .scene--scale .st-card { margin-top: max(12vh, calc(var(--s-96) + var(--s-16))); max-width: 34rem; }
+}
+/* Iraq estimates on phones: every row measured from one shared zero, clear of the chapter bar */
+@media (max-width: 760px) {
+  .st-scale { left: var(--page-margin); right: var(--page-margin); top: 34vh; gap: var(--s-8); }
+  .st-mark { justify-self: stretch; width: 100%; }
+  .st-mark::after { margin: var(--s-4) auto 0 0; }
+}
+.nw { white-space: nowrap; }
+
+/* Phones: era cards sit above their credits and the chapter bar */
+@media (max-width: 900px) {
+  .storymode .st-card--left { margin-bottom: calc(var(--s-96) + var(--s-64) + var(--s-32)); }
+}
+
+/* Names never break mid-name; separators trail each name */
+.st-names span { white-space: nowrap; }
+
+.st-memory-also { max-width: 40ch; margin: var(--s-24) auto 0; font: 400 var(--text-ui)/var(--lh-body) var(--font-display); color: var(--st-ink-2); }
+@media (max-width: 900px) {
+  .st-memory { padding-bottom: calc(var(--s-96) + var(--s-64)); }
+}
+
+/* Reduced motion: words first, then the chart, then the later beats, then the credit */
+@media (prefers-reduced-motion: reduce) {
+  .storymode .stage > .beat { order: 2; }
+  .storymode .stage > .beat:first-of-type { order: 0; }
+  .storymode .stage > :is(.st-viz, .st-bars, .st-scale) { order: 1; width: 100%; margin-inline: 0; left: auto; right: auto; }
+  .storymode .stage > .st-credit { order: 3; }
+  .storymode .scene--era .stage { justify-content: flex-end; }
+  .storymode .scene--number .stage { align-items: center; text-align: center; }
+  .storymode .st-float { position: absolute; transform: none; }
+  .storymode .scene--viz .stage > .beat:not(:first-of-type) .st-vtitle { font-size: var(--text-xl); }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 760px) {
+  .storymode .st-float--2, .storymode .st-float--4 { display: none; }
+}
+
+/* =========================================================
+   Review round 2 (interaction)
+   ========================================================= */
+@media (hover: hover) and (pointer: fine) {
+  .st-head a:hover { color: var(--st-ink); }
+  .st-nav a:hover { color: var(--st-ink); }
+  .st-nav a:hover .st-nav-tick { width: 20px; opacity: 1; }
+}
+/* Photo scenes: a ground scrim under the credit, so small print reads over any image */
+:is(.scene--strip, .scene--era) .stage::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 38svh;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(11, 12, 14, 0.72));
+}
+.storymode .st-credit { z-index: 4; }
+/* Tablets and phones: header links get a 44px hit area without moving the layout */
+@media (hover: none) {
+  .st-head a { position: relative; }
+  .st-head a:not(.st-give):not(.st-full):not(.st-switch a)::after { content: ""; position: absolute; inset: calc(var(--s-16) * -1) calc(var(--s-4) * -1); }
+}
+/* Phones: the title's date sits above the chapter bar */
+@media (max-width: 900px) {
+  .storymode .st-dateline { bottom: calc(var(--s-96) - var(--s-8) + env(safe-area-inset-bottom)); }
+}
+.scene--title .st-dateline { text-shadow: 0 0 2px rgba(11, 12, 14, 0.9), 0 0 10px rgba(11, 12, 14, 0.85); }
+/* The open names list keeps its control with the reader */
+.st-names.is-open + .st-names-more {
+  position: sticky;
+  bottom: calc(var(--s-96) + env(safe-area-inset-bottom));
+  background: rgba(22, 24, 27, 0.96);
+}
+@media (min-width: 901px) and (hover: hover) { .st-names.is-open + .st-names-more { bottom: var(--s-24); } }
+/* Landscape phones: cards fit the short screen, credits step aside */
+@media (orientation: landscape) and (max-height: 500px) {
+  .st-card, .st-vcard { max-height: none; overflow: visible; max-width: min(46rem, calc(100vw - 2 * var(--page-margin))); padding-block: var(--s-16); }
+  .st-card p, .st-vcard p { font-size: var(--text-note); line-height: var(--lh-body); }
+  .st-card h2 { font-size: var(--text-lg); }
+  .st-vtitle { font-size: var(--text-xl); }
+  .storymode .st-card--left { margin-bottom: var(--s-64); }
+  .storymode .st-credit { display: none; }
+  .scene--number :is(.st-note--a, .st-note--b, .st-note--c) { top: auto; bottom: calc(var(--s-64) + var(--s-16)); }
+  .storymode .st-vcard { margin-top: var(--s-64); }
+}
+
+/* =========================================================
+   Review round 3
+   ========================================================= */
+/* Reduced motion: the first beat leads, then the chart; later headlines step down */
+@media (prefers-reduced-motion: reduce) {
+  .storymode .stage > .beat:not(.beat ~ .beat) { order: 0; }
+  .storymode .scene--viz .stage > .beat:not(.beat ~ .beat) .st-vtitle { font-size: inherit; }
+  .storymode .scene--viz .stage > .beat ~ .beat .st-vtitle { font-size: var(--text-xl); }
+}
+/* Solid-ground scenes arrive quicker, so handoffs have no empty frames; photo scenes keep the full crossfade */
+.st-js .scene + :is(.scene--viz, .scene--number, .scene--dots, .scene--scale, .scene--years) > .stage { opacity: clamp(0, var(--in, 0) * 1.6, 1); }
+/* Grain over everything except the header and navigation; the memorial feathers in */
+.storymode::after { z-index: 19; }
+.st-memory { position: relative; box-shadow: 0 calc(var(--s-128) * -1) var(--s-128) var(--st-ground); }
+/* The names: a list of people, no separators */
+.st-names { display: flex; flex-wrap: wrap; justify-content: center; column-gap: 1.25em; } /* floor-ignore: gap scales with the names */
+@media (max-width: 760px) {
+  .st-scale { top: 50vh; }
+  .st-js .st-float { opacity: calc(0.4 * clamp(0, 1 - var(--out, 0) * 3.4, 1) * clamp(0, (var(--in, 1) - 0.3) * 3, 1)); }
+  .st-year { top: calc(var(--s-96) + var(--s-12)); font-size: var(--fs-st-year-phone); }
+  .scene--era .st-card p { font-size: var(--text-ui); }
+  .scene--number .st-note { text-align: center; }
+}
+@media (max-width: 900px) {
+  .storymode .st-memory::after {
+    content: "";
+    display: block;
+    position: sticky;
+    bottom: 0;
+    height: calc(var(--s-96) + var(--s-16));
+    margin: calc((var(--s-96) + var(--s-16)) * -1) calc(var(--page-margin) * -1) 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent, var(--st-ground) 70%);
+    z-index: 18;
+  }
+}
+
+/* =========================================================
+   Review round 4
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) and (min-width: 761px) {
+  .storymode .stage > .st-scale { height: 1px; margin-top: calc(var(--s-96) * 3); }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 760px) {
+  .storymode .scene--scale .stage > .st-scale { position: relative; height: auto; top: auto; margin-top: var(--s-16); }
+}
+/* Iraq estimates on phones: each label sits under its figure, whole */
+@media (max-width: 760px) {
+  .st-scale { top: 40vh; }
+  .st-mark b { display: block; }
+  .st-mark small { display: block; margin: var(--s-4) 0 0; white-space: normal; }
+}
+/* The open names list: a shade under the header, and a ground halo round its button */
+.storymode:has(.st-names.is-open)::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: calc(var(--s-96) + var(--s-16));
+  z-index: 19;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--st-ground) 60%, transparent);
+}
+.st-names.is-open + .st-names-more { box-shadow: 0 0 0 var(--s-16) var(--st-ground), 0 var(--s-32) 0 var(--s-32) var(--st-ground); }
+@media (max-width: 900px) { .st-names.is-open + .st-names-more { bottom: calc(var(--s-96) + var(--s-8)); } }
+
+/* Landscape phones: two columns. Words on the left 38vw, the chart fills the right. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .st-head { padding-block: var(--s-8); }
+  .storymode .scene .st-vcard,
+  .storymode .scene--years .st-card {
+    max-width: 38vw;
+    margin: calc(var(--s-64) + var(--s-8)) 0 0 var(--page-margin);
+  }
+  .storymode .scene .st-viz,
+  .storymode .scene .st-bars,
+  .storymode .scene .st-dots {
+    inset: calc(var(--s-64) + var(--s-8)) var(--page-margin) calc(var(--s-64) + var(--s-16)) calc(38vw + var(--page-margin) + var(--s-24));
+    width: auto;
+    height: auto;
+  }
+  .scene--dots .st-card--center { justify-self: start; text-align: left; max-width: 34vw; margin-left: var(--page-margin); }
+  /* Iraq estimates: one row per source, in the right column */
+  .storymode .scene .st-scale {
+    top: calc(var(--s-64) + var(--s-8)); bottom: auto; left: calc(38vw + var(--page-margin) + var(--s-24)); right: var(--page-margin);
+    height: auto; background: none; display: grid; gap: var(--s-4);
+  }
+  .st-scale-tick { display: none; }
+  .st-mark { position: relative; left: auto; bottom: auto; translate: none; display: block; text-align: left; }
+  .st-mark::after { content: ""; display: block; width: var(--x); height: 3px; margin-top: var(--s-4); border-radius: 2px; background: var(--st-ink-2); }
+  .st-mark--count::after { background: #c9d3ae; }
+  .st-mark i, .st-mark--range::before { display: none; }
+  .st-mark b { font-size: var(--text-note); }
+  .st-mark small { margin-left: var(--s-8); }
+  .scene--scale .st-card { max-width: 38vw; margin: calc(var(--s-64) + var(--s-8)) 0 0 var(--page-margin); justify-self: start; text-align: left; }
+  .scene--scale .st-big-line { font-size: var(--text-xl); }
+  /* The toll: a smaller numeral, notes in three columns under it */
+  .scene--number .st-numeral { font-size: min(34vh, 16vw); translate: 0 -14vh !important; }
+  .scene--number :is(.st-note--a, .st-note--b, .st-note--c) { top: auto; bottom: calc(var(--s-64) + var(--s-16)); width: 30vw; max-width: none; translate: none; text-align: left; }
+  .scene--number .st-note--a { left: var(--page-margin); right: auto; }
+  .scene--number .st-note--b { left: 35vw; right: auto; }
+  .scene--number .st-note--c { left: auto; right: var(--page-margin); }
+  /* Title: the date sits above the title, clear of it */
+  .storymode .st-dateline { top: calc(var(--s-64) + var(--s-8)); bottom: auto; }
+  /* Era cards pin to the top, under the header */
+  .storymode .st-card--left { align-self: start; margin-top: calc(var(--s-64) + var(--s-8)); margin-bottom: 0; }
+  /* Century photographs stay behind the words */
+  .storymode .st-float--2, .storymode .st-float--4 { display: none; }
+  .st-js .st-float { opacity: calc(0.3 * clamp(0, 1 - var(--out, 0) * 3.4, 1) * clamp(0, (var(--in, 1) - 0.3) * 3, 1)); }
+}
+/* Round 4, after own review */
+@media (max-width: 760px) {
+  .storymode .st-mark { display: block; text-align: left; justify-items: start; }
+  .storymode .scene .st-scale { top: 46vh; gap: var(--s-4); }
+  .scene--scale .st-big-line { font-size: var(--text-xl); }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .storymode .st-mark { display: block; text-align: left; }
+  .scene--number .st-numeral--range { font-size: min(26vh, 11vw); translate: 0 -20vh !important; }
+}
+
+/* =========================================================
+   Review round 5 (landscape phones)
+   ========================================================= */
+@media (orientation: landscape) and (max-height: 500px) {
+  .storymode .st-rates { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-24); margin-top: var(--s-12); }
+  .storymode .st-rates b { font-size: var(--text-xl); }
+  .scene--title .st-title { margin-top: calc(var(--s-48) + var(--s-8)); font-size: min(26vh, 12vw); }
+  /* The dot field: an explicit box, so the canvas never falls back to its default 300×150 */
+  .storymode .scene .st-dots {
+    width: calc(62vw - 2 * var(--page-margin) - var(--s-24));
+    height: calc(100svh - var(--s-64) - var(--s-8) - var(--s-64) - var(--s-16));
+  }
+  .scene--dots .st-card--center { align-self: start; margin-top: calc(var(--s-64) + var(--s-8)); }
+  .storymode .scene .st-bars { inset: calc(var(--s-64) + var(--s-8) + var(--s-24)) var(--page-margin) calc(var(--s-64) + var(--s-24)) calc(38vw + var(--page-margin) + var(--s-24)); }
+}
+.st-names.is-open + .st-names-more { box-shadow: 0 0 var(--s-24) var(--s-16) var(--st-ground); }
+@media (min-width: 761px) { .st-mark small { position: relative; z-index: 1; background: var(--st-ground); padding-inline: var(--s-4); } }
+/* The reading line runs along the top edge of the header, where nothing passes under it */
+.st-progress { inset: 0 0 auto; background: var(--st-ground); }
+@media (orientation: landscape) and (max-height: 500px) { .scene--dots .st-card--center { padding-inline: 0; background: none; } }
+@media (max-width: 900px) { .st-names.is-open + .st-names-more { box-shadow: 0 0 var(--s-24) calc(var(--s-16) + var(--s-4)) var(--st-ground); } }
+/* Landscape titles: a shade under the date line, so it reads over any plate */
+@media (orientation: landscape) and (max-height: 500px) {
+  .scene--title .stage::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: calc(var(--s-96) + var(--s-64));
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(11, 12, 14, 0.82), rgba(11, 12, 14, 0.55) 70%, transparent);
+  }
+  .storymode .scene--title .st-dateline { z-index: 2; }
+}
+/* Landscape phones: credits stay, as a short block at the top of the right column */
+@media (orientation: landscape) and (max-height: 500px) {
+  .storymode .st-credit {
+    display: block;
+    top: calc(var(--s-64) - var(--s-4));
+    bottom: auto;
+    left: calc(38vw + var(--page-margin) + var(--s-24));
+    right: var(--page-margin);
+    max-width: none;
+    font-size: var(--text-3xs);
+    line-height: var(--lh-label);
+  }
+  .storymode .scene .st-viz,
+  .storymode .scene .st-dots { top: calc(var(--s-64) + var(--s-48)); }
+  .storymode .scene .st-dots { height: calc(100svh - var(--s-64) - var(--s-48) - var(--s-64) - var(--s-16)); }
+  .storymode .scene .st-bars { top: calc(var(--s-64) + var(--s-48) + var(--s-24)); }
+}
+@media (min-width: 761px) { .st-mark b { position: relative; z-index: 1; background: var(--st-ground); padding-inline: var(--s-4); } }
+@media (orientation: landscape) and (max-height: 500px) {
+  :is(.scene--strip, .scene--era) .stage::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: calc(var(--s-96) + var(--s-32));
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(11, 12, 14, 0.85), rgba(11, 12, 14, 0.6) 70%, transparent);
+  }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  :is(.scene--era, .scene--strip) .st-credit { left: auto; right: var(--page-margin); width: 30vw; text-align: right; }
+  .storymode .scene--era .st-card { max-width: calc(62vw - var(--page-margin) - var(--s-24)); }
+  .scene--era .st-card p { line-height: var(--lh-label); }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .storymode .st-year { top: auto; bottom: var(--s-16); right: var(--page-margin); font-size: min(18vh, 10vw); transform: none; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .scene--century .st-card { justify-self: start; text-align: left; margin-left: var(--page-margin); max-width: calc(62vw - var(--page-margin) - var(--s-24)); }
+  .scene--century .st-credit { left: auto; right: var(--page-margin); width: 30vw; text-align: right; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Photo credits carry their own dark backing, so a long credit reads over any part of the image */
+  :is(.scene--era, .scene--strip, .scene--century) .st-credit {
+    width: auto;
+    max-width: 30vw;
+    padding: var(--s-4) var(--s-8);
+    border-radius: var(--s-4);
+    background: rgba(11, 12, 14, 0.78);
+  }
+  /* Iraq estimates: the surveys beat fits above the chapter bar */
+  .scene--scale .st-card { margin-top: calc(var(--s-48) + var(--s-8)); max-width: 40vw; }
+  .scene--scale .st-big-line { font-size: var(--text-lg); }
+  /* Century photographs move to the empty right half */
+  .st-float--1, .st-float--3 { left: auto; right: var(--page-margin); }
+  .scene--era .st-card { padding-block-end: var(--s-12); }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Every estimate bar starts from the same zero, at the column's left edge */
+  .storymode .st-mark::after { margin: var(--s-4) auto 0 0; }
+  .scene--scale .st-card { margin-top: var(--s-48); }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .st-float--1 { top: calc(var(--s-96) + var(--s-48)); transform: translateY(calc((0.5 - var(--p, 0.5)) * 30vh)); }
+}

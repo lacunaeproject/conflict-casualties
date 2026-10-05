@@ -74,17 +74,17 @@ window.StoryViz = (function () {
   B.pace = {
     draw(box) {
       const { s, w, h } = svgIn(box);
-      const unit = w < 640 ? 'month' : 'week', data = series(unit);
+      const unit = 'week', data = series(unit);   /* weekly at every width, as the copy says */
       const m = { t: 40, r: 44, b: 28, l: 0 };
       const ymax = niceMax(Math.max(...data.map(b => b.total)));
       const ys = v => h - m.b - (v / ymax) * (h - m.b - m.t);
       const t0 = data[0].start, t1 = data[data.length - 1].end + DAY;
       const xs = ms => m.l + ((ms - t0) / (t1 - t0)) * (w - m.l - m.r);
       [ymax / 2, ymax].forEach(v => { el('line', { x1: m.l, x2: w - m.r, y1: ys(v), y2: ys(v), class: 'sv-grid' }, s); text(s, w, ys(v) + 4, num(v), 'sv-t', 'end'); });
-      text(s, w, ys(ymax) + 20, unit === 'week' ? 'a week' : 'a month', 'sv-t', 'end');
+      text(s, w, ys(ymax) + 20, 'a week', 'sv-t', 'end');
       const bars = el('g', {}, s);
       data.forEach(b => {
-        const x = xs(b.start), bw = Math.max(1, xs(b.end + DAY) - x - (unit === 'week' ? 1 : 3));
+        const x = xs(b.start), bw = Math.max(1, xs(b.end + DAY) - x - (w < 640 ? 0.4 : 1));
         el('rect', { x, y: ys(b.total), width: bw, height: ys(0) - ys(b.total), class: 'sv-bar', 'data-s': b.start, 'data-e': b.end }, bars);
       });
       el('line', { x1: m.l, x2: w - m.r, y1: ys(0), y2: ys(0), class: 'sv-base' }, s);
@@ -195,7 +195,7 @@ window.StoryViz = (function () {
       [['killed', 'Palestinians killed per month', 'sv-wbk'], ['attacks', 'Settler attacks per month', 'sv-wba']].forEach(([key, title, cls], pi) => {
         const g = el('g', { class: `sv-panel p-${key}` }, s);
         const y0 = top + pi * (PH + gapY), base = y0 + PH;
-        const peak = data.reduce((a, b) => (b[key] > a[key] ? b : a)), ymax = niceMax(peak[key]);
+        const peak = data.reduce((a, b) => (b[key] > a[key] ? b : a)), ymax = niceMax(peak[key] * 1.15);
         const ys = v => base - (v / ymax) * PH;
         text(g, 0, y0 - 10, title, 'sv-l');
         el('line', { x1: 0, x2: w, y1: ys(ymax), y2: ys(ymax), class: 'sv-grid' }, g);
@@ -206,8 +206,8 @@ window.StoryViz = (function () {
         el('line', { x1: 0, x2: w, y1: base, y2: base, class: 'sv-base' }, g);
         const i = data.indexOf(peak), x = i * step;
         const d = new Date(peak.start);
-        const lab = text(g, x + bw + 6, ys(peak[key]) + 10, `${num(peak[key])} in ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`, 'sv-v');
-        if (x + bw + 6 + lab.getComputedTextLength() > w - 40) { lab.setAttribute('x', x - 6); lab.setAttribute('text-anchor', 'end'); }
+        const lab = text(g, x, ys(peak[key]) - 8, `${num(peak[key])} in ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`, 'sv-v');
+        if (x + lab.getComputedTextLength() > w - 48) { lab.setAttribute('x', x + bw); lab.setAttribute('text-anchor', 'end'); }
       });
       for (let y = 2024; Date.UTC(y, 0, 1) <= data[data.length - 1].start; y++) {
         const i = data.findIndex(b => b.start === Date.UTC(y, 0, 1));
@@ -253,7 +253,7 @@ window.StoryViz = (function () {
       ].filter(Boolean);
       const { s, w, h } = svgIn(box);
       const phone = w < 640, labelW = phone ? 0 : Math.min(300, w * 0.32), m = { r: 80, b: 26 };
-      const rowH = Math.min(90, (h - m.b) / rows.length);
+      const rowH = Math.max(phone ? (h < 260 ? 48 : 64) : 0, Math.min(90, (h - m.b) / rows.length));
       const xmax = niceMax(Math.max(...rows.map(r => r.v)) * 1.05);
       const xs = v => labelW + (v / xmax) * (w - labelW - m.r);
       [0, xmax / 4, xmax / 2, (xmax * 3) / 4, xmax].forEach(v => {
@@ -269,6 +269,17 @@ window.StoryViz = (function () {
         text(g, xs(r.v) + 14, y + 5, num(r.v), 'sv-v');
       });
     },
+  };
+
+  // Accessible names that carry each chart's figures
+  const LABEL = {
+    oct7: () => { const o = D.oct7; return `${num(o.total)} squares, one for each person killed in Israel on October 7, 2023: ${num(o.israeli_civilians)} Israeli civilians, ${num(o.israeli_security_forces)} members of the security forces, and ${num(o.foreign_nationals + o.other_and_revised)} foreign nationals and others.`; },
+    pace: () => { const s = series('week'), pk = s.reduce((a, b) => (b.total > a.total ? b : a)); return `Deaths reported in Gaza each week from October 2023 to ${dayLabel(t(asOf))}. The highest week, beginning ${dayLabel(pk.start)}, had ${num(pk.total)}. ${num(totalBetween('2023-10-07', '2023-12-31'))} were reported in the first three months.`; },
+    ceasefire: () => `Deaths added to the Gaza toll each month since the October 10, 2025 ceasefire: ${num(cumOn(asOf) - cumOn(CEASEFIRE))} in all, by type: new killings, bodies recovered, and deaths added after review.`,
+    named: () => { const k = D.summary.known_killed_in_gaza; return `The dead identified by name, one square for every 100 people: ${num(k.male.child + k.female.child)} children (${num(k.male.child)} boys, ${num(k.female.child)} girls), ${num(k.male.adult + k.female.adult)} adults aged 18 to 59, ${num(k.male.senior + k.female.senior)} people aged 60 and over.`; },
+    westbank: () => { const w = D.west_bank_daily.at(-1); return `West Bank, each month since October 2023, as reported by UN OCHA: ${num(w.killed_cum)} Palestinians killed and ${num(w.settler_attacks_cum)} settler attacks in all.`; },
+    century: () => `Palestinians killed in each period: 1936–39 about 5,000; 1947–49 15,000; 1982 about 18,000 (everyone killed in Lebanon); 1987–93 1,100 or more; 2000–05 about 3,000; 2014 2,251; since October 7, 2023, ${num(D.summary.gaza.killed.total)}.`,
+    sources: () => { const l = (D.trackers || []).find(r => /lancet/i.test(r.name)); return `Gaza Ministry of Health count to January 31, 2025: ${num(cumOn('2025-01-31'))}.${l ? ` Lancet estimate of violent deaths to January 2025: ${num(l.palestinian_killed)}.` : ''} Ministry count to ${dayLabel(t(asOf))}: ${num(cumOn(asOf))}.`; },
   };
 
   // ---------- Public ----------
@@ -317,6 +328,7 @@ window.StoryViz = (function () {
       const render = () => { b.draw(box); if (b.state && sc.dataset.state) b.state(box, sc.dataset.state); };
       let wPrev = 0, hPrev = 0;
       new ResizeObserver(() => { const w = box.clientWidth, h = box.clientHeight; if (w && h && (w !== wPrev || Math.abs(h - hPrev) > 40)) { wPrev = w; hPrev = h; render(); } }).observe(box);
+      if (LABEL[sc.dataset.viz]) box.setAttribute('aria-label', LABEL[sc.dataset.viz]());
       boxes.push({ sc, b, box });
     });
     return values;

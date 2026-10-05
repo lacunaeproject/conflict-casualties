@@ -196,6 +196,47 @@
   --text-3xl:  2.25rem;
   --text-4xl:  3rem;
 
+  /* Fluid display sizes, one per role (each grows with the viewport between its bounds) */
+  --fs-cw-card-h2: clamp(1.625rem, 3vw, 2rem);
+  --fs-gallery-head-h2: clamp(1.6rem, 3vw, 2.2rem);
+  --fs-context-card-rm-num: clamp(2.2rem, 3.6vw, 3.2rem);
+  --fs-section-head-h2: clamp(1.75rem, 3vw, 2.25rem);
+  --fs-book-featured-title-cover: clamp(1.5rem, 2.5vw, 1.9rem);
+  --fs-stats-num-range: clamp(2rem, 1.2rem + 1.6vw, 3rem);
+  --fs-stats-tile-lead-stats-num-range: clamp(2.5rem, 1.2rem + 2.8vw, 4.5rem);
+  --fs-stats-num-range-stats: clamp(1.75rem, 0.6rem + 6vw, 2.5rem);
+  --fs-st-line-small: clamp(1.125rem, 0.9rem + 1vw, 1.5rem);
+  --fs-st-big-line: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  --fs-scene-century-st-card-p: clamp(1.25rem, 0.95rem + 1.2vw, 1.75rem);
+  --fs-st-numeral-range: clamp(4.5rem, 19vw, 21rem);
+  --fs-panel-head-h2: clamp(1.6rem, 2.6vw, 2rem);
+  --fs-context-lede-h2: clamp(1.9rem, 3.6vw, 2.75rem);
+  --fs-context-dek: clamp(1.05rem, 1.6vw, 1.25rem);
+  --fs-context-stat-stat-val: clamp(1.6rem, 2.4vw, 2rem);
+  --fs-tracker-context-card-context-lede-h2: clamp(2.2rem, 4.6vw, 3.75rem);
+  --fs-pullquote-p: clamp(1.7rem, 3.6vw, 2.75rem);
+  --fs-panel-head-dek: clamp(1.05rem, 1.5vw, 1.2rem);
+  --fs-pf-val: clamp(1.8rem, 3vw, 2.4rem);
+  --fs-story: clamp(1.12rem, 1.5vw, 1.28rem);
+  --fs-part-head-h2: clamp(2.4rem, 6vw, 4.5rem);
+  --fs-era-h3: clamp(1.8rem, 3.2vw, 2.6rem);
+  --fs-era-body-p: clamp(1.05rem, 1.35vw, 1.15rem);
+  --fs-era-stats-strong: clamp(1.5rem, 2.4vw, 2rem);
+  --fs-era-feature-h3: clamp(2.2rem, 4.6vw, 3.6rem);
+  --fs-step-h3: clamp(1.4rem, 2.2vw, 1.8rem);
+  --fs-panel-head-h2-styles: clamp(1.75rem, 3vw, 2.4rem);
+  --fs-story-styles: clamp(1.125rem, 1.4vw, 1.25rem);
+  --fs-era-body-p-styles: clamp(1.08rem, 1.4vw, 1.2rem);
+  --fs-rm-num: clamp(4.5rem, 14vw, 11rem);
+  --fs-era-quote-p: clamp(1.8rem, 3.6vw, 2.8rem);
+  --fs-coda-num: clamp(4rem, 13vw, 10rem);
+  --fs-coda-line: clamp(1.15rem, 1.8vw, 1.4rem);
+  --fs-panel-head-h2-ui: clamp(1.875rem, 1.3rem + 1.8vw, 3rem);
+  --fs-panel-head-dek-ui: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem);
+  --fs-rm-num-ui: clamp(3.5rem, 2rem + 4vw, 5.5rem);
+  --fs-oct7-grid-cell-val: clamp(1.75rem, 1.3rem + 1vw, 2.25rem);
+  --fs-gallery-head-h2-ui: clamp(1.6rem, 2.4vw, 2.2rem);
+
   /* Tracking, one value per role */
   --track-figure:  -0.045em;
   --track-display: -0.03em;
@@ -438,7 +479,7 @@ em { font-style: italic; }
 .panel-head h2 {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(1.6rem, 2.6vw, 2rem);
+  font-size: var(--fs-panel-head-h2);
   letter-spacing: var(--track-title);
   line-height: var(--lh-title);
   margin: 0 0 var(--stack-block);
@@ -561,7 +602,7 @@ em { font-style: italic; }
 .context-lede h2 {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+  font-size: var(--fs-context-lede-h2);
   letter-spacing: var(--track-title);
   line-height: var(--lh-title);
   margin: 0 0 var(--stack-block);
@@ -571,7 +612,7 @@ em { font-style: italic; }
 .context-dek {
   font-family: var(--font-display);
   font-style: normal;
-  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  font-size: var(--fs-context-dek);
   line-height: var(--lh-caption);
   color: var(--ink-2);
   max-width: 60ch;
@@ -588,7 +629,7 @@ em { font-style: italic; }
 .context-stat .stat-val {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  font-size: var(--fs-context-stat-stat-val);
   letter-spacing: var(--track-title);
   line-height: var(--lh-display);
   color: var(--pal);
@@ -835,7 +876,7 @@ em { font-style: italic; }
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
-.foot-meta ul { padding-left: 1.25em; margin: var(--s-12) 0; }
+.foot-meta ul { padding-left: 1.25em; margin: var(--s-12) 0; } /* floor-ignore: optical offset in em, scales with the type it adjusts */
 .foot-meta li { margin-bottom: var(--s-4); }
 
 /* ========== Responsive ========== */
@@ -901,7 +942,7 @@ em { font-style: italic; }
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: -1px; /* floor-ignore: hairline offset */
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -1089,7 +1130,7 @@ body { overflow-x: clip; }
   padding-bottom: var(--s-96);
 }
 .tracker + .context-card .card::before { display: none; }
-.tracker + .context-card .context-lede h2 { font-size: clamp(2.2rem, 4.6vw, 3.75rem); max-width: 24ch; }
+.tracker + .context-card .context-lede h2 { font-size: var(--fs-tracker-context-card-context-lede-h2); max-width: 24ch; }
 
 /* Pull quotes */
 .pullquote {
@@ -1111,7 +1152,7 @@ body { overflow-x: clip; }
   font-family: var(--font-display);
   font-style: normal;
   font-weight: 400;
-  font-size: clamp(1.7rem, 3.6vw, 2.75rem);
+  font-size: var(--fs-pullquote-p);
   line-height: var(--lh-title);
   letter-spacing: var(--track-title);
   color: var(--ink);
@@ -1132,8 +1173,8 @@ body { overflow-x: clip; }
     display: inline-block;
     overflow: clip;
     overflow-clip-margin: 0.04em;
-    padding-block: 0.06em 0.1em;
-    margin-block: -0.06em -0.1em;
+    padding-block: 0.06em 0.1em; /* floor-ignore: optical offset in em, scales with the type it adjusts */
+    margin-block: -0.06em -0.1em; /* floor-ignore: optical offset in em, scales with the type it adjusts */
     vertical-align: top;
   }
   html.motion [data-set="words"] .set-wi { display: inline-block; }
@@ -1178,7 +1219,7 @@ body { overflow-x: clip; }
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -1px;
+  bottom: -1px; /* floor-ignore: hairline offset */
   height: 2px;
   background: var(--pal-on-night);
   transform-origin: 0 50%;
@@ -1270,7 +1311,7 @@ body { overflow-x: clip; }
 
 .panel-head { margin-bottom: var(--s-48); max-width: 760px; }
 .panel-head h2 { margin-bottom: var(--stack-block); }
-.panel-head .dek { font-size: clamp(1.05rem, 1.5vw, 1.2rem); line-height: var(--lh-ui); }
+.panel-head .dek { font-size: var(--fs-panel-head-dek); line-height: var(--lh-ui); }
 .panel-head .eyebrow { margin-bottom: var(--stack-related); }
 /* Kicker rule sits above the eyebrow when one is present */
 .panel-head:has(.eyebrow) h2::before { display: none; }
@@ -1344,7 +1385,7 @@ body { overflow-x: clip; }
 .pf-val {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-size: var(--fs-pf-val);
   letter-spacing: var(--track-title);
   line-height: var(--lh-figure);
   color: var(--ink);
@@ -1432,7 +1473,7 @@ body { overflow-x: clip; }
 .story {
   max-width: 680px;
   font-family: var(--font-display);
-  font-size: clamp(1.12rem, 1.5vw, 1.28rem);
+  font-size: var(--fs-story);
   line-height: var(--lh-body);
   color: var(--ink-2);
   margin-inline: auto;
@@ -1447,10 +1488,10 @@ body { overflow-x: clip; }
   margin-inline: auto; }
 .story--lede > p:first-of-type::first-letter {
   float: left;
-  font-size: 4.1em;
+  font-size: 4.1em; /* floor-ignore: proportional to its parent text, in em by design */
   line-height: var(--lh-figure);
   font-weight: 600;
-  margin: 0.08em 0.1em 0 0;
+  margin: 0.08em 0.1em 0 0; /* floor-ignore: optical offset in em, scales with the type it adjusts */
   color: var(--ink);
 }
 .story-map {
@@ -1461,7 +1502,7 @@ body { overflow-x: clip; }
   font-size: var(--text-base);
   color: var(--ink-3);
 }
-.story-dek { font-size: 1.18em; color: var(--ink); line-height: var(--lh-ui); }
+.story-dek { font-size: 1.18em; color: var(--ink); line-height: var(--lh-ui); } /* floor-ignore: proportional to its parent text, in em by design */
 
 /* Part dividers */
 .part-head {
@@ -1488,7 +1529,7 @@ body { overflow-x: clip; }
   margin: 0;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-size: var(--fs-part-head-h2);
   letter-spacing: var(--track-display);
   line-height: var(--lh-figure);
   color: var(--ink);
@@ -1552,7 +1593,7 @@ body { overflow-x: clip; }
 .era h3 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-size: var(--fs-era-h3);
   letter-spacing: var(--track-title);
   line-height: var(--lh-title);
   color: var(--ink);
@@ -1560,7 +1601,7 @@ body { overflow-x: clip; }
 }
 .era-body > p {
   font-family: var(--font-display);
-  font-size: clamp(1.05rem, 1.35vw, 1.15rem);
+  font-size: var(--fs-era-body-p);
   line-height: var(--lh-body);
   color: var(--ink-2);
   margin: 0 0 1lh;
@@ -1603,7 +1644,7 @@ body { overflow-x: clip; }
   display: block;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-size: var(--fs-era-stats-strong);
   letter-spacing: var(--track-title);
   line-height: var(--lh-display);
   color: var(--pal);
@@ -1637,7 +1678,7 @@ body { overflow-x: clip; }
 }
 .era--feature .era-body { max-width: 780px; }
 .era--feature .era-years { color: var(--pal-on-night); }
-.era--feature h3 { color: #fff; font-size: clamp(2.2rem, 4.6vw, 3.6rem); }
+.era--feature h3 { color: #fff; font-size: var(--fs-era-feature-h3); }
 .era--feature .era-body > p { color: #e1e5ea; }
 .era--feature .era-body em { color: #fff; }
 .era--feature .era-stats { border-top-color: var(--night-rule); }
@@ -1704,7 +1745,7 @@ body { overflow-x: clip; }
 }
 .scrolly-graphic {
   position: sticky;
-  top: max(var(--s-48), calc(50vh - 220px));
+  top: max(var(--s-48), calc(50vh - 220px)); /* floor-ignore: pin position derived from the chart height, not spacing */
 }
 .scrolly-steps { padding: 20vh 0 30vh; }
 .step {
@@ -1724,7 +1765,7 @@ body { overflow-x: clip; }
 .step h3 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+  font-size: var(--fs-step-h3);
   letter-spacing: var(--track-title);
   line-height: var(--lh-title);
   margin: 0 0 var(--stack-block);
@@ -1936,7 +1977,7 @@ body { overflow-x: clip; }
 .panel-head { margin-bottom: var(--s-48); }
 .panel-head h2 {
   font-weight: 500;
-  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-size: var(--fs-panel-head-h2-styles);
   margin-bottom: var(--stack-block);
 }
 .context-lede h2 { font-weight: 500; }
@@ -1988,15 +2029,15 @@ body { overflow-x: clip; }
 .viz-title { font: 600 1rem/var(--lh-label) var(--font-body); letter-spacing: 0; color: var(--ink); }
 
 /* ---- Prose ---- */
-.story { line-height: var(--lh-body); font-size: clamp(1.125rem, 1.4vw, 1.25rem); }
+.story { line-height: var(--lh-body); font-size: var(--fs-story-styles); }
 .story p { margin-bottom: 1lh; }
 .era-body > p, .step p {
   line-height: var(--lh-body);
   font-variant-numeric: oldstyle-nums proportional-nums;
 }
-.era-body > p { font-size: clamp(1.08rem, 1.4vw, 1.2rem); }
+.era-body > p { font-size: var(--fs-era-body-p-styles); }
 .story strong, .era-body strong, .step strong { font-weight: 500; color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
-.story--lede > p:first-of-type::first-letter { font-weight: 400; font-size: 3.6em; }
+.story--lede > p:first-of-type::first-letter { font-weight: 400; font-size: 3.6em; } /* floor-ignore: proportional to its parent text, in em by design */
 @supports (initial-letter: 3) or (-webkit-initial-letter: 3) {
   .story--lede > p:first-of-type::first-letter {
     -webkit-initial-letter: 3;
@@ -2004,7 +2045,7 @@ body { overflow-x: clip; }
     float: none;
     font-size: inherit;
     line-height: inherit;
-    margin: 0 0.1em 0 0;
+    margin: 0 0.1em 0 0; /* floor-ignore: optical offset in em, scales with the type it adjusts */
   }
 }
 .story-map { font-family: var(--font-display); font-size: var(--text-ui); }
@@ -2049,7 +2090,7 @@ body { overflow-x: clip; }
   border: 0;
   border-radius: 0;
   font-weight: 400;
-  font-size: 1.1em;
+  font-size: 1.1em; /* floor-ignore: proportional to its parent text, in em by design */
   color: var(--ink-3);
 }
 .more[open] > summary::before { content: "–"; }
@@ -2229,7 +2270,7 @@ h1, h2, h3, h4, .story-dek, .coda-line { text-wrap: balance; }
 .rm-num {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(4.5rem, 14vw, 11rem);
+  font-size: var(--fs-rm-num);
   line-height: var(--lh-figure);
   letter-spacing: var(--track-figure);
   color: var(--pal);
@@ -2247,7 +2288,7 @@ h1, h2, h3, h4, .story-dek, .coda-line { text-wrap: balance; }
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  font-size: var(--fs-era-quote-p);
   line-height: var(--lh-title);
   letter-spacing: var(--track-title);
   color: var(--ink);
@@ -2336,7 +2377,7 @@ h1, h2, h3, h4, .story-dek, .coda-line { text-wrap: balance; }
   margin: var(--s-24) 0 var(--s-16);
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(4rem, 13vw, 10rem);
+  font-size: var(--fs-coda-num);
   line-height: var(--lh-figure);
   letter-spacing: var(--track-title);
   color: #fff;
@@ -2346,7 +2387,7 @@ h1, h2, h3, h4, .story-dek, .coda-line { text-wrap: balance; }
   max-width: 32ch;
   margin: 0 auto;
   font-family: var(--font-display);
-  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+  font-size: var(--fs-coda-line);
   line-height: var(--lh-caption);
   color: #e1e5ea;
 }
@@ -2378,7 +2419,7 @@ h1, h2, h3, h4, .story-dek, .coda-line { text-wrap: balance; }
 }
 .names-wall.is-open { max-height: none; -webkit-mask-image: none; mask-image: none; }
 .names-wall span { white-space: nowrap; }
-.names-wall span + span::before { content: "·"; margin: 0 0.6em; color: var(--night-ink-3); }
+.names-wall span + span::before { content: "·"; margin: 0 0.6em; color: var(--night-ink-3); } /* floor-ignore: optical offset in em, scales with the type it adjusts */
 .names-more {
   appearance: none;
   margin-top: var(--s-24);
@@ -2454,7 +2495,7 @@ main:has(.coda) .foot-meta { padding-bottom: 0; }
   background: linear-gradient(var(--night-rule), var(--night-rule)) top center / calc(100% - 2 * var(--page-margin)) 1px no-repeat;
 }
 .names-wall span + span::before { content: none; }
-.names-wall span:not(:last-child)::after { content: "·"; margin: 0 0.1em 0 0.7em; color: var(--night-ink-3); }
+.names-wall span:not(:last-child)::after { content: "·"; margin: 0 0.1em 0 0.7em; color: var(--night-ink-3); } /* floor-ignore: optical offset in em, scales with the type it adjusts */
 
 /* QA round 2 */
 @media (max-width: 900px) { .step, .step.is-active { opacity: 1; } }
@@ -2469,7 +2510,7 @@ main:has(.coda) + .site-foot { margin-top: 0; }
 /* The end of the Ministry's age-and-sex breakdown: dashed, so it reads as a data boundary, not a count */
 .dots-mark--gap::before, .dots-mark--gap::after { border-top-style: dashed; border-top-color: var(--ink); }
 .dots-mark--gap span { color: var(--ink); white-space: nowrap; }
-.names-wall span:not(:last-child)::after { margin: 0; margin-inline: 0.7em 0.1em; }
+.names-wall span:not(:last-child)::after { margin: 0; margin-inline: 0.7em 0.1em; } /* floor-ignore: optical offset in em, scales with the type it adjusts */
 .names-wall.is-open + .names-more {
   position: sticky;
   bottom: var(--s-16);

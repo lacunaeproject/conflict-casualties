@@ -193,5 +193,5 @@
 .rd .who-chart { background: none; box-shadow: none; padding: 0; border-radius: 0; }
 /* Indirect-deaths band: neutral numbers, facts span the card */
 .rd .context-inner > .yr-facts { grid-column: 1 / -1; margin-top: 0; }
-.rd .context-card .rm-num { color: var(--text); font-size: clamp(2.2rem, 3.6vw, 3.2rem); white-space: nowrap; }
+.rd .context-card .rm-num { color: var(--text); font-size: var(--fs-context-card-rm-num); white-space: nowrap; }
 .rd .context-card .rm-col--now .rm-num { color: var(--text-2); }

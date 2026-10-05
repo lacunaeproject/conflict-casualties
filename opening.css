@@ -66,11 +66,11 @@
 .opening-line {
   display: block;
   overflow: clip;
-  padding-bottom: 0.14em;
-  margin-bottom: -0.14em;
+  padding-bottom: 0.14em; /* floor-ignore: optical offset in em, scales with the type it adjusts */
+  margin-bottom: -0.14em; /* floor-ignore: optical offset in em, scales with the type it adjusts */
 }
 /* Optical edge: the E's serifs and the a's bowl sit inside their sidebearings */
-.opening-line > span { display: inline-block; margin-left: -0.04em; }
+.opening-line > span { display: inline-block; margin-left: -0.04em; } /* floor-ignore: optical offset in em, scales with the type it adjusts */
 
 .opening-dek {
   max-width: 32em;

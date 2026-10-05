@@ -94,7 +94,7 @@
   display: inline-block;
   width: 0.7em;
   height: 0.7em;
-  margin-right: 0.3em;
+  margin-right: 0.3em; /* floor-ignore: optical offset in em, scales with the type it adjusts */
   border-radius: 2px;
   vertical-align: -0.05em;
   background: var(--k);

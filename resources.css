@@ -76,7 +76,7 @@
 .section-head h2 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-size: var(--fs-section-head-h2);
   letter-spacing: var(--track-title);
   line-height: var(--lh-title);
   margin: 0 0 var(--stack-block);
@@ -185,7 +185,7 @@
 /* Featured cover — bigger typography */
 .book-featured .book-cover { min-height: 300px; }
 .book-featured .title-cover {
-  font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+  font-size: var(--fs-book-featured-title-cover);
   line-height: var(--lh-display);
 }
 .book-featured .author-cover {
@@ -279,7 +279,7 @@
 .book-links a::after {
   content: ' ↗';
   color: var(--ink-4);
-  font-size: 0.85em;
+  font-size: 0.85em; /* floor-ignore: proportional to its parent text, in em by design */
 }
 .book-links a:hover::after { color: var(--pal); }
 
@@ -322,7 +322,7 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 0.65em;
+  top: 0.65em; /* floor-ignore: optical offset in em, scales with the type it adjusts */
   width: 10px;
   height: 1px;
   background: var(--ink-4);
